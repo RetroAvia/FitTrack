@@ -8,164 +8,361 @@
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- React and ReactDOM -->
-    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-    
-    <!-- Babel for JSX transformation -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-    
-    <!-- Recharts -->
-    <script src="https://unpkg.com/recharts@2.8.0/umd/Recharts.js"></script>
-    
-    <!-- Lucide React Icons -->
-    <script src="https://unpkg.com/lucide-react@latest/dist/umd/lucide-react.js"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        @keyframes fade-in {
-            from {
-                opacity: 0;
-                transform: translateY(30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-        .animate-fade-in {
-            animation: fade-in 0.8s ease-out forwards;
-        }
-        
-        .animate-spin {
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            from { transform: rotate(0deg); }
-            to { transform: rotate(360deg); }
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
-        /* Custom gradient classes for better browser compatibility */
-        .bg-gradient-primary {
-            background: linear-gradient(135deg, #3B82F6 0%, #1D4ED8 100%);
+        body {
+            background: linear-gradient(135deg, #0f172a 0%, #1e293b 25%, #334155 50%, #1e293b 75%, #0f172a 100%);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+            min-height: 100vh;
         }
-        
-        .bg-gradient-success {
-            background: linear-gradient(135deg, #10B981 0%, #047857 100%);
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
-        
-        .bg-gradient-warning {
-            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+
+        .glass-effect {
+            backdrop-filter: blur(16px);
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(148, 163, 184, 0.1);
         }
-        
-        .bg-gradient-danger {
-            background: linear-gradient(135deg, #EF4444 0%, #DC2626 100%);
+
+        .neon-glow {
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+            transition: all 0.3s ease;
         }
-        
-        .bg-gradient-secondary {
-            background: linear-gradient(135deg, #6B7280 0%, #4B5563 100%);
+
+        .neon-glow:hover {
+            box-shadow: 0 0 30px rgba(59, 130, 246, 0.6);
+            transform: translateY(-2px);
         }
-        
-        .bg-gradient-header {
-            background: linear-gradient(135deg, #1F2937 0%, #111827 50%, #1F2937 100%);
+
+        .animate-float {
+            animation: float 3s ease-in-out infinite;
         }
-        
-        .bg-gradient-body {
-            background: linear-gradient(135deg, #111827 0%, #1F2937 50%, #111827 100%);
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
         }
-        
+
+        .animate-pulse-glow {
+            animation: pulseGlow 2s ease-in-out infinite;
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.4); }
+            50% { box-shadow: 0 0 40px rgba(59, 130, 246, 0.8); }
+        }
+
+        .animate-slide-up {
+            animation: slideUp 0.6s ease-out forwards;
+        }
+
+        @keyframes slideUp {
+            0% { transform: translateY(30px); opacity: 0; }
+            100% { transform: translateY(0); opacity: 1; }
+        }
+
+        .loading-wave {
+            display: inline-block;
+            animation: wave 1.4s ease-in-out infinite;
+        }
+
+        .loading-wave:nth-child(2) { animation-delay: 0.1s; }
+        .loading-wave:nth-child(3) { animation-delay: 0.2s; }
+
+        @keyframes wave {
+            0%, 60%, 100% { transform: initial; }
+            30% { transform: translateY(-15px); }
+        }
+
+        .btn-enhanced {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-enhanced::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-enhanced:hover::before {
+            left: 100%;
+        }
+
+        .card-hover {
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .card-hover:hover {
+            transform: translateY(-8px) scale(1.02);
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(148, 163, 184, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            border-radius: 10px;
+        }
+
         .text-gradient {
-            background: linear-gradient(135deg, #60A5FA 0%, #A855F7 50%, #EC4899 100%);
+            background: linear-gradient(135deg, #60a5fa 0%, #a855f7 50%, #ec4899 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
         }
+
+        /* Particle animation */
+        .particle-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(59, 130, 246, 0.4);
+            border-radius: 50%;
+            animation: particleFloat 6s ease-in-out infinite;
+        }
+
+        @keyframes particleFloat {
+            0%, 100% { transform: translateY(100vh) translateX(0px); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100px) translateX(100px); opacity: 0; }
+        }
     </style>
 </head>
-<body class="bg-gradient-body min-h-screen">
-    <div id="root"></div>
+<body>
+    <!-- Animated Background Particles -->
+    <div class="particle-bg" id="particles"></div>
+    
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 flex items-center justify-center z-50">
+        <div class="text-center">
+            <div class="mb-8">
+                <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center animate-pulse-glow">
+                    <svg class="w-10 h-10 text-white animate-float" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                    </svg>
+                </div>
+                <h1 class="text-5xl font-bold text-gradient mb-4">
+                    FitTrack Pro
+                </h1>
+                <div class="flex justify-center space-x-1 mb-4">
+                    <span class="loading-wave text-blue-400 text-xl">●</span>
+                    <span class="loading-wave text-purple-400 text-xl">●</span>
+                    <span class="loading-wave text-pink-400 text-xl">●</span>
+                </div>
+                <p class="text-gray-300 text-lg">Inizializzazione in corso...</p>
+            </div>
+        </div>
+    </div>
 
-    <script type="text/babel">
-        const { useState, useEffect, useMemo, useCallback } = React;
-        const { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar, AreaChart, Area } = Recharts;
-        const { 
-            Plus, TrendingUp, Target, User, Calendar, Award, Dumbbell, Activity, 
-            Home, BarChart3, Ruler, Bell, Trash2, Filter, Star, AlertTriangle, 
-            Save, X, Check, Zap, Flame, TrendingDown, Download, Search, Calculator 
-        } = lucideReact;
+    <!-- Main App Container -->
+    <div id="root" class="opacity-0 transition-opacity duration-1000"></div>
 
+    <!-- React and Dependencies -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+
+    <!-- Main Application Script -->
+    <script>
+        // Create animated particles background
+        function createParticles() {
+            const container = document.getElementById('particles');
+            const particleCount = 30;
+
+            for (let i = 0; i < particleCount; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 6 + 's';
+                particle.style.animationDuration = (Math.random() * 3 + 3) + 's';
+                container.appendChild(particle);
+            }
+        }
+
+        // Initialize particles
+        createParticles();
+
+        // Error handling
+        window.onerror = function(msg, url, lineNo, columnNo, error) {
+            console.error('Error: ', msg, url, lineNo, columnNo, error);
+            return false;
+        };
+
+        // Check if React loaded
+        if (typeof React === 'undefined' || typeof ReactDOM === 'undefined') {
+            console.error('React libraries failed to load');
+            alert('Errore caricamento. Ricarica la pagina.');
+        }
+
+        // Main App Component
         const FitTrackPro = () => {
-            const [currentView, setCurrentView] = useState('dashboard');
-            const [exercises, setExercises] = useState([]);
-            const [workouts, setWorkouts] = useState([]);
-            const [bodyMeasurements, setBodyMeasurements] = useState([]);
-            const [goals, setGoals] = useState([]);
-            const [loading, setLoading] = useState(false);
-            const [showDeleteConfirm, setShowDeleteConfirm] = useState(null);
-            const [searchTerm, setSearchTerm] = useState('');
+            const [currentView, setCurrentView] = React.useState('dashboard');
+            const [exercises, setExercises] = React.useState([]);
+            const [workouts, setWorkouts] = React.useState([]);
+            const [bodyMeasurements, setBodyMeasurements] = React.useState([]);
+            const [goals, setGoals] = React.useState([]);
+            const [loading, setLoading] = React.useState(false);
+            const [showDeleteConfirm, setShowDeleteConfirm] = React.useState(null);
+            const [searchTerm, setSearchTerm] = React.useState('');
+            const [appInitialized, setAppInitialized] = React.useState(false);
 
             // Form states
-            const [newExercise, setNewExercise] = useState({ name: '', category: 'petto', muscleGroup: '' });
-            const [newWorkout, setNewWorkout] = useState({ exerciseId: '', exercise: '', weight: '', sets: '', reps: '', date: new Date().toISOString().split('T')[0] });
-            const [newMeasurement, setNewMeasurement] = useState({ type: 'peso', value: '', date: new Date().toISOString().split('T')[0] });
-            const [newGoal, setNewGoal] = useState({ type: 'exercise', target: '', value: '', deadline: '' });
+            const [newExercise, setNewExercise] = React.useState({ name: '', category: 'petto', muscleGroup: '' });
+            const [newWorkout, setNewWorkout] = React.useState({ 
+                exerciseId: '', 
+                exercise: '', 
+                weight: '', 
+                sets: '', 
+                reps: '', 
+                date: new Date().toISOString().split('T')[0] 
+            });
+            const [newMeasurement, setNewMeasurement] = React.useState({ 
+                type: 'peso', 
+                value: '', 
+                date: new Date().toISOString().split('T')[0] 
+            });
+            const [newGoal, setNewGoal] = React.useState({ 
+                type: 'exercise', 
+                target: '', 
+                value: '', 
+                deadline: '' 
+            });
 
             const categories = ['petto', 'schiena', 'spalle', 'bicipiti', 'tricipiti', 'gambe', 'addominali', 'cardio'];
             const measurementTypes = ['peso', 'altezza', 'petto', 'vita', 'fianchi', 'braccio_dx', 'braccio_sx', 'coscia_dx', 'coscia_sx'];
 
+            // Simple SVG Icons Component
+            const Icon = ({ name, className = "w-5 h-5" }) => {
+                const iconPaths = {
+                    home: "M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z",
+                    dumbbell: "M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z",
+                    chart: "M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z",
+                    ruler: "M3 4a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1V4zm2 2V5h1v1H5zM3 13a1 1 0 011-1h3a1 1 0 011 1v3a1 1 0 01-1 1H4a1 1 0 01-1-1v-3zm2 2v-1h1v1H5zM13 3a1 1 0 00-1 1v3a1 1 0 001 1h3a1 1 0 001-1V4a1 1 0 00-1-1h-3zm1 2v1h1V5h-1z",
+                    target: "M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 3.314-2.686 6-6 6s-6-2.686-6-6a4.99 4.99 0 01.332-1.973z",
+                    plus: "M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z",
+                    trash: "M9 2a1 1 0 000 2h2a1 1 0 100-2H9z M4 5a1 1 0 000 2v6a2 2 0 002 2h8a2 2 0 002-2V7a1 1 0 100-2H4z",
+                    check: "M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z",
+                    search: "M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z",
+                    filter: "M3 3a1 1 0 011-1h12a1 1 0 011 1v3a1 1 0 01-.293.707L12 11.414V15a1 1 0 01-.293.707l-2 2A1 1 0 018 17v-5.586L3.293 6.707A1 1 0 013 6V3z",
+                    download: "M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z",
+                    trending: "M3.293 9.707a1 1 0 010-1.414l6-6a1 1 0 011.414 0l6 6a1 1 0 01-1.414 1.414L11 5.414V17a1 1 0 11-2 0V5.414L4.707 9.707a1 1 0 01-1.414 0z",
+                    star: "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z",
+                    fire: "M12.395 2.553a1 1 0 00-1.45-.385c-.345.23-.614.558-.822.88-.214.33-.403.713-.57 1.116-.334.804-.614 1.768-.84 2.734a31.365 31.365 0 00-.613 3.58 2.64 2.64 0 01-.945-1.067c-.328-.68-.398-1.534-.398-2.654A1 1 0 005.05 6.05 6.981 6.981 0 003 11a7 7 0 1011.95-4.95c-.592-.591-.98-.985-1.348-1.467-.363-.476-.724-1.063-1.207-2.03zM12.12 15.12A3 3 0 017 13s.879.5 2.5.5c0-1 .5-4 1.25-4.5.5 1 .786 1.293 1.371 1.879A2.99 2.99 0 0113 13a2.99 2.99 0 01-.879 2.121z",
+                    zap: "M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z",
+                    user: "M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z",
+                    calendar: "M6 2a1 1 0 00-1 1v1H4a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V6a2 2 0 00-2-2h-1V3a1 1 0 10-2 0v1H7V3a1 1 0 00-1-1zm0 5a1 1 0 000 2h8a1 1 0 100-2H6z",
+                    award: "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+                };
+                
+                return React.createElement('svg', {
+                    className: className,
+                    fill: 'currentColor',
+                    viewBox: '0 0 20 20'
+                }, React.createElement('path', {
+                    fillRule: 'evenodd',
+                    d: iconPaths[name] || iconPaths.dumbbell,
+                    clipRule: 'evenodd'
+                }));
+            };
+
             // Sample data initialization
-            useEffect(() => {
-                if (exercises.length === 0) {
-                    setLoading(true);
+            React.useEffect(() => {
+                const initializeApp = async () => {
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    const sampleExercises = [
+                        { id: 1, name: 'Panca Piana', category: 'petto', muscleGroup: 'Pettorale maggiore' },
+                        { id: 2, name: 'Squat', category: 'gambe', muscleGroup: 'Quadricipiti' },
+                        { id: 3, name: 'Deadlift', category: 'schiena', muscleGroup: 'Dorsali' },
+                        { id: 4, name: 'Military Press', category: 'spalle', muscleGroup: 'Deltoidi' },
+                        { id: 5, name: 'Curl Bilanciere', category: 'bicipiti', muscleGroup: 'Bicipiti' }
+                    ];
+                    setExercises(sampleExercises);
+
+                    const sampleWorkouts = [
+                        { id: 1, exerciseId: 1, exercise: 'Panca Piana', weight: 80, sets: 3, reps: 8, date: '2025-08-15' },
+                        { id: 2, exerciseId: 1, exercise: 'Panca Piana', weight: 82, sets: 3, reps: 8, date: '2025-08-18' },
+                        { id: 3, exerciseId: 1, exercise: 'Panca Piana', weight: 85, sets: 3, reps: 7, date: '2025-08-22' },
+                        { id: 4, exerciseId: 1, exercise: 'Panca Piana', weight: 87, sets: 3, reps: 7, date: '2025-08-25' },
+                        { id: 5, exerciseId: 1, exercise: 'Panca Piana', weight: 90, sets: 3, reps: 6, date: '2025-08-27' },
+                        { id: 6, exerciseId: 2, exercise: 'Squat', weight: 100, sets: 4, reps: 6, date: '2025-08-16' },
+                        { id: 7, exerciseId: 2, exercise: 'Squat', weight: 105, sets: 4, reps: 6, date: '2025-08-20' },
+                        { id: 8, exerciseId: 2, exercise: 'Squat', weight: 110, sets: 4, reps: 6, date: '2025-08-24' }
+                    ];
+                    setWorkouts(sampleWorkouts);
+
+                    const sampleMeasurements = [
+                        { id: 1, type: 'peso', value: 75, date: '2025-08-15' },
+                        { id: 2, type: 'peso', value: 74.5, date: '2025-08-22' },
+                        { id: 3, type: 'peso', value: 74, date: '2025-08-27' },
+                        { id: 4, type: 'petto', value: 98, date: '2025-08-15' },
+                        { id: 5, type: 'petto', value: 99, date: '2025-08-22' },
+                        { id: 6, type: 'petto', value: 100, date: '2025-08-27' }
+                    ];
+                    setBodyMeasurements(sampleMeasurements);
+
+                    const sampleGoals = [
+                        { id: 1, type: 'exercise', target: 'Panca Piana 100kg', value: 100, current: 90, deadline: '2025-12-31', progress: 90 },
+                        { id: 2, type: 'body', target: 'Peso 70kg', value: 70, current: 74, deadline: '2025-11-30', progress: 25 },
+                        { id: 3, type: 'exercise', target: 'Squat 130kg', value: 130, current: 110, deadline: '2025-10-31', progress: 85 }
+                    ];
+                    setGoals(sampleGoals);
+
+                    setAppInitialized(true);
+                    
                     setTimeout(() => {
-                        const sampleExercises = [
-                            { id: 1, name: 'Panca Piana', category: 'petto', muscleGroup: 'Pettorale maggiore' },
-                            { id: 2, name: 'Squat', category: 'gambe', muscleGroup: 'Quadricipiti' },
-                            { id: 3, name: 'Deadlift', category: 'schiena', muscleGroup: 'Dorsali' },
-                            { id: 4, name: 'Military Press', category: 'spalle', muscleGroup: 'Deltoidi' },
-                            { id: 5, name: 'Curl Bilanciere', category: 'bicipiti', muscleGroup: 'Bicipiti' }
-                        ];
-                        setExercises(sampleExercises);
+                        document.getElementById('loadingScreen').style.opacity = '0';
+                        setTimeout(() => {
+                            document.getElementById('loadingScreen').style.display = 'none';
+                            document.getElementById('root').style.opacity = '1';
+                        }, 500);
+                    }, 500);
+                };
 
-                        const sampleWorkouts = [
-                            { id: 1, exerciseId: 1, exercise: 'Panca Piana', weight: 80, sets: 3, reps: 8, date: '2025-08-15' },
-                            { id: 2, exerciseId: 1, exercise: 'Panca Piana', weight: 82, sets: 3, reps: 8, date: '2025-08-18' },
-                            { id: 3, exerciseId: 1, exercise: 'Panca Piana', weight: 85, sets: 3, reps: 7, date: '2025-08-22' },
-                            { id: 4, exerciseId: 1, exercise: 'Panca Piana', weight: 87, sets: 3, reps: 7, date: '2025-08-25' },
-                            { id: 5, exerciseId: 1, exercise: 'Panca Piana', weight: 90, sets: 3, reps: 6, date: '2025-08-27' },
-                            { id: 6, exerciseId: 2, exercise: 'Squat', weight: 100, sets: 4, reps: 6, date: '2025-08-16' },
-                            { id: 7, exerciseId: 2, exercise: 'Squat', weight: 105, sets: 4, reps: 6, date: '2025-08-20' },
-                            { id: 8, exerciseId: 2, exercise: 'Squat', weight: 110, sets: 4, reps: 6, date: '2025-08-24' },
-                            { id: 9, exerciseId: 3, exercise: 'Deadlift', weight: 120, sets: 3, reps: 5, date: '2025-08-17' },
-                            { id: 10, exerciseId: 3, exercise: 'Deadlift', weight: 125, sets: 3, reps: 5, date: '2025-08-21' },
-                        ];
-                        setWorkouts(sampleWorkouts);
+                initializeApp().catch(error => {
+                    console.error('Initialization error:', error);
+                    alert('Errore inizializzazione. Ricarica la pagina.');
+                });
+            }, []);
 
-                        const sampleMeasurements = [
-                            { id: 1, type: 'peso', value: 75, date: '2025-08-15' },
-                            { id: 2, type: 'peso', value: 74.5, date: '2025-08-22' },
-                            { id: 3, type: 'peso', value: 74, date: '2025-08-27' },
-                            { id: 4, type: 'petto', value: 98, date: '2025-08-15' },
-                            { id: 5, type: 'petto', value: 99, date: '2025-08-22' },
-                            { id: 6, type: 'petto', value: 100, date: '2025-08-27' },
-                            { id: 7, type: 'braccio_dx', value: 35, date: '2025-08-15' },
-                            { id: 8, type: 'braccio_dx', value: 35.5, date: '2025-08-27' }
-                        ];
-                        setBodyMeasurements(sampleMeasurements);
-
-                        const sampleGoals = [
-                            { id: 1, type: 'exercise', target: 'Panca Piana 100kg', value: 100, current: 90, deadline: '2025-12-31', progress: 90 },
-                            { id: 2, type: 'body', target: 'Peso 70kg', value: 70, current: 74, deadline: '2025-11-30', progress: 25 },
-                            { id: 3, type: 'exercise', target: 'Squat 130kg', value: 130, current: 110, deadline: '2025-10-31', progress: 85 }
-                        ];
-                        setGoals(sampleGoals);
-                        setLoading(false);
-                    }, 1000);
-                }
-            }, [exercises.length]);
-
-            // Data export functionality
-            const exportData = useCallback(() => {
+            // Export data functionality
+            const exportData = React.useCallback(() => {
                 const data = {
                     exercises,
                     workouts,
@@ -185,19 +382,19 @@
             }, [exercises, workouts, bodyMeasurements, goals]);
 
             // Input handlers
-            const handleExerciseInputChange = useCallback((field, value) => {
+            const handleExerciseInputChange = React.useCallback((field, value) => {
                 setNewExercise(prev => ({ ...prev, [field]: value }));
             }, []);
 
-            const handleWorkoutInputChange = useCallback((field, value) => {
+            const handleWorkoutInputChange = React.useCallback((field, value) => {
                 setNewWorkout(prev => ({ ...prev, [field]: value }));
             }, []);
 
-            const handleMeasurementInputChange = useCallback((field, value) => {
+            const handleMeasurementInputChange = React.useCallback((field, value) => {
                 setNewMeasurement(prev => ({ ...prev, [field]: value }));
             }, []);
 
-            const handleGoalInputChange = useCallback((field, value) => {
+            const handleGoalInputChange = React.useCallback((field, value) => {
                 setNewGoal(prev => ({ ...prev, [field]: value }));
             }, []);
 
@@ -209,56 +406,46 @@
                     large: "w-12 h-12"
                 };
 
-                return (
-                    <div className={`${sizeClasses[size]} animate-spin`}>
-                        <div className={`${sizeClasses[size]} border-4 border-blue-200 border-t-blue-600 rounded-full`}></div>
-                    </div>
-                );
+                return React.createElement('div', {
+                    className: `${sizeClasses[size]} animate-spin`
+                }, React.createElement('div', {
+                    className: `${sizeClasses[size]} border-4 border-blue-200 border-t-blue-600 rounded-full`
+                }));
             };
 
             // Enhanced button component
             const ActionButton = ({ onClick, loading, children, variant = "primary", size = "medium", className = "", disabled = false, ...props }) => {
-                const baseClasses = "flex items-center justify-center space-x-2 font-semibold rounded-xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg";
+                const baseClasses = "flex items-center justify-center space-x-2 font-semibold rounded-2xl transition-all duration-300 transform hover:scale-105 active:scale-95 shadow-lg btn-enhanced";
                 
                 const variantClasses = {
-                    primary: "bg-gradient-primary text-white shadow-blue-500/25 hover:shadow-blue-500/40",
-                    success: "bg-gradient-success text-white shadow-green-500/25 hover:shadow-green-500/40", 
-                    warning: "bg-gradient-warning text-white shadow-amber-500/25 hover:shadow-amber-500/40",
-                    danger: "bg-gradient-danger text-white shadow-red-500/25 hover:shadow-red-500/40",
-                    secondary: "bg-gradient-secondary text-white border border-gray-600 hover:border-gray-500 shadow-gray-500/25",
+                    primary: "bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white shadow-blue-500/25 hover:shadow-blue-500/40 neon-glow",
+                    success: "bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-green-500/25 hover:shadow-green-500/40", 
+                    warning: "bg-gradient-to-r from-amber-600 to-amber-700 hover:from-amber-700 hover:to-amber-800 text-white shadow-amber-500/25 hover:shadow-amber-500/40",
+                    danger: "bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-red-500/25 hover:shadow-red-500/40",
+                    secondary: "bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-600 hover:to-gray-700 text-white border border-gray-600 hover:border-gray-500",
                     outline: "bg-transparent border-2 border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white shadow-blue-500/25"
                 };
 
                 const sizes = {
-                    small: "px-3 py-2 text-sm",
-                    medium: "px-5 py-3",
-                    large: "px-7 py-4 text-lg"
+                    small: "px-4 py-2 text-sm",
+                    medium: "px-6 py-3",
+                    large: "px-8 py-4 text-lg"
                 };
 
-                return (
-                    <button
-                        onClick={onClick}
-                        disabled={loading || disabled}
-                        className={`${baseClasses} ${variantClasses[variant]} ${sizes[size]} ${className} ${loading || disabled ? 'opacity-50 cursor-not-allowed transform-none' : ''}`}
-                        {...props}
-                    >
-                        {loading ? <LoadingSpinner size="small" /> : children}
-                    </button>
-                );
+                return React.createElement('button', {
+                    onClick: onClick,
+                    disabled: loading || disabled,
+                    className: `${baseClasses} ${variantClasses[variant]} ${sizes[size]} ${className} ${loading || disabled ? 'opacity-50 cursor-not-allowed transform-none' : ''}`,
+                    ...props
+                }, loading ? React.createElement(LoadingSpinner, { size: "small" }) : children);
             };
 
             // Enhanced card component
             const AnimatedCard = ({ children, className = "", delay = 0, hover = true }) => {
-                return (
-                    <div 
-                        className={`bg-gray-800/90 backdrop-blur-xl rounded-3xl p-8 border border-gray-700/50 transition-all duration-500 ${
-                            hover ? 'hover:transform hover:scale-[1.02] hover:shadow-2xl hover:shadow-blue-500/10 hover:border-gray-600/70' : ''
-                        } animate-fade-in ${className}`}
-                        style={{ animationDelay: `${delay}ms` }}
-                    >
-                        {children}
-                    </div>
-                );
+                return React.createElement('div', {
+                    className: `glass-effect rounded-3xl p-8 transition-all duration-500 ${hover ? 'card-hover' : ''} animate-slide-up ${className}`,
+                    style: { animationDelay: `${delay}ms` }
+                }, children);
             };
 
             // Enhanced Input Component
@@ -270,20 +457,18 @@
                 className = "",
                 ...props 
             }) => {
-                return (
-                    <input
-                        type={type}
-                        placeholder={placeholder}
-                        value={value}
-                        onChange={(e) => onChange(e.target.value)}
-                        className={`bg-gray-700/50 text-white p-4 rounded-xl border border-gray-600/50 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 placeholder-gray-400 ${className}`}
-                        {...props}
-                    />
-                );
+                return React.createElement('input', {
+                    type: type,
+                    placeholder: placeholder,
+                    value: value,
+                    onChange: (e) => onChange(e.target.value),
+                    className: `glass-effect text-white p-4 rounded-2xl border border-slate-600/50 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-300 placeholder-gray-400 ${className}`,
+                    ...props
+                });
             };
 
             // Smart analysis
-            const analyzeProgress = useMemo(() => {
+            const analyzeProgress = React.useMemo(() => {
                 const recentWorkouts = workouts.filter(w => {
                     const workoutDate = new Date(w.date);
                     const twoWeeksAgo = new Date();
@@ -321,85 +506,99 @@
             // CRUD operations
             const handleDelete = async (type, id) => {
                 setLoading(true);
-                setTimeout(() => {
-                    if (type === 'exercise') {
-                        setExercises(exercises.filter(ex => ex.id !== id));
-                        setWorkouts(workouts.filter(w => w.exerciseId !== id));
-                    } else if (type === 'workout') {
-                        setWorkouts(workouts.filter(w => w.id !== id));
-                    } else if (type === 'measurement') {
-                        setBodyMeasurements(bodyMeasurements.filter(m => m.id !== id));
-                    } else if (type === 'goal') {
-                        setGoals(goals.filter(g => g.id !== id));
-                    }
-                    setShowDeleteConfirm(null);
-                    setLoading(false);
-                }, 400);
+                await new Promise(resolve => setTimeout(resolve, 400));
+                
+                if (type === 'exercise') {
+                    setExercises(exercises.filter(ex => ex.id !== id));
+                    setWorkouts(workouts.filter(w => w.exerciseId !== id));
+                } else if (type === 'workout') {
+                    setWorkouts(workouts.filter(w => w.id !== id));
+                } else if (type === 'measurement') {
+                    setBodyMeasurements(bodyMeasurements.filter(m => m.id !== id));
+                } else if (type === 'goal') {
+                    setGoals(goals.filter(g => g.id !== id));
+                }
+                
+                setShowDeleteConfirm(null);
+                setLoading(false);
             };
 
             // Navigation Component
-            const Navigation = () => (
-                <div className="bg-gradient-header text-white p-6 border-b border-gray-700/50 backdrop-blur-lg shadow-2xl">
-                    <div className="max-w-7xl mx-auto">
-                        <div className="flex items-center justify-between mb-6">
-                            <div className="flex items-center space-x-4">
-                                <div className="p-4 bg-gradient-primary rounded-3xl shadow-xl shadow-blue-500/30">
-                                    <Dumbbell className="w-8 h-8 text-white" />
-                                </div>
-                                <div>
-                                    <h1 className="text-4xl font-bold text-gradient">
-                                        FitTrack Pro
-                                    </h1>
-                                    <p className="text-gray-400 text-sm font-medium">Il tuo tracker fitness definitivo</p>
-                                </div>
-                            </div>
-                            
-                            <div className="flex items-center space-x-4">
-                                <ActionButton
-                                    onClick={exportData}
-                                    variant="outline"
-                                    size="small"
-                                >
-                                    <Download className="w-4 h-4" />
-                                    <span>Esporta Dati</span>
-                                </ActionButton>
-                            </div>
-                        </div>
-                        
-                        <div className="flex justify-center">
-                            <div className="flex space-x-2 bg-gray-800/60 rounded-3xl p-2 backdrop-blur-sm border border-gray-700/30">
-                                {[
-                                    { id: 'dashboard', icon: Home, label: 'Dashboard' },
-                                    { id: 'exercises', icon: Dumbbell, label: 'Esercizi' },
-                                    { id: 'progress', icon: BarChart3, label: 'Progressi' },
-                                    { id: 'measurements', icon: Ruler, label: 'Misure' },
-                                    { id: 'goals', icon: Target, label: 'Obiettivi' }
-                                ].map(item => (
-                                    <button
-                                        key={item.id}
-                                        onClick={() => setCurrentView(item.id)}
-                                        className={`flex items-center space-x-3 px-6 py-4 rounded-2xl text-sm font-semibold transition-all duration-300 transform hover:scale-105 ${
-                                            currentView === item.id 
-                                                ? 'bg-gradient-primary text-white shadow-lg shadow-blue-500/30 scale-105' 
-                                                : 'hover:bg-gray-700/50 text-gray-300 hover:text-white'
-                                        }`}
-                                    >
-                                        <item.icon className="w-5 h-5" />
-                                        <span className="hidden sm:inline">{item.label}</span>
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            );
+            const Navigation = () => {
+                const navItems = [
+                    { id: 'dashboard', icon: 'home', label: 'Dashboard' },
+                    { id: 'exercises', icon: 'dumbbell', label: 'Esercizi' },
+                    { id: 'progress', icon: 'chart', label: 'Progressi' },
+                    { id: 'measurements', icon: 'ruler', label: 'Misure' },
+                    { id: 'goals', icon: 'target', label: 'Obiettivi' }
+                ];
+
+                return React.createElement('div', {
+                    className: "glass-effect text-white p-6 border-b border-slate-700/50 backdrop-blur-lg shadow-2xl sticky top-0 z-40"
+                }, React.createElement('div', {
+                    className: "max-w-7xl mx-auto"
+                }, 
+                    React.createElement('div', {
+                        className: "flex items-center justify-between mb-6"
+                    },
+                        React.createElement('div', {
+                            className: "flex items-center space-x-4"
+                        },
+                            React.createElement('div', {
+                                className: "p-4 bg-gradient-to-r from-blue-500 to-purple-600 rounded-3xl shadow-xl animate-pulse-glow"
+                            }, React.createElement(Icon, { name: "dumbbell", className: "w-8 h-8 text-white" })),
+                            React.createElement('div', {},
+                                React.createElement('h1', {
+                                    className: "text-4xl font-bold text-gradient animate-float"
+                                }, "FitTrack Pro"),
+                                React.createElement('p', {
+                                    className: "text-gray-400 text-sm font-medium"
+                                }, "Il tuo tracker fitness definitivo")
+                            )
+                        ),
+                        React.createElement('div', {
+                            className: "flex items-center space-x-4"
+                        },
+                            React.createElement(ActionButton, {
+                                onClick: exportData,
+                                variant: "outline",
+                                size: "small",
+                                className: "animate-float"
+                            },
+                                React.createElement(Icon, { name: "download", className: "w-4 h-4" }),
+                                React.createElement('span', {}, "Esporta Dati")
+                            )
+                        )
+                    ),
+                    React.createElement('div', {
+                        className: "flex justify-center"
+                    },
+                        React.createElement('div', {
+                            className: "flex space-x-2 glass-effect rounded-3xl p-3 border border-slate-700/30"
+                        }, navItems.map(item => 
+                            React.createElement('button', {
+                                key: item.id,
+                                onClick: () => setCurrentView(item.id),
+                                className: `flex items-center space-x-3 px-6 py-4 rounded-2xl text-sm font-semibold transition-all duration-300 transform hover:scale-105 ${
+                                    currentView === item.id 
+                                        ? 'bg-gradient-to-r from-blue-600 to-purple-600 text-white shadow-lg shadow-blue-500/30 scale-105 neon-glow' 
+                                        : 'hover:bg-slate-700/50 text-gray-300 hover:text-white'
+                                }`
+                            },
+                                React.createElement(Icon, { name: item.icon, className: "w-5 h-5" }),
+                                React.createElement('span', { className: "hidden sm:inline" }, item.label)
+                            )
+                        ))
+                    )
+                ));
+            };
 
             // Dashboard Component
             const Dashboard = () => {
                 const completedGoals = goals.filter(g => g.progress >= 100).length;
                 const activeGoals = goals.length - completedGoals;
                 
-                const bestImprovements = useMemo(() => {
+                const bestImprovements = React.useMemo(() => {
                     const thirtyDaysAgo = new Date();
                     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
                     
@@ -427,224 +626,217 @@
                     .slice(0, 3);
                 }, [exercises, workouts]);
 
-                const measurementTrends = useMemo(() => {
-                    return measurementTypes.map(type => {
-                        const measurements = bodyMeasurements
-                            .filter(m => m.type === type)
-                            .sort((a, b) => new Date(b.date) - new Date(a.date));
-                            
-                        if (measurements.length < 2) return null;
-                        
-                        const latest = measurements[0];
-                        const previous = measurements[1];
-                        const change = latest.value - previous.value;
-                        
-                        return {
-                            type: type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase()),
-                            value: latest.value,
-                            change,
-                            unit: type === 'peso' ? 'kg' : 'cm',
-                            trend: change > 0 ? 'up' : change < 0 ? 'down' : 'stable'
-                        };
-                    }).filter(Boolean);
-                }, [bodyMeasurements]);
-
                 const statsCards = [
-                    { title: 'Esercizi Attivi', value: exercises.length, icon: Dumbbell, subtitle: 'Nel tuo repertorio' },
-                    { title: 'Obiettivi Completati', value: completedGoals, icon: Award, subtitle: 'Traguardi raggiunti' },
-                    { title: 'Obiettivi Attivi', value: activeGoals, icon: Target, subtitle: 'In corso' },
-                    { title: 'Misure Tracciate', value: bodyMeasurements.length, icon: Ruler, subtitle: 'Registrazioni totali' }
+                    { title: 'Esercizi Attivi', value: exercises.length, icon: 'dumbbell', subtitle: 'Nel tuo repertorio' },
+                    { title: 'Obiettivi Completati', value: completedGoals, icon: 'award', subtitle: 'Traguardi raggiunti' },
+                    { title: 'Obiettivi Attivi', value: activeGoals, icon: 'target', subtitle: 'In corso' },
+                    { title: 'Misure Tracciate', value: bodyMeasurements.length, icon: 'ruler', subtitle: 'Registrazioni totali' }
                 ];
 
-                if (loading) {
-                    return (
-                        <div className="p-6 space-y-6">
-                            <div className="flex items-center justify-center h-96">
-                                <div className="text-center space-y-6">
-                                    <LoadingSpinner size="large" />
-                                    <div className="space-y-2">
-                                        <p className="text-white text-xl font-semibold">Caricamento Dashboard...</p>
-                                        <p className="text-gray-400">Preparando i tuoi dati fitness</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    );
-                }
+                return React.createElement('div', {
+                    className: "p-6 space-y-8 max-w-7xl mx-auto"
+                },
+                    React.createElement('div', {
+                        className: "text-center space-y-3"
+                    },
+                        React.createElement('h2', {
+                            className: "text-6xl font-bold text-gradient animate-float"
+                        }, "Dashboard"),
+                        React.createElement('p', {
+                            className: "text-gray-400 text-lg"
+                        }, "Il tuo centro di controllo fitness")
+                    ),
+                    
+                    React.createElement('div', {
+                        className: "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6"
+                    }, statsCards.map((stat, index) => 
+                        React.createElement(AnimatedCard, {
+                            key: stat.title,
+                            delay: index * 100,
+                            className: "relative overflow-hidden"
+                        },
+                            React.createElement('div', {
+                                className: "absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-blue-500/10 to-transparent rounded-full -mr-16 -mt-16"
+                            }),
+                            React.createElement('div', {
+                                className: "relative"
+                            },
+                                React.createElement('div', {
+                                    className: "flex items-center justify-between mb-4"
+                                },
+                                    React.createElement('div', {
+                                        className: "p-4 bg-gradient-to-r from-blue-600 to-blue-700 rounded-2xl shadow-lg shadow-blue-500/30 animate-float"
+                                    }, React.createElement(Icon, { name: stat.icon, className: "w-7 h-7 text-white" }))
+                                ),
+                                React.createElement('h3', {
+                                    className: "text-gray-400 text-sm font-medium mb-2"
+                                }, stat.title),
+                                React.createElement('p', {
+                                    className: "text-4xl font-bold text-white mb-1"
+                                }, stat.value),
+                                React.createElement('p', {
+                                    className: "text-gray-500 text-xs"
+                                }, stat.subtitle)
+                            )
+                        )
+                    )),
 
-                return (
-                    <div className="p-6 space-y-8 max-w-7xl mx-auto">
-                        <div className="text-center space-y-3">
-                            <h2 className="text-5xl font-bold text-gradient">
-                                Dashboard
-                            </h2>
-                            <p className="text-gray-400 text-lg">Il tuo centro di controllo fitness</p>
-                        </div>
-                        
-                        {/* Enhanced Stats Cards */}
-                        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-                            {statsCards.map((stat, index) => (
-                                <AnimatedCard key={stat.title} delay={index * 100} className="relative overflow-hidden">
-                                    <div className="relative">
-                                        <div className="flex items-center justify-between mb-4">
-                                            <div className="p-4 bg-gradient-primary rounded-2xl shadow-lg shadow-blue-500/30">
-                                                <stat.icon className="w-7 h-7 text-white" />
-                                            </div>
-                                        </div>
-                                        <h3 className="text-gray-400 text-sm font-medium mb-2">{stat.title}</h3>
-                                        <p className="text-4xl font-bold text-white mb-1">{stat.value}</p>
-                                        <p className="text-gray-500 text-xs">{stat.subtitle}</p>
-                                    </div>
-                                </AnimatedCard>
-                            ))}
-                        </div>
+                    bestImprovements.length > 0 && React.createElement(AnimatedCard, {
+                        delay: 400
+                    },
+                        React.createElement('div', {
+                            className: "flex items-center justify-between mb-6"
+                        },
+                            React.createElement('h3', {
+                                className: "text-2xl font-bold text-white flex items-center"
+                            },
+                                React.createElement(Icon, { name: "fire", className: "w-7 h-7 mr-3 text-orange-400 animate-pulse" }),
+                                "Top Miglioramenti (30gg)"
+                            ),
+                            React.createElement('div', {
+                                className: "flex items-center space-x-2 text-gray-400"
+                            },
+                                React.createElement(Icon, { name: "trending", className: "w-5 h-5" }),
+                                React.createElement('span', { className: "text-sm" }, "Migliori progressi")
+                            )
+                        ),
+                        React.createElement('div', {
+                            className: "grid grid-cols-1 md:grid-cols-3 gap-6"
+                        }, bestImprovements.map((improvement, index) => 
+                            React.createElement('div', {
+                                key: index,
+                                className: "relative bg-gradient-to-br from-orange-900/20 to-red-900/10 p-6 rounded-2xl border border-orange-500/20 hover:border-orange-500/40 transition-all duration-300 overflow-hidden group"
+                            },
+                                React.createElement('div', {
+                                    className: "absolute -top-10 -right-10 w-20 h-20 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-full animate-pulse"
+                                }),
+                                React.createElement('div', {
+                                    className: "absolute top-2 right-2 text-orange-400 font-bold text-lg"
+                                }, `#${index + 1}`),
+                                React.createElement('div', {
+                                    className: "space-y-3 relative z-10"
+                                },
+                                    React.createElement('h4', {
+                                        className: "text-white font-bold text-lg"
+                                    }, improvement.exercise),
+                                    React.createElement('div', {
+                                        className: "flex items-center justify-between"
+                                    },
+                                        React.createElement('span', {
+                                            className: "text-gray-400 text-sm"
+                                        }, "Progresso:"),
+                                        React.createElement('span', {
+                                            className: "text-orange-400 font-bold"
+                                        }, `+${improvement.improvement}kg`)
+                                    ),
+                                    React.createElement('div', {
+                                        className: "flex items-center justify-between"
+                                    },
+                                        React.createElement('span', {
+                                            className: "text-gray-400 text-sm"
+                                        }, "Crescita:"),
+                                        React.createElement('span', {
+                                            className: "text-green-400 font-bold"
+                                        }, `+${improvement.percentage}%`)
+                                    ),
+                                    React.createElement('div', {
+                                        className: "pt-2 border-t border-gray-700"
+                                    },
+                                        React.createElement('div', {
+                                            className: "flex items-center justify-between text-sm"
+                                        },
+                                            React.createElement('span', {
+                                                className: "text-gray-500"
+                                            }, `${improvement.from}kg → ${improvement.to}kg`)
+                                        )
+                                    )
+                                )
+                            )
+                        ))
+                    ),
 
-                        {/* Top Improvements */}
-                        {bestImprovements.length > 0 && (
-                            <AnimatedCard delay={400}>
-                                <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-2xl font-bold text-white flex items-center">
-                                        <Flame className="w-7 h-7 mr-3 text-orange-400" />
-                                        Top Miglioramenti (30gg)
-                                    </h3>
-                                    <div className="flex items-center space-x-2 text-gray-400">
-                                        <TrendingUp className="w-5 h-5" />
-                                        <span className="text-sm">Migliori progressi</span>
-                                    </div>
-                                </div>
-                                
-                                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                                    {bestImprovements.map((improvement, index) => (
-                                        <div key={index} 
-                                             className="bg-gradient-to-br from-orange-900/20 to-red-900/10 p-6 rounded-2xl border border-orange-500/20 relative overflow-hidden group hover:border-orange-500/40 transition-all duration-300"
-                                        >
-                                            <div className="absolute top-2 right-2 text-orange-400 font-bold text-lg">
-                                                #{index + 1}
-                                            </div>
-                                            <div className="space-y-3">
-                                                <h4 className="text-white font-bold text-lg">{improvement.exercise}</h4>
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-gray-400 text-sm">Progresso:</span>
-                                                    <span className="text-orange-400 font-bold">+{improvement.improvement}kg</span>
-                                                </div>
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-gray-400 text-sm">Crescita:</span>
-                                                    <span className="text-green-400 font-bold">+{improvement.percentage}%</span>
-                                                </div>
-                                                <div className="pt-2 border-t border-gray-700">
-                                                    <div className="flex items-center justify-between text-sm">
-                                                        <span className="text-gray-500">{improvement.from}kg → {improvement.to}kg</span>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </AnimatedCard>
-                        )}
-
-                        {/* Smart Analytics */}
-                        {analyzeProgress.length > 0 && (
-                            <AnimatedCard delay={600}>
-                                <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-2xl font-bold text-white flex items-center">
-                                        <Zap className="w-7 h-7 mr-3 text-yellow-400" />
-                                        Analisi Intelligente
-                                    </h3>
-                                    <div className="flex items-center space-x-2 text-gray-400">
-                                        <Calculator className="w-5 h-5" />
-                                        <span className="text-sm">Basato su ultimi 14 giorni</span>
-                                    </div>
-                                </div>
-                                
-                                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                    {analyzeProgress.map((analysis, index) => (
-                                        <div key={index} className={`p-6 rounded-2xl border transition-all duration-300 hover:scale-[1.02] ${
-                                            analysis.trend === 'excellent' ? 'bg-gradient-to-br from-green-900/30 to-green-800/10 border-green-500/30 hover:border-green-500/50' :
-                                            analysis.trend === 'good' ? 'bg-gradient-to-br from-blue-900/30 to-blue-800/10 border-blue-500/30 hover:border-blue-500/50' :
-                                            analysis.trend === 'stable' ? 'bg-gradient-to-br from-yellow-900/30 to-yellow-800/10 border-yellow-500/30 hover:border-yellow-500/50' :
-                                            'bg-gradient-to-br from-red-900/30 to-red-800/10 border-red-500/30 hover:border-red-500/50'
-                                        }`}>
-                                            <div className="flex items-center justify-between mb-4">
-                                                <h4 className="text-white font-bold text-lg">{analysis.exercise}</h4>
-                                                <div className={`flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-bold ${
-                                                    analysis.trend === 'excellent' ? 'bg-green-500/20 text-green-400' :
-                                                    analysis.trend === 'good' ? 'bg-blue-500/20 text-blue-400' :
-                                                    analysis.trend === 'stable' ? 'bg-yellow-500/20 text-yellow-400' :
-                                                    'bg-red-500/20 text-red-400'
-                                                }`}>
-                                                    {analysis.trend === 'excellent' && <TrendingUp className="w-4 h-4" />}
-                                                    {analysis.trend === 'good' && <TrendingUp className="w-4 h-4" />}
-                                                    {analysis.trend === 'stable' && <Flame className="w-4 h-4" />}
-                                                    {analysis.trend === 'declining' && <TrendingDown className="w-4 h-4" />}
-                                                    <span>{analysis.progress > 0 ? '+' : ''}{analysis.progress.toFixed(1)}%</span>
-                                                </div>
-                                            </div>
-                                            
-                                            {analysis.growth !== 0 && (
-                                                <div className="mb-3">
-                                                    <span className={`text-sm font-medium ${analysis.growth > 0 ? 'text-green-400' : 'text-red-400'}`}>
-                                                        {analysis.growth > 0 ? '+' : ''}{analysis.growth}kg negli ultimi 14 giorni
-                                                    </span>
-                                                </div>
-                                            )}
-                                            
-                                            <p className="text-gray-300 text-sm leading-relaxed">{analysis.suggestion}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </AnimatedCard>
-                        )}
-
-                        {/* Body Measurements Overview */}
-                        {measurementTrends.length > 0 && (
-                            <AnimatedCard delay={800}>
-                                <div className="flex items-center justify-between mb-6">
-                                    <h3 className="text-2xl font-bold text-white flex items-center">
-                                        <User className="w-7 h-7 mr-3 text-pink-400" />
-                                        Andamento Corporeo
-                                    </h3>
-                                    <div className="flex items-center space-x-2 text-gray-400">
-                                        <TrendingUp className="w-5 h-5" />
-                                        <span className="text-sm">Ultimi cambiamenti</span>
-                                    </div>
-                                </div>
-                                
-                                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                                    {measurementTrends.slice(0, 6).map((trend, index) => (
-                                        <div key={index} 
-                                             className="bg-gray-700/50 p-5 rounded-xl border border-gray-600/30 hover:bg-gray-700 transition-all duration-300"
-                                        >
-                                            <div className="flex items-center justify-between mb-2">
-                                                <h4 className="text-white font-semibold text-sm">{trend.type}</h4>
-                                                <div className={`flex items-center space-x-1 ${
-                                                    trend.trend === 'up' ? 'text-green-400' :
-                                                    trend.trend === 'down' ? 'text-red-400' :
-                                                    'text-gray-400'
-                                                }`}>
-                                                    {trend.trend === 'up' && <TrendingUp className="w-4 h-4" />}
-                                                    {trend.trend === 'down' && <TrendingDown className="w-4 h-4" />}
-                                                    {trend.trend === 'stable' && <Flame className="w-4 h-4" />}
-                                                    <span className="text-xs font-medium">
-                                                        {trend.change > 0 ? '+' : ''}{trend.change.toFixed(1)}{trend.unit}
-                                                    </span>
-                                                </div>
-                                            </div>
-                                            <p className="text-pink-400 font-bold text-xl">{trend.value}{trend.unit}</p>
-                                        </div>
-                                    ))}
-                                </div>
-                            </AnimatedCard>
-                        )}
-                    </div>
+                    analyzeProgress.length > 0 && React.createElement(AnimatedCard, {
+                        delay: 600
+                    },
+                        React.createElement('div', {
+                            className: "flex items-center justify-between mb-6"
+                        },
+                            React.createElement('h3', {
+                                className: "text-2xl font-bold text-white flex items-center"
+                            },
+                                React.createElement(Icon, { name: "zap", className: "w-7 h-7 mr-3 text-yellow-400 animate-pulse" }),
+                                "Analisi Intelligente"
+                            ),
+                            React.createElement('div', {
+                                className: "flex items-center space-x-2 text-gray-400"
+                            },
+                                React.createElement(Icon, { name: "chart", className: "w-5 h-5" }),
+                                React.createElement('span', { className: "text-sm" }, "Basato su ultimi 14 giorni")
+                            )
+                        ),
+                        React.createElement('div', {
+                            className: "grid grid-cols-1 lg:grid-cols-2 gap-6"
+                        }, analyzeProgress.map((analysis, index) => 
+                            React.createElement('div', {
+                                key: index,
+                                className: `relative p-6 rounded-2xl border transition-all duration-300 hover:scale-[1.02] overflow-hidden ${
+                                    analysis.trend === 'excellent' ? 'bg-gradient-to-br from-green-900/30 to-green-800/10 border-green-500/30 hover:border-green-500/50' :
+                                    analysis.trend === 'good' ? 'bg-gradient-to-br from-blue-900/30 to-blue-800/10 border-blue-500/30 hover:border-blue-500/50' :
+                                    analysis.trend === 'stable' ? 'bg-gradient-to-br from-yellow-900/30 to-yellow-800/10 border-yellow-500/30 hover:border-yellow-500/50' :
+                                    'bg-gradient-to-br from-red-900/30 to-red-800/10 border-red-500/30 hover:border-red-500/50'
+                                }`
+                            },
+                                React.createElement('div', {
+                                    className: `absolute -top-10 -right-10 w-20 h-20 rounded-full animate-pulse ${
+                                        analysis.trend === 'excellent' ? 'bg-green-500/10' :
+                                        analysis.trend === 'good' ? 'bg-blue-500/10' :
+                                        analysis.trend === 'stable' ? 'bg-yellow-500/10' :
+                                        'bg-red-500/10'
+                                    }`
+                                }),
+                                React.createElement('div', {
+                                    className: "flex items-center justify-between mb-4 relative z-10"
+                                },
+                                    React.createElement('h4', {
+                                        className: "text-white font-bold text-lg"
+                                    }, analysis.exercise),
+                                    React.createElement('div', {
+                                        className: `flex items-center space-x-2 px-3 py-2 rounded-full text-sm font-bold ${
+                                            analysis.trend === 'excellent' ? 'bg-green-500/20 text-green-400' :
+                                            analysis.trend === 'good' ? 'bg-blue-500/20 text-blue-400' :
+                                            analysis.trend === 'stable' ? 'bg-yellow-500/20 text-yellow-400' :
+                                            'bg-red-500/20 text-red-400'
+                                        }`
+                                    },
+                                        React.createElement(Icon, { 
+                                            name: analysis.trend === 'excellent' || analysis.trend === 'good' ? 'trending' : 
+                                                  analysis.trend === 'stable' ? 'fire' : 'trending', 
+                                            className: "w-4 h-4" 
+                                        }),
+                                        React.createElement('span', {}, `${analysis.progress > 0 ? '+' : ''}${analysis.progress.toFixed(1)}%`)
+                                    )
+                                ),
+                                analysis.growth !== 0 && React.createElement('div', {
+                                    className: "mb-3 relative z-10"
+                                },
+                                    React.createElement('span', {
+                                        className: `text-sm font-medium ${analysis.growth > 0 ? 'text-green-400' : 'text-red-400'}`
+                                    }, `${analysis.growth > 0 ? '+' : ''}${analysis.growth}kg negli ultimi 14 giorni`)
+                                ),
+                                React.createElement('p', {
+                                    className: "text-gray-300 text-sm leading-relaxed relative z-10"
+                                }, analysis.suggestion)
+                            )
+                        ))
+                    )
                 );
             };
 
-            // Enhanced Exercises Management
+            // Exercises View
             const ExercisesView = () => {
-                const [selectedCategory, setSelectedCategory] = useState('all');
+                const [selectedCategory, setSelectedCategory] = React.useState('all');
 
-                const filteredExercises = useMemo(() => {
+                const filteredExercises = React.useMemo(() => {
                     let filtered = selectedCategory === 'all' 
                         ? exercises 
                         : exercises.filter(ex => ex.category === selectedCategory);
@@ -659,883 +851,456 @@
                     return filtered;
                 }, [exercises, selectedCategory, searchTerm]);
 
-                return (
-                    <div className="p-6 space-y-8 max-w-7xl mx-auto">
-                        <div className="text-center space-y-3">
-                            <h2 className="text-5xl font-bold text-gradient">
-                                Gestione Esercizi
-                            </h2>
-                            <p className="text-gray-400 text-lg">Organizza e monitora i tuoi esercizi</p>
-                        </div>
-                        
-                        {/* Add Exercise Form */}
-                        <AnimatedCard>
-                            <div className="flex items-center mb-6">
-                                <div className="p-4 bg-gradient-success rounded-2xl mr-4 shadow-lg shadow-green-500/30">
-                                    <Plus className="w-7 h-7 text-white" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-white">Nuovo Esercizio</h3>
-                            </div>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                                <EnhancedInput
-                                    placeholder="Nome esercizio"
-                                    value={newExercise.name}
-                                    onChange={(value) => handleExerciseInputChange('name', value)}
-                                />
-                                <select
-                                    className="bg-gray-700/50 text-white p-4 rounded-xl border border-gray-600/50 focus:border-green-500 focus:outline-none focus:ring-4 focus:ring-green-500/20 transition-all duration-300"
-                                    value={newExercise.category}
-                                    onChange={(e) => handleExerciseInputChange('category', e.target.value)}
-                                >
-                                    {categories.map(cat => (
-                                        <option key={cat} value={cat}>{cat.charAt(0).toUpperCase() + cat.slice(1)}</option>
-                                    ))}
-                                </select>
-                                <EnhancedInput
-                                    placeholder="Gruppo muscolare"
-                                    value={newExercise.muscleGroup}
-                                    onChange={(value) => handleExerciseInputChange('muscleGroup', value)}
-                                />
-                            </div>
-                            
-                            <ActionButton
-                                onClick={async () => {
-                                    if (newExercise.name && newExercise.muscleGroup) {
-                                        setLoading(true);
-                                        setTimeout(() => {
-                                            const exercise = {
-                                                id: Date.now(),
-                                                ...newExercise
-                                            };
-                                            setExercises([...exercises, exercise]);
-                                            setNewExercise({ name: '', category: 'petto', muscleGroup: '' });
-                                            setLoading(false);
-                                        }, 500);
-                                    }
-                                }}
-                                loading={loading}
-                                variant="success"
-                                disabled={!newExercise.name || !newExercise.muscleGroup}
-                            >
-                                <Plus className="w-5 h-5" />
-                                <span>Aggiungi Esercizio</span>
-                            </ActionButton>
-                        </AnimatedCard>
-
-                        {/* Search and Filter */}
-                        <AnimatedCard delay={200}>
-                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                                <div className="space-y-2">
-                                    <label className="text-white font-semibold flex items-center">
-                                        <Search className="w-5 h-5 mr-2" />
-                                        Cerca Esercizi
-                                    </label>
-                                    <EnhancedInput
-                                        placeholder="Cerca per nome o gruppo muscolare..."
-                                        value={searchTerm}
-                                        onChange={setSearchTerm}
-                                    />
-                                </div>
-                                <div className="space-y-2">
-                                    <label className="text-white font-semibold flex items-center">
-                                        <Filter className="w-5 h-5 mr-2" />
-                                        Filtra per Categoria
-                                    </label>
-                                    <select
-                                        className="w-full bg-gray-700/50 text-white p-4 rounded-xl border border-gray-600/50 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-300"
-                                        value={selectedCategory}
-                                        onChange={(e) => setSelectedCategory(e.target.value)}
-                                    >
-                                        <option value="all">Tutti ({exercises.length})</option>
-                                        {categories.map(category => {
-                                            const count = exercises.filter(ex => ex.category === category).length;
-                                            return (
-                                                <option key={category} value={category}>
-                                                    {category.charAt(0).toUpperCase() + category.slice(1)} ({count})
-                                                </option>
-                                            );
-                                        })}
-                                    </select>
-                                </div>
-                            </div>
-                        </AnimatedCard>
-
-                        {/* Exercises Grid */}
-                        <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
-                            {filteredExercises.map((exercise, index) => {
-                                const exerciseWorkouts = workouts.filter(w => w.exerciseId === exercise.id);
-                                const maxWeight = exerciseWorkouts.length > 0 ? Math.max(...exerciseWorkouts.map(w => w.weight)) : 0;
-                                const latestWorkout = exerciseWorkouts.length > 0 ? 
-                                    exerciseWorkouts.sort((a, b) => new Date(b.date) - new Date(a.date))[0] : null;
-                                
-                                return (
-                                    <AnimatedCard key={exercise.id} delay={index * 100} className="relative group">
-                                        {/* Category badge */}
-                                        <div className={`absolute -top-3 -right-3 px-4 py-2 rounded-full text-xs font-bold shadow-lg ${
-                                            exercise.category === 'petto' ? 'bg-gradient-danger text-white' :
-                                            exercise.category === 'schiena' ? 'bg-gradient-primary text-white' :
-                                            exercise.category === 'gambe' ? 'bg-gradient-success text-white' :
-                                            exercise.category === 'spalle' ? 'bg-gradient-warning text-white' :
-                                            'bg-gradient-secondary text-white'
-                                        }`}>
-                                            {exercise.category}
-                                        </div>
-
-                                        <div className="flex items-start justify-between mb-6">
-                                            <div className="flex items-center">
-                                                <div className="p-4 bg-gradient-secondary rounded-2xl mr-4 shadow-lg">
-                                                    <Dumbbell className="w-7 h-7 text-white" />
-                                                </div>
-                                                <div>
-                                                    <h4 className="text-white font-bold text-xl">{exercise.name}</h4>
-                                                    <p className="text-gray-400 text-sm">{exercise.muscleGroup}</p>
-                                                </div>
-                                            </div>
-                                            
-                                            <ActionButton
-                                                onClick={() => setShowDeleteConfirm(`exercise-${exercise.id}`)}
-                                                variant="danger"
-                                                size="small"
-                                                className="opacity-0 group-hover:opacity-100 transition-opacity"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                            </ActionButton>
-                                        </div>
-                                        
-                                        <div className="space-y-4 mb-6">
-                                            <div className="flex justify-between items-center p-4 bg-gray-700/30 rounded-xl">
-                                                <span className="text-gray-400 text-sm font-medium">Peso Massimo</span>
-                                                <span className="text-blue-400 font-bold text-2xl">{maxWeight}kg</span>
-                                            </div>
-                                            {latestWorkout && (
-                                                <div className="flex justify-between items-center p-4 bg-gray-700/30 rounded-xl">
-                                                    <span className="text-gray-400 text-sm font-medium">Ultimo Allenamento</span>
-                                                    <span className="text-green-400 font-semibold">
-                                                        {new Date(latestWorkout.date).toLocaleDateString('it-IT')}
-                                                    </span>
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        {/* Add workout section */}
-                                        <div className="border-t border-gray-700/50 pt-6">
-                                            <h5 className="text-white font-semibold mb-4 flex items-center">
-                                                <Plus className="w-5 h-5 mr-2" />
-                                                Aggiungi Carico
-                                            </h5>
-                                            <div className="grid grid-cols-3 gap-3 mb-4">
-                                                <EnhancedInput
-                                                    type="number"
-                                                    placeholder="Peso"
-                                                    value={newWorkout.exerciseId === exercise.id ? newWorkout.weight : ''}
-                                                    onChange={(value) => {
-                                                        setNewWorkout({
-                                                            ...newWorkout, 
-                                                            exerciseId: exercise.id, 
-                                                            exercise: exercise.name, 
-                                                            weight: value
-                                                        });
-                                                    }}
-                                                    className="text-sm p-3"
-                                                />
-                                                <EnhancedInput
-                                                    type="number"
-                                                    placeholder="Serie"
-                                                    value={newWorkout.exerciseId === exercise.id ? newWorkout.sets : ''}
-                                                    onChange={(value) => {
-                                                        setNewWorkout({
-                                                            ...newWorkout, 
-                                                            exerciseId: exercise.id, 
-                                                            exercise: exercise.name, 
-                                                            sets: value
-                                                        });
-                                                    }}
-                                                    className="text-sm p-3"
-                                                />
-                                                <EnhancedInput
-                                                    type="number"
-                                                    placeholder="Reps"
-                                                    value={newWorkout.exerciseId === exercise.id ? newWorkout.reps : ''}
-                                                    onChange={(value) => {
-                                                        setNewWorkout({
-                                                            ...newWorkout, 
-                                                            exerciseId: exercise.id, 
-                                                            exercise: exercise.name, 
-                                                            reps: value
-                                                        });
-                                                    }}
-                                                    className="text-sm p-3"
-                                                />
-                                            </div>
-                                            <EnhancedInput
-                                                type="date"
-                                                value={newWorkout.exerciseId === exercise.id ? newWorkout.date : new Date().toISOString().split('T')[0]}
-                                                onChange={(value) => {
-                                                    setNewWorkout({
-                                                        ...newWorkout, 
-                                                        exerciseId: exercise.id, 
-                                                        exercise: exercise.name, 
-                                                        date: value
-                                                    });
-                                                }}
-                                                className="w-full mb-4 text-sm p-3"
-                                            />
-                                            
-                                            <ActionButton
-                                                onClick={async () => {
-                                                    if (newWorkout.exerciseId === exercise.id && newWorkout.weight && newWorkout.sets && newWorkout.reps) {
-                                                        setLoading(true);
-                                                        setTimeout(() => {
-                                                            const workout = {
-                                                                id: Date.now(),
-                                                                exerciseId: exercise.id,
-                                                                exercise: exercise.name,
-                                                                weight: parseInt(newWorkout.weight),
-                                                                sets: parseInt(newWorkout.sets),
-                                                                reps: parseInt(newWorkout.reps),
-                                                                date: newWorkout.date
-                                                            };
-                                                            setWorkouts([...workouts, workout]);
-                                                            setNewWorkout({ exerciseId: '', exercise: '', weight: '', sets: '', reps: '', date: new Date().toISOString().split('T')[0] });
-                                                            setLoading(false);
-                                                        }, 500);
-                                                    }
-                                                }}
-                                                loading={loading}
-                                                variant="success"
-                                                size="small"
-                                                className="w-full"
-                                                disabled={
-                                                    newWorkout.exerciseId !== exercise.id || 
-                                                    !newWorkout.weight || 
-                                                    !newWorkout.sets || 
-                                                    !newWorkout.reps
-                                                }
-                                            >
-                                                <Check className="w-4 h-4" />
-                                                <span>Salva Carico</span>
-                                            </ActionButton>
-                                        </div>
-                                    </AnimatedCard>
-                                );
-                            })}
-                        </div>
-
-                        {filteredExercises.length === 0 && (
-                            <AnimatedCard className="text-center py-12">
-                                <div className="space-y-4">
-                                    <div className="p-6 bg-gray-700/30 rounded-full w-24 h-24 mx-auto flex items-center justify-center">
-                                        <Search className="w-12 h-12 text-gray-400" />
-                                    </div>
-                                    <h3 className="text-xl font-semibold text-gray-300">Nessun esercizio trovato</h3>
-                                    <p className="text-gray-500">
-                                        {searchTerm ? 
-                                            `Nessun risultato per "${searchTerm}"` : 
-                                            `Nessun esercizio nella categoria "${selectedCategory}"`
-                                        }
-                                    </p>
-                                </div>
-                            </AnimatedCard>
-                        )}
-                    </div>
-                );
-            };
-
-            // Progress Charts (simplified)
-            const ProgressView = () => {
-                const [selectedExercise, setSelectedExercise] = useState('');
-                const [chartType, setChartType] = useState('weight');
-                
-                const getExerciseProgress = useCallback((exerciseName) => {
-                    return workouts
-                        .filter(w => w.exercise === exerciseName)
-                        .sort((a, b) => new Date(a.date) - new Date(b.date))
-                        .map(w => ({
-                            date: new Date(w.date).toLocaleDateString('it-IT', { month: 'short', day: 'numeric' }),
-                            peso: w.weight,
-                            volume: w.weight * w.sets * w.reps,
-                            oneRM: Math.round(w.weight * (1 + w.reps / 30))
-                        }));
-                }, [workouts]);
-
-                const exerciseOptions = useMemo(() => [...new Set(workouts.map(w => w.exercise))], [workouts]);
-                const chartData = useMemo(() => selectedExercise ? getExerciseProgress(selectedExercise) : [], [selectedExercise, getExerciseProgress]);
-
-                return (
-                    <div className="p-6 space-y-8 max-w-7xl mx-auto">
-                        <div className="text-center space-y-3">
-                            <h2 className="text-5xl font-bold text-gradient">
-                                Analisi Progressi
-                            </h2>
-                            <p className="text-gray-400 text-lg">Visualizza i tuoi miglioramenti nel tempo</p>
-                        </div>
-                        
-                        <AnimatedCard>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-                                <div className="space-y-3">
-                                    <label className="text-white font-semibold flex items-center text-lg">
-                                        <Filter className="w-5 h-5 mr-2" />
-                                        Seleziona Esercizio
-                                    </label>
-                                    <select
-                                        className="w-full bg-gray-700/50 text-white p-4 rounded-xl border border-gray-600/50 focus:border-purple-500 focus:outline-none focus:ring-4 focus:ring-purple-500/20 transition-all duration-300"
-                                        value={selectedExercise}
-                                        onChange={(e) => setSelectedExercise(e.target.value)}
-                                    >
-                                        <option value="">Seleziona esercizio</option>
-                                        {exerciseOptions.map(exercise => (
-                                            <option key={exercise} value={exercise}>{exercise}</option>
-                                        ))}
-                                    </select>
-                                </div>
-                                <div className="space-y-3">
-                                    <label className="text-white font-semibold flex items-center text-lg">
-                                        <BarChart3 className="w-5 h-5 mr-2" />
-                                        Tipo di Grafico
-                                    </label>
-                                    <select
-                                        className="w-full bg-gray-700/50 text-white p-4 rounded-xl border border-gray-600/50 focus:border-purple-500 focus:outline-none focus:ring-4 focus:ring-purple-500/20 transition-all duration-300"
-                                        value={chartType}
-                                        onChange={(e) => setChartType(e.target.value)}
-                                    >
-                                        <option value="weight">Progressione Peso</option>
-                                        <option value="volume">Volume di Allenamento</option>
-                                        <option value="oneRM">1RM Stimato</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            {chartData.length > 0 && (
-                                <div className="bg-gray-800/50 p-8 rounded-3xl border border-gray-700/30">
-                                    <h3 className="text-white font-bold text-2xl mb-6 flex items-center">
-                                        <TrendingUp className="w-6 h-6 mr-3 text-purple-400" />
-                                        {chartType === 'weight' ? 'Progressione Peso' : 
-                                         chartType === 'volume' ? 'Volume di Allenamento' : '1RM Stimato'}
-                                    </h3>
-                                    <ResponsiveContainer width="100%" height={450}>
-                                        {chartType === 'volume' ? (
-                                            <BarChart data={chartData}>
-                                                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                                                <XAxis dataKey="date" stroke="#9CA3AF" />
-                                                <YAxis stroke="#9CA3AF" />
-                                                <Tooltip 
-                                                    contentStyle={{ 
-                                                        backgroundColor: '#1F2937', 
-                                                        border: '1px solid #374151', 
-                                                        borderRadius: '16px',
-                                                        boxShadow: '0 20px 40px rgba(0,0,0,0.6)'
-                                                    }}
-                                                    labelStyle={{ color: '#F3F4F6' }}
-                                                />
-                                                <Bar dataKey="volume" fill="#10B981" radius={[8, 8, 0, 0]} />
-                                            </BarChart>
-                                        ) : (
-                                            <AreaChart data={chartData}>
-                                                <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                                                <XAxis dataKey="date" stroke="#9CA3AF" />
-                                                <YAxis stroke="#9CA3AF" />
-                                                <Tooltip 
-                                                    contentStyle={{ 
-                                                        backgroundColor: '#1F2937', 
-                                                        border: '1px solid #374151', 
-                                                        borderRadius: '16px',
-                                                        boxShadow: '0 20px 40px rgba(0,0,0,0.6)'
-                                                    }}
-                                                    labelStyle={{ color: '#F3F4F6' }}
-                                                />
-                                                <Area 
-                                                    type="monotone" 
-                                                    dataKey={chartType} 
-                                                    stroke={chartType === 'weight' ? '#3B82F6' : '#8B5CF6'}
-                                                    fill={chartType === 'weight' ? '#3B82F6' : '#8B5CF6'}
-                                                    fillOpacity={0.3}
-                                                    strokeWidth={4}
-                                                />
-                                            </AreaChart>
-                                        )}
-                                    </ResponsiveContainer>
-                                </div>
-                            )}
-                        </AnimatedCard>
-
-                        {/* Workout History for selected exercise */}
-                        {selectedExercise && (
-                            <AnimatedCard delay={300}>
-                                <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
-                                    <Calendar className="w-7 h-7 mr-3 text-purple-400" />
-                                    Storico {selectedExercise}
-                                </h3>
-                                <div className="space-y-4 max-h-96 overflow-y-auto">
-                                    {workouts
-                                        .filter(w => w.exercise === selectedExercise)
-                                        .sort((a, b) => new Date(b.date) - new Date(a.date))
-                                        .map((workout, index) => (
-                                            <div key={workout.id} 
-                                                 className="flex items-center justify-between bg-gray-700/50 p-5 rounded-2xl hover:bg-gray-700 transition-all duration-300 group border border-gray-600/30"
-                                            >
-                                                <div className="flex items-center space-x-4">
-                                                    <div className="p-3 bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl group-hover:scale-110 transition-transform shadow-lg">
-                                                        <Dumbbell className="w-6 h-6 text-white" />
-                                                    </div>
-                                                    <div>
-                                                        <p className="text-white font-bold text-lg">{new Date(workout.date).toLocaleDateString('it-IT')}</p>
-                                                        <p className="text-gray-400 text-sm">1RM stimato: {Math.round(workout.weight * (1 + workout.reps / 30))}kg</p>
-                                                    </div>
-                                                </div>
-                                                <div className="flex items-center space-x-6">
-                                                    <div className="text-right">
-                                                        <div className="flex items-center space-x-4">
-                                                            <span className="text-blue-400 font-bold text-xl">{workout.weight}kg</span>
-                                                            <span className="text-gray-300 text-lg">{workout.sets} × {workout.reps}</span>
-                                                        </div>
-                                                        <div className="text-xs text-gray-500 mt-1">
-                                                            Volume: {(workout.weight * workout.sets * workout.reps).toLocaleString()}kg
-                                                        </div>
-                                                    </div>
-                                                    <ActionButton
-                                                        onClick={() => setShowDeleteConfirm(`workout-${workout.id}`)}
-                                                        variant="danger"
-                                                        size="small"
-                                                        className="opacity-0 group-hover:opacity-100 transition-opacity"
-                                                    >
-                                                        <Trash2 className="w-4 h-4" />
-                                                    </ActionButton>
-                                                </div>
-                                            </div>
-                                        ))}
-                                </div>
-                            </AnimatedCard>
-                        )}
-                    </div>
-                );
-            };
-
-            // Body Measurements (simplified)
-            const MeasurementsView = () => {
-                const [selectedMeasurement, setSelectedMeasurement] = useState('peso');
-                
-                const getMeasurementData = useCallback((type) => {
-                    return bodyMeasurements
-                        .filter(m => m.type === type)
-                        .sort((a, b) => new Date(a.date) - new Date(b.date))
-                        .map(m => ({
-                            date: new Date(m.date).toLocaleDateString('it-IT', { month: 'short', day: 'numeric' }),
-                            value: m.value
-                        }));
-                }, [bodyMeasurements]);
-
-                const chartData = useMemo(() => getMeasurementData(selectedMeasurement), [selectedMeasurement, getMeasurementData]);
-
-                return (
-                    <div className="p-6 space-y-8 max-w-7xl mx-auto">
-                        <div className="text-center space-y-3">
-                            <h2 className="text-5xl font-bold text-gradient">
-                                Misure Corporee
-                            </h2>
-                            <p className="text-gray-400 text-lg">Monitora i cambiamenti del tuo corpo</p>
-                        </div>
-                        
-                        {/* Add Measurement */}
-                        <AnimatedCard>
-                            <div className="flex items-center mb-6">
-                                <div className="p-4 bg-gradient-warning rounded-2xl mr-4 shadow-lg shadow-pink-500/30">
-                                    <Ruler className="w-7 h-7 text-white" />
-                                </div>
-                                <h3 className="text-2xl font-bold text-white">Nuova Misurazione</h3>
-                            </div>
-                            
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                                <select
-                                    className="bg-gray-700/50 text-white p-4 rounded-xl border border-gray-600/50 focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-500/20 transition-all duration-300"
-                                    value={newMeasurement.type}
-                                    onChange={(e) => handleMeasurementInputChange('type', e.target.value)}
-                                >
-                                    {measurementTypes.map(type => (
-                                        <option key={type} value={type}>
-                                            {type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                        </option>
-                                    ))}
-                                </select>
-                                <EnhancedInput
-                                    type="number"
-                                    step="0.1"
-                                    placeholder="Valore"
-                                    value={newMeasurement.value}
-                                    onChange={(value) => handleMeasurementInputChange('value', value)}
-                                />
-                                <EnhancedInput
-                                    type="date"
-                                    value={newMeasurement.date}
-                                    onChange={(value) => handleMeasurementInputChange('date', value)}
-                                />
-                            </div>
-                            
-                            <ActionButton
-                                onClick={async () => {
-                                    if (newMeasurement.value) {
-                                        setLoading(true);
-                                        setTimeout(() => {
-                                            const measurement = {
-                                                id: Date.now(),
-                                                type: newMeasurement.type,
-                                                value: parseFloat(newMeasurement.value),
-                                                date: newMeasurement.date
-                                            };
-                                            setBodyMeasurements([...bodyMeasurements, measurement]);
-                                            setNewMeasurement({ type: 'peso', value: '', date: new Date().toISOString().split('T')[0] });
-                                            setLoading(false);
-                                        }, 500);
-                                    }
-                                }}
-                                loading={loading}
-                                variant="warning"
-                                disabled={!newMeasurement.value}
-                            >
-                                <Plus className="w-5 h-5" />
-                                <span>Aggiungi Misurazione</span>
-                            </ActionButton>
-                        </AnimatedCard>
-
-                        {/* Measurements Chart */}
-                        <AnimatedCard delay={200}>
-                            <div className="flex items-center space-x-4 mb-8">
-                                <Filter className="w-6 h-6 text-gray-400" />
-                                <select
-                                    className="bg-gray-700/50 text-white p-4 rounded-xl border border-gray-600/50 focus:border-pink-500 focus:outline-none focus:ring-4 focus:ring-pink-500/20 transition-all duration-300 text-lg font-semibold"
-                                    value={selectedMeasurement}
-                                    onChange={(e) => setSelectedMeasurement(e.target.value)}
-                                >
-                                    {measurementTypes.map(type => (
-                                        <option key={type} value={type}>
-                                            {type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-
-                            {chartData.length > 0 && (
-                                <div className="bg-gray-800/50 p-8 rounded-3xl border border-gray-700/30">
-                                    <h3 className="text-white font-bold text-2xl mb-6 flex items-center">
-                                        <TrendingUp className="w-6 h-6 mr-3 text-pink-400" />
-                                        Andamento {selectedMeasurement.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                    </h3>
-                                    <ResponsiveContainer width="100%" height={400}>
-                                        <AreaChart data={chartData}>
-                                            <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-                                            <XAxis dataKey="date" stroke="#9CA3AF" />
-                                            <YAxis stroke="#9CA3AF" />
-                                            <Tooltip 
-                                                contentStyle={{ 
-                                                    backgroundColor: '#1F2937', 
-                                                    border: '1px solid #374151', 
-                                                    borderRadius: '16px',
-                                                    boxShadow: '0 20px 40px rgba(0,0,0,0.6)'
-                                                }}
-                                                labelStyle={{ color: '#F3F4F6' }}
-                                            />
-                                            <Area 
-                                                type="monotone" 
-                                                dataKey="value" 
-                                                stroke="#EC4899" 
-                                                fill="#EC4899"
-                                                fillOpacity={0.3}
-                                                strokeWidth={4}
-                                            />
-                                        </AreaChart>
-                                    </ResponsiveContainer>
-                                </div>
-                            )}
-                        </AnimatedCard>
-
-                        {/* Measurements Summary */}
-                        <AnimatedCard delay={300}>
-                            <h3 className="text-2xl font-bold text-white mb-6 flex items-center">
-                                <User className="w-7 h-7 mr-3 text-pink-400" />
-                                Riepilogo Misure
-                            </h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-                                {measurementTypes.map((type, index) => {
-                                    const typeMeasurements = bodyMeasurements.filter(m => m.type === type);
-                                    const sorted = typeMeasurements.sort((a, b) => new Date(b.date) - new Date(a.date));
-                                    const latest = sorted[0];
-                                    const previous = sorted[1];
-                                    const change = latest && previous ? latest.value - previous.value : 0;
-                                    
-                                    return (
-                                        <div key={type} 
-                                             className="bg-gray-700/50 p-6 rounded-2xl border border-gray-600/30 hover:bg-gray-700 transition-all duration-300 group relative hover:scale-105"
-                                             style={{ animationDelay: `${400 + index * 50}ms` }}
-                                        >
-                                            <div className="flex items-center justify-between mb-4">
-                                                <h4 className="text-white font-bold text-lg">
-                                                    {type.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                                                </h4>
-                                                {latest && (
-                                                    <ActionButton
-                                                        onClick={() => setShowDeleteConfirm(`measurement-${latest.id}`)}
-                                                        variant="danger"
-                                                        size="small"
-                                                        className="opacity-0 group-hover:opacity-100 transition-opacity"
-                                                    >
-                                                        <Trash2 className="w-3 h-3" />
-                                                    </ActionButton>
-                                                )}
-                                            </div>
-                                            
-                                            <div className="space-y-3">
-                                                <div className="flex items-center justify-between">
-                                                    <span className="text-3xl font-bold text-pink-400">
-                                                        {latest ? `${latest.value}${type === 'peso' ? 'kg' : 'cm'}` : 'N/A'}
-                                                    </span>
-                                                    {change !== 0 && (
-                                                        <div className={`flex items-center space-x-1 px-3 py-1 rounded-full text-xs font-bold ${
-                                                            change > 0 ? 'bg-green-900/50 text-green-400 border border-green-500/30' : 'bg-red-900/50 text-red-400 border border-red-500/30'
-                                                        }`}>
-                                                            {change > 0 ? <TrendingUp className="w-3 h-3" /> : <TrendingDown className="w-3 h-3" />}
-                                                            <span>{change > 0 ? '+' : ''}{change.toFixed(1)}</span>
-                                                        </div>
-                                                    )}
-                                                </div>
-                                                <p className="text-gray-400 text-sm">
-                                                    {latest ? `Ultimo: ${new Date(latest.date).toLocaleDateString('it-IT')}` : 'Nessun dato disponibile'}
-                                                </p>
-                                                <p className="text-gray-500 text-xs">
-                                                    {typeMeasurements.length} misurazione{typeMeasurements.length !== 1 ? 'i' : 'e'}
-                                                </p>
-                                            </div>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </AnimatedCard>
-                    </div>
-                );
-            };
-
-            // Goals Management (simplified)
-            const GoalsView = () => (
-                <div className="p-6 space-y-8 max-w-7xl mx-auto">
-                    <div className="text-center space-y-3">
-                        <h2 className="text-5xl font-bold text-gradient">
-                            Obiettivi
-                        </h2>
-                        <p className="text-gray-400 text-lg">Definisci e raggiungi i tuoi traguardi</p>
-                    </div>
+                return React.createElement('div', {
+                    className: "p-6 space-y-8 max-w-7xl mx-auto"
+                },
+                    React.createElement('div', {
+                        className: "text-center space-y-3"
+                    },
+                        React.createElement('h2', {
+                            className: "text-6xl font-bold text-gradient animate-float"
+                        }, "Gestione Esercizi"),
+                        React.createElement('p', {
+                            className: "text-gray-400 text-lg"
+                        }, "Organizza e monitora i tuoi esercizi")
+                    ),
                     
-                    {/* Add Goal */}
-                    <AnimatedCard>
-                        <div className="flex items-center mb-6">
-                            <div className="p-4 bg-gradient-warning rounded-2xl mr-4 shadow-lg shadow-amber-500/30">
-                                <Target className="w-7 h-7 text-white" />
-                            </div>
-                            <h3 className="text-2xl font-bold text-white">Nuovo Obiettivo</h3>
-                        </div>
+                    React.createElement(AnimatedCard, {},
+                        React.createElement('div', {
+                            className: "flex items-center mb-6"
+                        },
+                            React.createElement('div', {
+                                className: "p-4 bg-gradient-to-r from-green-600 to-green-700 rounded-2xl mr-4 shadow-lg shadow-green-500/30 animate-pulse-glow"
+                            }, React.createElement(Icon, { name: "plus", className: "w-7 h-7 text-white" })),
+                            React.createElement('h3', {
+                                className: "text-2xl font-bold text-white"
+                            }, "Nuovo Esercizio")
+                        ),
                         
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                            <select
-                                className="bg-gray-700/50 text-white p-4 rounded-xl border border-gray-600/50 focus:border-amber-500 focus:outline-none focus:ring-4 focus:ring-amber-500/20 transition-all duration-300"
-                                value={newGoal.type}
-                                onChange={(e) => handleGoalInputChange('type', e.target.value)}
-                            >
-                                <option value="exercise">Esercizio</option>
-                                <option value="body">Corpo</option>
-                            </select>
-                            <EnhancedInput
-                                placeholder="Descrizione obiettivo"
-                                value={newGoal.target}
-                                onChange={(value) => handleGoalInputChange('target', value)}
-                            />
-                            <EnhancedInput
-                                type="number"
-                                placeholder="Valore target"
-                                value={newGoal.value}
-                                onChange={(value) => handleGoalInputChange('value', value)}
-                            />
-                            <EnhancedInput
-                                type="date"
-                                value={newGoal.deadline}
-                                onChange={(value) => handleGoalInputChange('deadline', value)}
-                            />
-                        </div>
+                        React.createElement('div', {
+                            className: "grid grid-cols-1 md:grid-cols-3 gap-6 mb-6"
+                        },
+                            React.createElement(EnhancedInput, {
+                                placeholder: "Nome esercizio",
+                                value: newExercise.name,
+                                onChange: (value) => handleExerciseInputChange('name', value)
+                            }),
+                            React.createElement('select', {
+                                className: "glass-effect text-white p-4 rounded-2xl border border-slate-600/50 focus:border-green-500 focus:outline-none focus:ring-4 focus:ring-green-500/20 transition-all duration-300",
+                                value: newExercise.category,
+                                onChange: (e) => handleExerciseInputChange('category', e.target.value)
+                            }, categories.map(cat => 
+                                React.createElement('option', {
+                                    key: cat,
+                                    value: cat
+                                }, cat.charAt(0).toUpperCase() + cat.slice(1))
+                            )),
+                            React.createElement(EnhancedInput, {
+                                placeholder: "Gruppo muscolare",
+                                value: newExercise.muscleGroup,
+                                onChange: (value) => handleExerciseInputChange('muscleGroup', value)
+                            })
+                        ),
                         
-                        <ActionButton
-                            onClick={async () => {
-                                if (newGoal.target && newGoal.value && newGoal.deadline) {
+                        React.createElement(ActionButton, {
+                            onClick: async () => {
+                                if (newExercise.name && newExercise.muscleGroup) {
                                     setLoading(true);
-                                    setTimeout(() => {
-                                        const goal = {
-                                            id: Date.now(),
-                                            ...newGoal,
-                                            value: parseFloat(newGoal.value),
-                                            current: 0,
-                                            progress: 0
-                                        };
-                                        setGoals([...goals, goal]);
-                                        setNewGoal({ type: 'exercise', target: '', value: '', deadline: '' });
-                                        setLoading(false);
-                                    }, 500);
+                                    await new Promise(resolve => setTimeout(resolve, 500));
+                                    const exercise = {
+                                        id: Date.now(),
+                                        ...newExercise
+                                    };
+                                    setExercises([...exercises, exercise]);
+                                    setNewExercise({ name: '', category: 'petto', muscleGroup: '' });
+                                    setLoading(false);
                                 }
-                            }}
-                            loading={loading}
-                            variant="warning"
-                            disabled={!newGoal.target || !newGoal.value || !newGoal.deadline}
-                        >
-                            <Target className="w-5 h-5" />
-                            <span>Aggiungi Obiettivo</span>
-                        </ActionButton>
-                    </AnimatedCard>
+                            },
+                            loading: loading,
+                            variant: "success",
+                            disabled: !newExercise.name || !newExercise.muscleGroup
+                        },
+                            React.createElement(Icon, { name: "plus", className: "w-5 h-5" }),
+                            React.createElement('span', {}, "Aggiungi Esercizio")
+                        )
+                    ),
 
-                    {/* Goals List */}
-                    <div className="space-y-6">
-                        {goals.map((goal, index) => {
-                            const progressPercentage = goal.current > 0 ? (goal.current / goal.value) * 100 : goal.progress;
-                            const isCompleted = progressPercentage >= 100;
-                            const deadline = new Date(goal.deadline);
-                            const today = new Date();
-                            const daysLeft = Math.ceil((deadline - today) / (1000 * 60 * 60 * 24));
+                    React.createElement(AnimatedCard, { delay: 200 },
+                        React.createElement('div', {
+                            className: "grid grid-cols-1 lg:grid-cols-2 gap-6"
+                        },
+                            React.createElement('div', {
+                                className: "space-y-2"
+                            },
+                                React.createElement('label', {
+                                    className: "text-white font-semibold flex items-center"
+                                },
+                                    React.createElement(Icon, { name: "search", className: "w-5 h-5 mr-2" }),
+                                    "Cerca Esercizi"
+                                ),
+                                React.createElement(EnhancedInput, {
+                                    placeholder: "Cerca per nome o gruppo muscolare...",
+                                    value: searchTerm,
+                                    onChange: setSearchTerm
+                                })
+                            ),
+                            React.createElement('div', {
+                                className: "space-y-2"
+                            },
+                                React.createElement('label', {
+                                    className: "text-white font-semibold flex items-center"
+                                },
+                                    React.createElement(Icon, { name: "filter", className: "w-5 h-5 mr-2" }),
+                                    "Filtra per Categoria"
+                                ),
+                                React.createElement('select', {
+                                    className: "w-full glass-effect text-white p-4 rounded-2xl border border-slate-600/50 focus:border-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500/20 transition-all duration-300",
+                                    value: selectedCategory,
+                                    onChange: (e) => setSelectedCategory(e.target.value)
+                                },
+                                    React.createElement('option', { value: "all" }, `Tutti (${exercises.length})`),
+                                    ...categories.map(category => {
+                                        const count = exercises.filter(ex => ex.category === category).length;
+                                        return React.createElement('option', {
+                                            key: category,
+                                            value: category
+                                        }, `${category.charAt(0).toUpperCase() + category.slice(1)} (${count})`);
+                                    })
+                                )
+                            )
+                        )
+                    ),
+
+                    React.createElement('div', {
+                        className: "grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8"
+                    }, filteredExercises.map((exercise, index) => {
+                        const exerciseWorkouts = workouts.filter(w => w.exerciseId === exercise.id);
+                        const maxWeight = exerciseWorkouts.length > 0 ? Math.max(...exerciseWorkouts.map(w => w.weight)) : 0;
+                        const latestWorkout = exerciseWorkouts.length > 0 ? 
+                            exerciseWorkouts.sort((a, b) => new Date(b.date) - new Date(a.date))[0] : null;
+                        
+                        return React.createElement(AnimatedCard, {
+                            key: exercise.id,
+                            delay: index * 100,
+                            className: "relative group"
+                        },
+                            React.createElement('div', {
+                                className: `absolute -top-3 -right-3 px-4 py-2 rounded-full text-xs font-bold shadow-lg animate-pulse ${
+                                    exercise.category === 'petto' ? 'bg-gradient-to-r from-red-500 to-red-600 text-white' :
+                                    exercise.category === 'schiena' ? 'bg-gradient-to-r from-blue-500 to-blue-600 text-white' :
+                                    exercise.category === 'gambe' ? 'bg-gradient-to-r from-green-500 to-green-600 text-white' :
+                                    exercise.category === 'spalle' ? 'bg-gradient-to-r from-yellow-500 to-yellow-600 text-white' :
+                                    'bg-gradient-to-r from-purple-500 to-purple-600 text-white'
+                                }`
+                            }, exercise.category),
+
+                            React.createElement('div', {
+                                className: "flex items-start justify-between mb-6"
+                            },
+                                React.createElement('div', {
+                                    className: "flex items-center"
+                                },
+                                    React.createElement('div', {
+                                        className: "p-4 bg-gradient-to-r from-slate-700 to-slate-800 rounded-2xl mr-4 shadow-lg animate-float"
+                                    }, React.createElement(Icon, { name: "dumbbell", className: "w-7 h-7 text-white" })),
+                                    React.createElement('div', {},
+                                        React.createElement('h4', {
+                                            className: "text-white font-bold text-xl"
+                                        }, exercise.name),
+                                        React.createElement('p', {
+                                            className: "text-gray-400 text-sm"
+                                        }, exercise.muscleGroup)
+                                    )
+                                ),
+                                
+                                React.createElement(ActionButton, {
+                                    onClick: () => setShowDeleteConfirm(`exercise-${exercise.id}`),
+                                    variant: "danger",
+                                    size: "small",
+                                    className: "opacity-0 group-hover:opacity-100 transition-opacity"
+                                }, React.createElement(Icon, { name: "trash", className: "w-4 h-4" }))
+                            ),
                             
-                            return (
-                                <AnimatedCard key={goal.id} delay={index * 150} className="relative group">
-                                    {isCompleted && (
-                                        <div className="absolute -top-3 -right-3 p-3 bg-gradient-success rounded-full shadow-xl shadow-green-500/40">
-                                            <Star className="w-6 h-6 text-white" />
-                                        </div>
-                                    )}
-                                    
-                                    <div className="flex items-center justify-between mb-6">
-                                        <div className="flex items-center space-x-4">
-                                            <div className={`p-4 rounded-2xl shadow-xl ${
-                                                goal.type === 'exercise' 
-                                                    ? 'bg-gradient-primary shadow-blue-500/30' 
-                                                    : 'bg-gradient-success shadow-green-500/30'
-                                            }`}>
-                                                {goal.type === 'exercise' ? 
-                                                    <Dumbbell className="w-7 h-7 text-white" /> : 
-                                                    <User className="w-7 h-7 text-white" />
-                                                }
-                                            </div>
-                                            <div>
-                                                <h3 className="text-white font-bold text-2xl">{goal.target}</h3>
-                                                <div className="flex items-center space-x-4 mt-2">
-                                                    <p className="text-gray-400">
-                                                        Scadenza: {deadline.toLocaleDateString('it-IT')}
-                                                    </p>
-                                                    <div className={`px-3 py-1 rounded-full text-xs font-bold ${
-                                                        daysLeft > 30 ? 'bg-green-900/50 text-green-400 border border-green-500/30' :
-                                                        daysLeft > 7 ? 'bg-yellow-900/50 text-yellow-400 border border-yellow-500/30' :
-                                                        daysLeft > 0 ? 'bg-orange-900/50 text-orange-400 border border-orange-500/30' :
-                                                        'bg-red-900/50 text-red-400 border border-red-500/30'
-                                                    }`}>
-                                                        {daysLeft > 0 ? `${daysLeft} giorni rimasti` : 'Scaduto'}
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div className="flex items-center space-x-4">
-                                            <div className="text-right">
-                                                <p className="text-white font-bold text-3xl">{progressPercentage.toFixed(1)}%</p>
-                                                <p className="text-gray-300">{goal.current} / {goal.value}</p>
-                                            </div>
-                                            <ActionButton
-                                                onClick={() => setShowDeleteConfirm(`goal-${goal.id}`)}
-                                                variant="danger"
-                                                size="small"
-                                                className="opacity-0 group-hover:opacity-100 transition-opacity"
-                                            >
-                                                <Trash2 className="w-4 h-4" />
-                                            </ActionButton>
-                                        </div>
-                                    </div>
-                                    
-                                    {/* Enhanced Progress Bar */}
-                                    <div className="relative mb-4">
-                                        <div className="w-full bg-gray-700 rounded-full h-5 overflow-hidden shadow-inner">
-                                            <div 
-                                                className={`h-full rounded-full transition-all duration-1000 ease-out relative ${
-                                                    isCompleted ? 'bg-gradient-success shadow-lg shadow-green-500/40' : 
-                                                    progressPercentage > 75 ? 'bg-gradient-warning shadow-lg shadow-yellow-500/40' : 
-                                                    'bg-gradient-primary shadow-lg shadow-blue-500/40'
-                                                }`}
-                                                style={{ width: `${Math.min(progressPercentage, 100)}%` }}
-                                            >
-                                                <div className="absolute inset-0 bg-gradient-to-t from-white/20 to-transparent rounded-full"></div>
-                                                <div className="absolute inset-0 animate-pulse bg-gradient-to-r from-transparent via-white/10 to-transparent rounded-full"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    
-                                    {isCompleted && (
-                                        <div className="flex items-center justify-center bg-gradient-to-r from-green-900/40 to-green-800/20 rounded-2xl p-6 border-2 border-green-500/30">
-                                            <Star className="w-6 h-6 mr-3 text-green-400" />
-                                            <span className="text-green-400 font-bold text-lg">🎉 Obiettivo completato! Complimenti! 🎉</span>
-                                        </div>
-                                    )}
-                                </AnimatedCard>
-                            );
-                        })}
-                    </div>
-                </div>
+                            React.createElement('div', {
+                                className: "space-y-4 mb-6"
+                            },
+                                React.createElement('div', {
+                                    className: "flex justify-between items-center p-4 glass-effect rounded-xl"
+                                },
+                                    React.createElement('span', {
+                                        className: "text-gray-400 text-sm font-medium"
+                                    }, "Peso Massimo"),
+                                    React.createElement('span', {
+                                        className: "text-blue-400 font-bold text-2xl animate-pulse"
+                                    }, `${maxWeight}kg`)
+                                ),
+                                latestWorkout && React.createElement('div', {
+                                    className: "flex justify-between items-center p-4 glass-effect rounded-xl"
+                                },
+                                    React.createElement('span', {
+                                        className: "text-gray-400 text-sm font-medium"
+                                    }, "Ultimo Allenamento"),
+                                    React.createElement('span', {
+                                        className: "text-green-400 font-semibold"
+                                    }, new Date(latestWorkout.date).toLocaleDateString('it-IT'))
+                                )
+                            ),
+
+                            React.createElement('div', {
+                                className: "border-t border-slate-700/50 pt-6"
+                            },
+                                React.createElement('h5', {
+                                    className: "text-white font-semibold mb-4 flex items-center"
+                                },
+                                    React.createElement(Icon, { name: "plus", className: "w-5 h-5 mr-2" }),
+                                    "Aggiungi Carico"
+                                ),
+                                React.createElement('div', {
+                                    className: "grid grid-cols-3 gap-3 mb-4"
+                                },
+                                    React.createElement(EnhancedInput, {
+                                        type: "number",
+                                        placeholder: "Peso",
+                                        value: newWorkout.exerciseId === exercise.id ? newWorkout.weight : '',
+                                        onChange: (value) => {
+                                            setNewWorkout({
+                                                ...newWorkout, 
+                                                exerciseId: exercise.id, 
+                                                exercise: exercise.name, 
+                                                weight: value
+                                            });
+                                        },
+                                        className: "text-sm p-3"
+                                    }),
+                                    React.createElement(EnhancedInput, {
+                                        type: "number",
+                                        placeholder: "Serie",
+                                        value: newWorkout.exerciseId === exercise.id ? newWorkout.sets : '',
+                                        onChange: (value) => {
+                                            setNewWorkout({
+                                                ...newWorkout, 
+                                                exerciseId: exercise.id, 
+                                                exercise: exercise.name, 
+                                                sets: value
+                                            });
+                                        },
+                                        className: "text-sm p-3"
+                                    }),
+                                    React.createElement(EnhancedInput, {
+                                        type: "number",
+                                        placeholder: "Reps",
+                                        value: newWorkout.exerciseId === exercise.id ? newWorkout.reps : '',
+                                        onChange: (value) => {
+                                            setNewWorkout({
+                                                ...newWorkout, 
+                                                exerciseId: exercise.id, 
+                                                exercise: exercise.name, 
+                                                reps: value
+                                            });
+                                        },
+                                        className: "text-sm p-3"
+                                    })
+                                ),
+                                React.createElement(EnhancedInput, {
+                                    type: "date",
+                                    value: newWorkout.exerciseId === exercise.id ? newWorkout.date : new Date().toISOString().split('T')[0],
+                                    onChange: (value) => {
+                                        setNewWorkout({
+                                            ...newWorkout, 
+                                            exerciseId: exercise.id, 
+                                            exercise: exercise.name, 
+                                            date: value
+                                        });
+                                    },
+                                    className: "w-full mb-4 text-sm p-3"
+                                }),
+                                
+                                React.createElement(ActionButton, {
+                                    onClick: async () => {
+                                        if (newWorkout.exerciseId === exercise.id && newWorkout.weight && newWorkout.sets && newWorkout.reps) {
+                                            setLoading(true);
+                                            await new Promise(resolve => setTimeout(resolve, 500));
+                                            const workout = {
+                                                id: Date.now(),
+                                                exerciseId: exercise.id,
+                                                exercise: exercise.name,
+                                                weight: parseInt(newWorkout.weight),
+                                                sets: parseInt(newWorkout.sets),
+                                                reps: parseInt(newWorkout.reps),
+                                                date: newWorkout.date
+                                            };
+                                            setWorkouts([...workouts, workout]);
+                                            setNewWorkout({ exerciseId: '', exercise: '', weight: '', sets: '', reps: '', date: new Date().toISOString().split('T')[0] });
+                                            setLoading(false);
+                                        }
+                                    },
+                                    loading: loading,
+                                    variant: "success",
+                                    size: "small",
+                                    className: "w-full",
+                                    disabled: newWorkout.exerciseId !== exercise.id || !newWorkout.weight || !newWorkout.sets || !newWorkout.reps
+                                },
+                                    React.createElement(Icon, { name: "check", className: "w-4 h-4" }),
+                                    React.createElement('span', {}, "Salva Carico")
+                                )
+                            )
+                        );
+                    })),
+
+                    filteredExercises.length === 0 && React.createElement(AnimatedCard, {
+                        className: "text-center py-12"
+                    },
+                        React.createElement('div', {
+                            className: "space-y-4"
+                        },
+                            React.createElement('div', {
+                                className: "p-6 bg-slate-700/30 rounded-full w-24 h-24 mx-auto flex items-center justify-center animate-pulse"
+                            }, React.createElement(Icon, { name: "search", className: "w-12 h-12 text-gray-400" })),
+                            React.createElement('h3', {
+                                className: "text-xl font-semibold text-gray-300"
+                            }, "Nessun esercizio trovato"),
+                            React.createElement('p', {
+                                className: "text-gray-500"
+                            }, searchTerm ? 
+                                `Nessun risultato per "${searchTerm}"` : 
+                                `Nessun esercizio nella categoria "${selectedCategory}"`)
+                        )
+                    )
+                );
+            };
+
+            // Simplified views
+            const ProgressView = () => React.createElement('div', {
+                className: "p-6 space-y-8 max-w-7xl mx-auto"
+            },
+                React.createElement('div', {
+                    className: "text-center space-y-3"
+                },
+                    React.createElement('h2', {
+                        className: "text-6xl font-bold text-gradient animate-float"
+                    }, "Progressi"),
+                    React.createElement('p', {
+                        className: "text-gray-400 text-lg"
+                    }, "Visualizza i tuoi miglioramenti")
+                ),
+                React.createElement(AnimatedCard, {},
+                    React.createElement('p', {
+                        className: "text-center text-gray-400 py-8"
+                    }, "Grafici dei progressi disponibili a breve...")
+                )
             );
 
-            // Main Render
-            return (
-                <div className="min-h-screen bg-gradient-body">
-                    <Navigation />
-                    <div>
-                        {currentView === 'dashboard' && <Dashboard />}
-                        {currentView === 'exercises' && <ExercisesView />}
-                        {currentView === 'progress' && <ProgressView />}
-                        {currentView === 'measurements' && <MeasurementsView />}
-                        {currentView === 'goals' && <GoalsView />}
-                    </div>
+            const MeasurementsView = () => React.createElement('div', {
+                className: "p-6 space-y-8 max-w-7xl mx-auto"
+            },
+                React.createElement('div', {
+                    className: "text-center space-y-3"
+                },
+                    React.createElement('h2', {
+                        className: "text-6xl font-bold text-gradient animate-float"
+                    }, "Misure Corporee"),
+                    React.createElement('p', {
+                        className: "text-gray-400 text-lg"
+                    }, "Monitora i cambiamenti del tuo corpo")
+                ),
+                React.createElement(AnimatedCard, {},
+                    React.createElement('p', {
+                        className: "text-center text-gray-400 py-8"
+                    }, "Sistema di misurazione disponibile a breve...")
+                )
+            );
 
-                    {/* Delete Confirmation Modal */}
-                    {showDeleteConfirm && (
-                        <div className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-50 p-4">
-                            <AnimatedCard className="max-w-lg w-full">
-                                <div className="text-center space-y-6">
-                                    <div className="p-6 bg-red-500/20 rounded-full w-24 h-24 mx-auto flex items-center justify-center">
-                                        <AlertTriangle className="w-12 h-12 text-red-400" />
-                                    </div>
-                                    <div className="space-y-3">
-                                        <h3 className="text-3xl font-bold text-white">Conferma Eliminazione</h3>
-                                        <p className="text-gray-300 text-lg leading-relaxed">
-                                            Sei sicuro di voler eliminare questo elemento? Questa azione non può essere annullata e tutti i dati associati verranno persi.
-                                        </p>
-                                    </div>
-                                    <div className="flex space-x-4 pt-6">
-                                        <ActionButton
-                                            onClick={() => setShowDeleteConfirm(null)}
-                                            variant="secondary"
-                                            className="flex-1"
-                                            size="large"
-                                        >
-                                            Annulla
-                                        </ActionButton>
-                                        <ActionButton
-                                            onClick={() => {
-                                                const [type, id] = showDeleteConfirm.split('-');
-                                                handleDelete(type, parseInt(id));
-                                            }}
-                                            variant="danger"
-                                            className="flex-1"
-                                            size="large"
-                                        >
-                                            Elimina Definitivamente
-                                        </ActionButton>
-                                    </div>
-                                </div>
-                            </AnimatedCard>
-                        </div>
-                    )}
-                </div>
+            const GoalsView = () => React.createElement('div', {
+                className: "p-6 space-y-8 max-w-7xl mx-auto"
+            },
+                React.createElement('div', {
+                    className: "text-center space-y-3"
+                },
+                    React.createElement('h2', {
+                        className: "text-6xl font-bold text-gradient animate-float"
+                    }, "Obiettivi"),
+                    React.createElement('p', {
+                        className: "text-gray-400 text-lg"
+                    }, "Definisci e raggiungi i tuoi traguardi")
+                ),
+                React.createElement(AnimatedCard, {},
+                    React.createElement('p', {
+                        className: "text-center text-gray-400 py-8"
+                    }, "Sistema obiettivi disponibile a breve...")
+                )
+            );
+
+            if (!appInitialized) {
+                return null;
+            }
+
+            return React.createElement('div', {
+                className: "min-h-screen"
+            },
+                React.createElement(Navigation),
+                React.createElement('div', {},
+                    currentView === 'dashboard' && React.createElement(Dashboard),
+                    currentView === 'exercises' && React.createElement(ExercisesView),
+                    currentView === 'progress' && React.createElement(ProgressView),
+                    currentView === 'measurements' && React.createElement(MeasurementsView),
+                    currentView === 'goals' && React.createElement(GoalsView)
+                ),
+
+                showDeleteConfirm && React.createElement('div', {
+                    className: "fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4"
+                },
+                    React.createElement(AnimatedCard, {
+                        className: "max-w-lg w-full"
+                    },
+                        React.createElement('div', {
+                            className: "text-center space-y-6"
+                        },
+                            React.createElement('div', {
+                                className: "p-6 bg-red-500/20 rounded-full w-24 h-24 mx-auto flex items-center justify-center animate-pulse"
+                            }, React.createElement(Icon, { name: "trash", className: "w-12 h-12 text-red-400" })),
+                            React.createElement('div', {
+                                className: "space-y-3"
+                            },
+                                React.createElement('h3', {
+                                    className: "text-3xl font-bold text-white"
+                                }, "Conferma Eliminazione"),
+                                React.createElement('p', {
+                                    className: "text-gray-300 text-lg leading-relaxed"
+                                }, "Sei sicuro di voler eliminare questo elemento? Questa azione non può essere annullata.")
+                            ),
+                            React.createElement('div', {
+                                className: "flex space-x-4 pt-6"
+                            },
+                                React.createElement(ActionButton, {
+                                    onClick: () => setShowDeleteConfirm(null),
+                                    variant: "secondary",
+                                    className: "flex-1",
+                                    size: "large"
+                                }, "Annulla"),
+                                React.createElement(ActionButton, {
+                                    onClick: () => {
+                                        const [type, id] = showDeleteConfirm.split('-');
+                                        handleDelete(type, parseInt(id));
+                                    },
+                                    variant: "danger",
+                                    className: "flex-1",
+                                    size: "large"
+                                }, "Elimina")
+                            )
+                        )
+                    )
+                )
             );
         };
 
-        // Render the app
-        ReactDOM.render(<FitTrackPro />, document.getElementById('root'));
+        // Initialize app
+        try {
+            const root = ReactDOM.createRoot(document.getElementById('root'));
+            root.render(React.createElement(FitTrackPro));
+        } catch (error) {
+            console.error('Failed to render app:', error);
+            alert('Errore rendering. Ricarica la pagina.');
+        }
     </script>
 </body>
 </html>
