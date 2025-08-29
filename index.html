@@ -36,8 +36,9 @@
 
         .glass-effect {
             backdrop-filter: blur(16px);
-            background: rgba(15, 23, 42, 0.8);
+            background: rgba(15, 23, 42, 0.85);
             border: 1px solid rgba(148, 163, 184, 0.1);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
 
         .smooth-transition {
@@ -57,20 +58,6 @@
             box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3), 0 10px 10px -5px rgba(0, 0, 0, 0.2);
         }
 
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(148, 163, 184, 0.1);
-            border-radius: 10px;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
-            border-radius: 10px;
-        }
-
         .text-gradient {
             background: linear-gradient(135deg, #60a5fa 0%, #a855f7 50%, #ec4899 100%);
             -webkit-background-clip: text;
@@ -78,61 +65,6 @@
             background-clip: text;
         }
 
-        .btn-enhanced {
-            position: relative;
-            overflow: hidden;
-        }
-
-        .btn-enhanced::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent);
-            transition: left 0.5s;
-        }
-
-        .btn-enhanced:hover::before {
-            left: 100%;
-        }
-
-        /* Loading animation */
-        .spinner {
-            width: 40px;
-            height: 40px;
-            border: 4px solid rgba(59, 130, 246, 0.3);
-            border-top: 4px solid #3b82f6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Hide/show views */
-        .view {
-            display: none;
-        }
-
-        .view.active {
-            display: block;
-        }
-
-        /* Enhanced animations */
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .fade-in {
-            animation: fadeIn 0.4s ease-out;
-        }
-
-        /* Progress bar animation */
         .progress-bar {
             background: linear-gradient(90deg, #3b82f6, #8b5cf6, #ec4899);
             background-size: 200% 100%;
@@ -144,24 +76,6 @@
             100% { background-position: -200% 0; }
         }
 
-        /* Custom chart container */
-        .chart-container {
-            position: relative;
-            height: 300px;
-        }
-
-        /* Mobile improvements */
-        @media (max-width: 768px) {
-            .nav-text {
-                display: none;
-            }
-            
-            .mobile-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        /* Notification styles */
         .notification {
             position: fixed;
             top: 20px;
@@ -193,14 +107,58 @@
             color: white;
         }
 
-        /* Pulse animation for important elements */
-        .pulse-glow {
-            animation: pulseGlow 3s ease-in-out infinite;
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(59, 130, 246, 0.3);
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
         }
 
-        @keyframes pulseGlow {
-            0%, 100% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.3); }
-            50% { box-shadow: 0 0 30px rgba(59, 130, 246, 0.6); }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .view {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .view.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .chart-container {
+            position: relative;
+            height: 300px;
+        }
+
+        @media (max-width: 768px) {
+            .nav-text {
+                display: none;
+            }
+        }
+
+        /* Scrollbar styling */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(148, 163, 184, 0.1);
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(45deg, #3b82f6, #8b5cf6);
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -209,13 +167,13 @@
     <div id="loadingScreen" class="fixed inset-0 bg-gradient-to-br from-slate-900 via-blue-900 to-purple-900 flex items-center justify-center z-50">
         <div class="text-center">
             <div class="mb-8">
-                <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center pulse-glow">
-                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 20 20">
-                        <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                <div class="w-20 h-20 mx-auto mb-6 rounded-full bg-gradient-to-r from-blue-500 to-purple-600 flex items-center justify-center shadow-2xl">
+                    <svg class="w-10 h-10 text-white" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M2 12h2v-1h1v-1h1v-1h1V7H6V6H5V5H4v1H3v1H2v1H1v1h1v2zm20 0h-2v-1h-1v-1h-1v-1h-1V7h1V6h1V5h1v1h1v1h1v1h1v1h-1v2zm-8-4h-4v8h4V8z"/>
                     </svg>
                 </div>
                 <h1 class="text-4xl font-bold text-gradient mb-4">FitTrack Pro</h1>
-                <div class="spinner mx-auto"></div>
+                <div class="loading-spinner mx-auto"></div>
                 <p class="text-gray-300 text-sm mt-4">Caricamento in corso...</p>
             </div>
         </div>
@@ -226,9 +184,9 @@
         <div class="max-w-7xl mx-auto">
             <div class="flex items-center justify-between mb-4">
                 <div class="flex items-center space-x-3">
-                    <div class="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-xl pulse-glow">
-                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M17.293 13.293A8 8 0 716.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                    <div class="p-3 bg-gradient-to-r from-blue-500 to-purple-600 rounded-2xl shadow-xl">
+                        <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M2 12h2v-1h1v-1h1v-1h1V7H6V6H5V5H4v1H3v1H2v1H1v1h1v2zm20 0h-2v-1h-1v-1h-1v-1h-1V7h1V6h1V5h1v1h1v1h1v1h1v1h-1v2zm-8-4h-4v8h4V8z"/>
                         </svg>
                     </div>
                     <div>
@@ -238,13 +196,13 @@
                 </div>
                 
                 <div class="flex items-center space-x-3">
-                    <button id="importBtn" class="flex items-center space-x-2 px-3 py-2 text-sm bg-transparent border border-green-500 text-green-400 hover:bg-green-500 hover:text-white rounded-xl smooth-transition btn-enhanced">
+                    <button id="importBtn" class="flex items-center space-x-2 px-3 py-2 text-sm bg-transparent border border-green-500 text-green-400 hover:bg-green-500 hover:text-white rounded-xl smooth-transition">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM6.293 6.707a1 1 0 010-1.414l3-3a1 1 0 011.414 0l3 3a1 1 0 01-1.414 1.414L11 4.414V15a1 1 0 11-2 0V4.414L7.707 5.707a1 1 0 01-1.414 0z"/>
                         </svg>
                         <span class="hidden sm:inline">Importa</span>
                     </button>
-                    <button id="exportBtn" class="flex items-center space-x-2 px-3 py-2 text-sm bg-transparent border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white rounded-xl smooth-transition btn-enhanced">
+                    <button id="exportBtn" class="flex items-center space-x-2 px-3 py-2 text-sm bg-transparent border border-blue-500 text-blue-400 hover:bg-blue-500 hover:text-white rounded-xl smooth-transition">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/>
                         </svg>
@@ -262,8 +220,8 @@
                         <span class="nav-text">Dashboard</span>
                     </button>
                     <button data-view="exercises" class="nav-btn flex items-center space-x-2 px-4 py-3 rounded-xl text-sm font-semibold smooth-transition hover:bg-slate-700/50 text-gray-300 hover:text-white">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path d="M17.293 13.293A8 8 0 716.707 2.707a8.001 8.001 0 1010.586 10.586z"/>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M2 12h2v-1h1v-1h1v-1h1V7H6V6H5V5H4v1H3v1H2v1H1v1h1v2zm20 0h-2v-1h-1v-1h-1v-1h-1V7h1V6h1V5h1v1h1v1h1v1h1v1h-1v2zm-8-4h-4v8h4V8z"/>
                         </svg>
                         <span class="nav-text">Esercizi</span>
                     </button>
@@ -280,8 +238,8 @@
                         <span class="nav-text">Misure</span>
                     </button>
                     <button data-view="goals" class="nav-btn flex items-center space-x-2 px-4 py-3 rounded-xl text-sm font-semibold smooth-transition hover:bg-slate-700/50 text-gray-300 hover:text-white">
-                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM4.332 8.027a6.012 6.012 0 011.912-2.706C6.512 5.73 6.974 6 7.5 6A1.5 1.5 0 019 7.5V8a2 2 0 004 0 2 2 0 011.523-1.943A5.977 5.977 0 0116 10c0 3.314-2.686 6-6 6s-6-2.686-6-6a4.99 4.99 0 01.332-1.973z" clip-rule="evenodd"/>
+                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
                         </svg>
                         <span class="nav-text">Obiettivi</span>
                     </button>
@@ -291,7 +249,7 @@
     </nav>
 
     <!-- Main Content -->
-    <main class="opacity-0 smooth-transition" id="mainContent">
+    <main id="mainContent" class="opacity-0 smooth-transition">
         
         <!-- Dashboard View -->
         <div id="dashboardView" class="view active p-4 md:p-6 space-y-6 max-w-7xl mx-auto">
@@ -306,7 +264,7 @@
             </div>
 
             <!-- Quick Actions -->
-            <div class="glass-effect rounded-2xl p-6 card-hover fade-in">
+            <div class="glass-effect rounded-2xl p-6 card-hover">
                 <h3 class="text-xl font-bold text-white mb-4 flex items-center">
                     <svg class="w-6 h-6 mr-2 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M11.3 1.046A1 1 0 0112 2v5h4a1 1 0 01.82 1.573l-7 10A1 1 0 018 18v-5H4a1 1 0 01-.82-1.573l7-10a1 1 0 011.12-.38z" clip-rule="evenodd"/>
@@ -327,12 +285,12 @@
                         <span class="text-white text-sm font-medium">Nuova Misura</span>
                     </button>
                     <button onclick="switchView('goals')" class="flex flex-col items-center p-4 glass-effect rounded-xl hover:bg-slate-700/30 smooth-transition">
-                        <svg class="w-8 h-8 text-purple-400 mb-2" fill="currentColor" viewBox="0 0 20 20">
-                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16z" clip-rule="evenodd"/>
+                        <svg class="w-8 h-8 text-purple-400 mb-2" fill="currentColor" viewBox="0 0 24 24">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
                         </svg>
                         <span class="text-white text-sm font-medium">Nuovo Obiettivo</span>
                     </button>
-                    <button onclick="exportData()" class="flex flex-col items-center p-4 glass-effect rounded-xl hover:bg-slate-700/30 smooth-transition">
+                    <button onclick="FitTracker.exportData()" class="flex flex-col items-center p-4 glass-effect rounded-xl hover:bg-slate-700/30 smooth-transition">
                         <svg class="w-8 h-8 text-yellow-400 mb-2" fill="currentColor" viewBox="0 0 20 20">
                             <path d="M3 17a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3.293-7.707a1 1 0 011.414 0L9 10.586V3a1 1 0 112 0v7.586l1.293-1.293a1 1 0 111.414 1.414l-3 3a1 1 0 01-1.414 0l-3-3a1 1 0 010-1.414z"/>
                         </svg>
@@ -342,7 +300,7 @@
             </div>
 
             <!-- Top Improvements -->
-            <div class="glass-effect rounded-2xl p-6 card-hover fade-in">
+            <div class="glass-effect rounded-2xl p-6 card-hover">
                 <div class="flex items-center justify-between mb-4">
                     <h3 class="text-xl font-bold text-white flex items-center">
                         <svg class="w-6 h-6 mr-2 text-orange-400" fill="currentColor" viewBox="0 0 24 24">
@@ -357,7 +315,7 @@
             </div>
 
             <!-- Recent Activity -->
-            <div class="glass-effect rounded-2xl p-6 card-hover fade-in">
+            <div class="glass-effect rounded-2xl p-6 card-hover">
                 <h3 class="text-xl font-bold text-white mb-4 flex items-center">
                     <svg class="w-6 h-6 mr-2 text-blue-400" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
@@ -378,7 +336,7 @@
             </div>
             
             <!-- Add Exercise Form -->
-            <div class="glass-effect rounded-2xl p-6 card-hover fade-in">
+            <div class="glass-effect rounded-2xl p-6 card-hover">
                 <div class="flex items-center mb-4">
                     <div class="p-3 bg-gradient-to-r from-green-600 to-green-700 rounded-xl mr-3 shadow-lg">
                         <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -391,19 +349,19 @@
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                     <input type="text" id="exerciseName" placeholder="Nome esercizio" class="glass-effect text-white p-3 rounded-xl border border-slate-600/50 focus:border-green-500 focus:outline-none smooth-transition placeholder-gray-400">
                     <select id="exerciseCategory" class="glass-effect text-white p-3 rounded-xl border border-slate-600/50 focus:border-green-500 focus:outline-none smooth-transition">
-                        <option value="petto">Petto</option>
-                        <option value="schiena">Schiena</option>
-                        <option value="spalle">Spalle</option>
-                        <option value="bicipiti">Bicipiti</option>
-                        <option value="tricipiti">Tricipiti</option>
-                        <option value="gambe">Gambe</option>
-                        <option value="addominali">Addominali</option>
-                        <option value="cardio">Cardio</option>
+                        <option value="petto">💪 Petto</option>
+                        <option value="schiena">🦵 Schiena</option>
+                        <option value="spalle">🏋️ Spalle</option>
+                        <option value="bicipiti">💪 Bicipiti</option>
+                        <option value="tricipiti">💪 Tricipiti</option>
+                        <option value="gambe">🦵 Gambe</option>
+                        <option value="addominali">🎯 Addominali</option>
+                        <option value="cardio">❤️ Cardio</option>
                     </select>
                     <input type="text" id="exerciseMuscleGroup" placeholder="Gruppo muscolare" class="glass-effect text-white p-3 rounded-xl border border-slate-600/50 focus:border-green-500 focus:outline-none smooth-transition placeholder-gray-400">
                 </div>
                 
-                <button id="addExerciseBtn" class="flex items-center justify-center space-x-2 px-6 py-3 font-semibold rounded-xl smooth-transition hover-lift shadow-lg btn-enhanced bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white">
+                <button id="addExerciseBtn" class="flex items-center justify-center space-x-2 px-6 py-3 font-semibold rounded-xl smooth-transition hover-lift shadow-lg bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
                     </svg>
@@ -412,7 +370,7 @@
             </div>
 
             <!-- Search and Filter -->
-            <div class="glass-effect rounded-2xl p-6 card-hover fade-in">
+            <div class="glass-effect rounded-2xl p-6 card-hover">
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
                     <div class="space-y-2">
                         <label class="text-white font-semibold flex items-center">
@@ -432,14 +390,14 @@
                         </label>
                         <select id="filterCategory" class="w-full glass-effect text-white p-3 rounded-xl border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition">
                             <option value="all">Tutti</option>
-                            <option value="petto">Petto</option>
-                            <option value="schiena">Schiena</option>
-                            <option value="spalle">Spalle</option>
-                            <option value="bicipiti">Bicipiti</option>
-                            <option value="tricipiti">Tricipiti</option>
-                            <option value="gambe">Gambe</option>
-                            <option value="addominali">Addominali</option>
-                            <option value="cardio">Cardio</option>
+                            <option value="petto">💪 Petto</option>
+                            <option value="schiena">🦵 Schiena</option>
+                            <option value="spalle">🏋️ Spalle</option>
+                            <option value="bicipiti">💪 Bicipiti</option>
+                            <option value="tricipiti">💪 Tricipiti</option>
+                            <option value="gambe">🦵 Gambe</option>
+                            <option value="addominali">🎯 Addominali</option>
+                            <option value="cardio">❤️ Cardio</option>
                         </select>
                     </div>
                 </div>
@@ -460,15 +418,15 @@
             
             <!-- Exercise Progress Charts -->
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                <div class="glass-effect rounded-2xl p-6 card-hover fade-in">
-                    <h3 class="text-lg font-bold text-white mb-4">Progressione Peso Massimo</h3>
+                <div class="glass-effect rounded-2xl p-6 card-hover">
+                    <h3 class="text-lg font-bold text-white mb-4">📈 Progressione Peso Massimo</h3>
                     <div class="chart-container">
                         <canvas id="weightProgressChart"></canvas>
                     </div>
                 </div>
                 
-                <div class="glass-effect rounded-2xl p-6 card-hover fade-in">
-                    <h3 class="text-lg font-bold text-white mb-4">Volume di Allenamento</h3>
+                <div class="glass-effect rounded-2xl p-6 card-hover">
+                    <h3 class="text-lg font-bold text-white mb-4">📊 Volume di Allenamento</h3>
                     <div class="chart-container">
                         <canvas id="volumeProgressChart"></canvas>
                     </div>
@@ -476,8 +434,8 @@
             </div>
             
             <!-- Exercise Selection -->
-            <div class="glass-effect rounded-2xl p-6 card-hover fade-in">
-                <h3 class="text-lg font-bold text-white mb-4">Seleziona Esercizio per Analisi Dettagliata</h3>
+            <div class="glass-effect rounded-2xl p-6 card-hover">
+                <h3 class="text-lg font-bold text-white mb-4">🎯 Analisi Dettagliata Esercizio</h3>
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <select id="progressExerciseSelect" class="glass-effect text-white p-3 rounded-xl border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition">
                         <option value="">Seleziona un esercizio...</option>
@@ -504,7 +462,7 @@
             </div>
             
             <!-- Add Measurement Form -->
-            <div class="glass-effect rounded-2xl p-6 card-hover fade-in">
+            <div class="glass-effect rounded-2xl p-6 card-hover">
                 <div class="flex items-center mb-4">
                     <div class="p-3 bg-gradient-to-r from-purple-600 to-purple-700 rounded-xl mr-3 shadow-lg">
                         <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -516,20 +474,20 @@
                 
                 <div class="grid grid-cols-1 md:grid-cols-4 gap-4 mb-4">
                     <select id="measurementType" class="glass-effect text-white p-3 rounded-xl border border-slate-600/50 focus:border-purple-500 focus:outline-none smooth-transition">
-                        <option value="peso">Peso (kg)</option>
-                        <option value="altezza">Altezza (cm)</option>
-                        <option value="petto">Petto (cm)</option>
-                        <option value="vita">Vita (cm)</option>
-                        <option value="fianchi">Fianchi (cm)</option>
-                        <option value="braccio_dx">Braccio Dx (cm)</option>
-                        <option value="braccio_sx">Braccio Sx (cm)</option>
-                        <option value="coscia_dx">Coscia Dx (cm)</option>
-                        <option value="coscia_sx">Coscia Sx (cm)</option>
-                        <option value="bf_percentage">Massa Grassa (%)</option>
+                        <option value="peso">⚖️ Peso (kg)</option>
+                        <option value="altezza">📏 Altezza (cm)</option>
+                        <option value="petto">💪 Petto (cm)</option>
+                        <option value="vita">🌟 Vita (cm)</option>
+                        <option value="fianchi">🍑 Fianchi (cm)</option>
+                        <option value="braccio_dx">💪 Braccio Dx (cm)</option>
+                        <option value="braccio_sx">💪 Braccio Sx (cm)</option>
+                        <option value="coscia_dx">🦵 Coscia Dx (cm)</option>
+                        <option value="coscia_sx">🦵 Coscia Sx (cm)</option>
+                        <option value="bf_percentage">📊 Massa Grassa (%)</option>
                     </select>
                     <input type="number" id="measurementValue" placeholder="Valore" step="0.1" class="glass-effect text-white p-3 rounded-xl border border-slate-600/50 focus:border-purple-500 focus:outline-none smooth-transition placeholder-gray-400">
                     <input type="date" id="measurementDate" class="glass-effect text-white p-3 rounded-xl border border-slate-600/50 focus:border-purple-500 focus:outline-none smooth-transition">
-                    <button id="addMeasurementBtn" class="flex items-center justify-center space-x-2 px-6 py-3 font-semibold rounded-xl smooth-transition hover-lift shadow-lg btn-enhanced bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white">
+                    <button id="addMeasurementBtn" class="flex items-center justify-center space-x-2 px-6 py-3 font-semibold rounded-xl smooth-transition hover-lift shadow-lg bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white">
                         <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
                             <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
                         </svg>
@@ -539,8 +497,8 @@
             </div>
             
             <!-- Measurements Chart -->
-            <div class="glass-effect rounded-2xl p-6 card-hover fade-in">
-                <h3 class="text-lg font-bold text-white mb-4">Andamento Misure</h3>
+            <div class="glass-effect rounded-2xl p-6 card-hover">
+                <h3 class="text-lg font-bold text-white mb-4">📈 Andamento Misure</h3>
                 <div class="mb-4">
                     <select id="measurementChartType" class="glass-effect text-white p-3 rounded-xl border border-slate-600/50 focus:border-purple-500 focus:outline-none smooth-transition">
                         <option value="">Seleziona tipo di misurazione...</option>
@@ -552,8 +510,8 @@
             </div>
             
             <!-- Measurements List -->
-            <div class="glass-effect rounded-2xl p-6 card-hover fade-in">
-                <h3 class="text-lg font-bold text-white mb-4">Storico Misurazioni</h3>
+            <div class="glass-effect rounded-2xl p-6 card-hover">
+                <h3 class="text-lg font-bold text-white mb-4">📋 Storico Misurazioni</h3>
                 <div id="measurementsList" class="space-y-3">
                     <!-- Content will be generated by JS -->
                 </div>
@@ -568,7 +526,7 @@
             </div>
             
             <!-- Add Goal Form -->
-            <div class="glass-effect rounded-2xl p-6 card-hover fade-in">
+            <div class="glass-effect rounded-2xl p-6 card-hover">
                 <div class="flex items-center mb-4">
                     <div class="p-3 bg-gradient-to-r from-yellow-600 to-yellow-700 rounded-xl mr-3 shadow-lg">
                         <svg class="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 20 20">
@@ -581,18 +539,18 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                     <input type="text" id="goalTarget" placeholder="Descrizione obiettivo (es. Panca Piana 100kg)" class="glass-effect text-white p-3 rounded-xl border border-slate-600/50 focus:border-yellow-500 focus:outline-none smooth-transition placeholder-gray-400">
                     <select id="goalType" class="glass-effect text-white p-3 rounded-xl border border-slate-600/50 focus:border-yellow-500 focus:outline-none smooth-transition">
-                        <option value="weight">Peso Esercizio</option>
-                        <option value="reps">Ripetizioni</option>
-                        <option value="body_weight">Peso Corporeo</option>
-                        <option value="body_measurement">Misurazione Corpo</option>
-                        <option value="time">Tempo (min)</option>
-                        <option value="distance">Distanza (km)</option>
+                        <option value="weight">🏋️ Peso Esercizio</option>
+                        <option value="reps">🔄 Ripetizioni</option>
+                        <option value="body_weight">⚖️ Peso Corporeo</option>
+                        <option value="body_measurement">📏 Misurazione Corpo</option>
+                        <option value="time">⏱️ Tempo (min)</option>
+                        <option value="distance">🏃 Distanza (km)</option>
                     </select>
                     <input type="number" id="goalValue" placeholder="Valore target" step="0.1" class="glass-effect text-white p-3 rounded-xl border border-slate-600/50 focus:border-yellow-500 focus:outline-none smooth-transition placeholder-gray-400">
                     <input type="date" id="goalDeadline" class="glass-effect text-white p-3 rounded-xl border border-slate-600/50 focus:border-yellow-500 focus:outline-none smooth-transition">
                 </div>
                 
-                <button id="addGoalBtn" class="flex items-center justify-center space-x-2 px-6 py-3 font-semibold rounded-xl smooth-transition hover-lift shadow-lg btn-enhanced bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white">
+                <button id="addGoalBtn" class="flex items-center justify-center space-x-2 px-6 py-3 font-semibold rounded-xl smooth-transition hover-lift shadow-lg bg-gradient-to-r from-yellow-600 to-yellow-700 hover:from-yellow-700 hover:to-yellow-800 text-white">
                     <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd"/>
                     </svg>
@@ -610,7 +568,7 @@
 
     <!-- Delete Confirmation Modal -->
     <div id="deleteModal" class="fixed inset-0 bg-black/80 backdrop-blur-md flex items-center justify-center z-50 p-4 hidden">
-        <div class="glass-effect rounded-2xl p-6 max-w-md w-full fade-in">
+        <div class="glass-effect rounded-2xl p-6 max-w-md w-full">
             <div class="text-center space-y-4">
                 <div class="p-4 bg-red-500/20 rounded-full w-16 h-16 mx-auto flex items-center justify-center">
                     <svg class="w-8 h-8 text-red-400" fill="currentColor" viewBox="0 0 20 20">
@@ -637,1050 +595,1508 @@
     <!-- File Import Input (hidden) -->
     <input type="file" id="fileImport" accept=".json" style="display: none;">
 
-    <!-- JavaScript -->
     <script>
-        // Global variables
-        let exercises = [];
-        let workouts = [];
-        let bodyMeasurements = [];
-        let goals = [];
-        let currentView = 'dashboard';
-        let deleteTarget = null;
-        let charts = {};
-
-        // Initialize app
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM Content Loaded');
-            
-            // Force show app if loading takes too long
-            const forceShowTimer = setTimeout(() => {
-                console.log('Forcing app show due to timeout');
-                showApp();
-            }, 3000);
-            
-            try {
-                loadData();
-                setupEventListeners();
+        class FitTracker {
+            constructor() {
+                this.exercises = [];
+                this.workouts = [];
+                this.bodyMeasurements = [];
+                this.goals = [];
+                this.currentView = 'dashboard';
+                this.deleteTarget = null;
+                this.charts = {};
                 
-                // Show app after initialization
-                setTimeout(() => {
-                    clearTimeout(forceShowTimer);
-                    showApp();
-                }, 500);
-                
-            } catch (error) {
-                console.error('Initialization error:', error);
-                clearTimeout(forceShowTimer);
-                showApp();
+                this.init();
             }
-        });
 
-        // Show app function
-        function showApp() {
-            const loadingScreen = document.getElementById('loadingScreen');
-            const mainContent = document.getElementById('mainContent');
-            
-            if (loadingScreen) {
-                loadingScreen.style.opacity = '0';
+            init() {
+                this.loadData();
+                this.setupEventListeners();
+                this.showApp();
+            }
+
+            showApp() {
                 setTimeout(() => {
-                    loadingScreen.style.display = 'none';
-                    if (mainContent) {
-                        mainContent.style.opacity = '1';
-                        // Try to render dashboard, with fallback
-                        try {
-                            renderDashboard();
-                        } catch (error) {
-                            console.error('Dashboard render error:', error);
-                            // Show basic content if dashboard fails
-                            const statsContainer = document.getElementById('statsCards');
-                            if (statsContainer) {
-                                statsContainer.innerHTML = '<div class="col-span-4 text-center text-white p-8">Dashboard caricato</div>';
+                    const loadingScreen = document.getElementById('loadingScreen');
+                    const mainContent = document.getElementById('mainContent');
+                    
+                    if (loadingScreen) {
+                        loadingScreen.style.opacity = '0';
+                        setTimeout(() => {
+                            loadingScreen.style.display = 'none';
+                            if (mainContent) {
+                                mainContent.style.opacity = '1';
+                                this.renderDashboard();
+                            }
+                        }, 300);
+                    }
+                }, 500);
+            }
+
+            loadData() {
+                try {
+                    const savedExercises = localStorage.getItem('fittrack_exercises');
+                    const savedWorkouts = localStorage.getItem('fittrack_workouts');
+                    const savedMeasurements = localStorage.getItem('fittrack_measurements');
+                    const savedGoals = localStorage.getItem('fittrack_goals');
+
+                    if (savedExercises && savedWorkouts) {
+                        this.exercises = JSON.parse(savedExercises) || [];
+                        this.workouts = JSON.parse(savedWorkouts) || [];
+                        this.bodyMeasurements = JSON.parse(savedMeasurements || '[]') || [];
+                        this.goals = JSON.parse(savedGoals || '[]') || [];
+                    } else {
+                        this.initializeSampleData();
+                    }
+                } catch (e) {
+                    console.error('Error loading data:', e);
+                    this.initializeSampleData();
+                }
+            }
+
+            saveData() {
+                try {
+                    localStorage.setItem('fittrack_exercises', JSON.stringify(this.exercises));
+                    localStorage.setItem('fittrack_workouts', JSON.stringify(this.workouts));
+                    localStorage.setItem('fittrack_measurements', JSON.stringify(this.bodyMeasurements));
+                    localStorage.setItem('fittrack_goals', JSON.stringify(this.goals));
+                } catch (e) {
+                    console.warn('Could not save to localStorage:', e);
+                    this.showNotification('Errore nel salvataggio dei dati', 'error');
+                }
+            }
+
+            initializeSampleData() {
+                this.exercises = [
+                    { id: 1, name: 'Panca Piana', category: 'petto', muscleGroup: 'Pettorale maggiore' },
+                    { id: 2, name: 'Squat', category: 'gambe', muscleGroup: 'Quadricipiti' },
+                    { id: 3, name: 'Deadlift', category: 'schiena', muscleGroup: 'Dorsali' },
+                    { id: 4, name: 'Military Press', category: 'spalle', muscleGroup: 'Deltoidi' },
+                    { id: 5, name: 'Curl Bilanciere', category: 'bicipiti', muscleGroup: 'Bicipiti' }
+                ];
+
+                this.workouts = [
+                    { id: 1, exerciseId: 1, exercise: 'Panca Piana', weight: 80, sets: 3, reps: 8, date: '2025-08-15' },
+                    { id: 2, exerciseId: 1, exercise: 'Panca Piana', weight: 82, sets: 3, reps: 8, date: '2025-08-18' },
+                    { id: 3, exerciseId: 1, exercise: 'Panca Piana', weight: 85, sets: 3, reps: 7, date: '2025-08-22' },
+                    { id: 4, exerciseId: 1, exercise: 'Panca Piana', weight: 87, sets: 3, reps: 7, date: '2025-08-25' },
+                    { id: 5, exerciseId: 1, exercise: 'Panca Piana', weight: 90, sets: 3, reps: 6, date: '2025-08-27' },
+                    { id: 6, exerciseId: 2, exercise: 'Squat', weight: 100, sets: 4, reps: 6, date: '2025-08-16' },
+                    { id: 7, exerciseId: 2, exercise: 'Squat', weight: 105, sets: 4, reps: 6, date: '2025-08-20' },
+                    { id: 8, exerciseId: 2, exercise: 'Squat', weight: 110, sets: 4, reps: 6, date: '2025-08-24' }
+                ];
+
+                this.bodyMeasurements = [
+                    { id: 1, type: 'peso', value: 75, date: '2025-08-15' },
+                    { id: 2, type: 'peso', value: 74.5, date: '2025-08-22' },
+                    { id: 3, type: 'peso', value: 74, date: '2025-08-27' },
+                    { id: 4, type: 'petto', value: 98, date: '2025-08-15' },
+                    { id: 5, type: 'petto', value: 99, date: '2025-08-22' },
+                    { id: 6, type: 'petto', value: 100, date: '2025-08-27' }
+                ];
+
+                this.goals = [
+                    { id: 1, type: 'weight', target: 'Panca Piana 100kg', value: 100, current: 90, deadline: '2025-12-31' },
+                    { id: 2, type: 'body_weight', target: 'Peso 70kg', value: 70, current: 74, deadline: '2025-11-30' },
+                    { id: 3, type: 'weight', target: 'Squat 130kg', value: 130, current: 110, deadline: '2025-10-31' }
+                ];
+
+                this.saveData();
+            }
+
+            setupEventListeners() {
+                // Navigation
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        const view = btn.dataset.view;
+                        this.switchView(view);
+                    });
+                });
+
+                // Form submissions
+                document.getElementById('addExerciseBtn').addEventListener('click', () => this.addExercise());
+                document.getElementById('addMeasurementBtn').addEventListener('click', () => this.addMeasurement());
+                document.getElementById('addGoalBtn').addEventListener('click', () => this.addGoal());
+
+                // Export/Import
+                document.getElementById('exportBtn').addEventListener('click', () => this.exportData());
+                document.getElementById('importBtn').addEventListener('click', () => {
+                    document.getElementById('fileImport').click();
+                });
+                document.getElementById('fileImport').addEventListener('change', (e) => this.importData(e));
+
+                // Delete modal
+                document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
+                    document.getElementById('deleteModal').classList.add('hidden');
+                });
+
+                document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
+                    if (this.deleteTarget) {
+                        const [type, id] = this.deleteTarget.split('-');
+                        this.handleDelete(type, parseInt(id));
+                        document.getElementById('deleteModal').classList.add('hidden');
+                        this.deleteTarget = null;
+                    }
+                });
+
+                // Search and filter
+                const searchInput = document.getElementById('searchExercises');
+                const filterSelect = document.getElementById('filterCategory');
+                if (searchInput) searchInput.addEventListener('input', () => this.renderExercises());
+                if (filterSelect) filterSelect.addEventListener('change', () => this.renderExercises());
+
+                // Progress selectors
+                const progressExerciseSelect = document.getElementById('progressExerciseSelect');
+                const progressTimeRange = document.getElementById('progressTimeRange');
+                if (progressExerciseSelect) progressExerciseSelect.addEventListener('change', () => this.renderExerciseDetailChart());
+                if (progressTimeRange) progressTimeRange.addEventListener('change', () => this.renderExerciseDetailChart());
+
+                // Measurement chart selector
+                const measurementChartType = document.getElementById('measurementChartType');
+                if (measurementChartType) measurementChartType.addEventListener('change', () => this.renderMeasurementChart());
+
+                // Set default dates
+                const today = new Date().toISOString().split('T')[0];
+                const measurementDate = document.getElementById('measurementDate');
+                const goalDeadline = document.getElementById('goalDeadline');
+                if (measurementDate) measurementDate.value = today;
+                if (goalDeadline) goalDeadline.value = today;
+            }
+
+            switchView(view) {
+                // Update navigation
+                document.querySelectorAll('.nav-btn').forEach(btn => {
+                    btn.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-purple-600', 'text-white', 'shadow-lg');
+                    btn.classList.add('hover:bg-slate-700/50', 'text-gray-300', 'hover:text-white');
+                });
+
+                const activeBtn = document.querySelector(`[data-view="${view}"]`);
+                if (activeBtn) {
+                    activeBtn.classList.remove('hover:bg-slate-700/50', 'text-gray-300', 'hover:text-white');
+                    activeBtn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-purple-600', 'text-white', 'shadow-lg');
+                }
+
+                // Update content
+                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+                const targetView = document.getElementById(view + 'View');
+                if (targetView) targetView.classList.add('active');
+
+                this.currentView = view;
+
+                // Render appropriate content
+                switch(view) {
+                    case 'dashboard':
+                        this.renderDashboard();
+                        break;
+                    case 'exercises':
+                        this.renderExercises();
+                        break;
+                    case 'progress':
+                        this.renderProgress();
+                        break;
+                    case 'measurements':
+                        this.renderMeasurements();
+                        break;
+                    case 'goals':
+                        this.renderGoals();
+                        break;
+                }
+            }
+
+            renderDashboard() {
+                this.renderStatsCards();
+                this.renderTopImprovements();
+                this.renderRecentActivity();
+            }
+
+            renderStatsCards() {
+                try {
+                    const completedGoals = this.goals.filter(g => this.calculateGoalProgress(g) >= 100).length;
+                    const totalWorkouts = this.workouts.length;
+                    const uniqueExercisesThisMonth = new Set(this.workouts.filter(w => {
+                        const workoutDate = new Date(w.date);
+                        const thisMonth = new Date();
+                        thisMonth.setDate(1);
+                        return workoutDate >= thisMonth;
+                    }).map(w => w.exerciseId)).size;
+                    
+                    const stats = [
+                        { title: 'Esercizi Attivi', value: this.exercises.length, icon: '💪', subtitle: 'Nel tuo repertorio', color: 'blue' },
+                        { title: 'Allenamenti Totali', value: totalWorkouts, icon: '🏋️', subtitle: 'Completati', color: 'green' },
+                        { title: 'Obiettivi Raggiunti', value: completedGoals, icon: '🏆', subtitle: 'Traguardi', color: 'yellow' },
+                        { title: 'Esercizi Questo Mese', value: uniqueExercisesThisMonth, icon: '📈', subtitle: 'Varietà', color: 'purple' }
+                    ];
+
+                    const colorClasses = {
+                        blue: 'from-blue-600 to-blue-700',
+                        green: 'from-green-600 to-green-700',
+                        yellow: 'from-yellow-600 to-yellow-700',
+                        purple: 'from-purple-600 to-purple-700'
+                    };
+
+                    const container = document.getElementById('statsCards');
+                    if (container) {
+                        container.innerHTML = stats.map((stat, index) => `
+                            <div class="glass-effect rounded-2xl p-4 md:p-6 card-hover relative overflow-hidden" style="animation-delay: ${index * 100}ms">
+                                <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-${stat.color}-500/10 to-transparent rounded-full -mr-12 -mt-12"></div>
+                                <div class="relative">
+                                    <div class="flex items-center justify-between mb-3">
+                                        <div class="text-3xl">${stat.icon}</div>
+                                    </div>
+                                    <h3 class="text-gray-400 text-xs md:text-sm font-medium mb-1">${stat.title}</h3>
+                                    <p class="text-2xl md:text-3xl font-bold text-white mb-1">${stat.value}</p>
+                                    <p class="text-gray-500 text-xs">${stat.subtitle}</p>
+                                </div>
+                            </div>
+                        `).join('');
+                    }
+                } catch (error) {
+                    console.error('Error rendering stats cards:', error);
+                }
+            }
+
+            renderTopImprovements() {
+                try {
+                    const thirtyDaysAgo = new Date();
+                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                    
+                    const improvements = this.exercises.map(exercise => {
+                        const exerciseWorkouts = this.workouts
+                            .filter(w => w.exerciseId === exercise.id && new Date(w.date) >= thirtyDaysAgo)
+                            .sort((a, b) => new Date(a.date) - new Date(b.date));
+                            
+                        if (exerciseWorkouts.length < 2) return null;
+                        
+                        const first = exerciseWorkouts[0];
+                        const last = exerciseWorkouts[exerciseWorkouts.length - 1];
+                        const improvement = last.weight - first.weight;
+                        
+                        return {
+                            exercise: exercise.name,
+                            improvement,
+                            percentage: ((improvement / first.weight) * 100).toFixed(1),
+                            from: first.weight,
+                            to: last.weight
+                        };
+                    })
+                    .filter(item => item && item.improvement > 0)
+                    .sort((a, b) => b.improvement - a.improvement)
+                    .slice(0, 3);
+
+                    const container = document.getElementById('topImprovements');
+                    if (!container) return;
+
+                    if (improvements.length === 0) {
+                        container.innerHTML = '<p class="text-gray-400 col-span-full text-center py-8">Nessun miglioramento negli ultimi 30 giorni</p>';
+                        return;
+                    }
+
+                    container.innerHTML = improvements.map((improvement, index) => `
+                        <div class="relative bg-gradient-to-br from-orange-900/20 to-red-900/10 p-4 rounded-xl border border-orange-500/20 hover:border-orange-500/40 smooth-transition overflow-hidden group">
+                            <div class="absolute -top-8 -right-8 w-16 h-16 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-full"></div>
+                            <div class="absolute top-2 right-2 text-orange-400 font-bold">#${index + 1}</div>
+                            <div class="space-y-2 relative z-10">
+                                <h4 class="text-white font-bold flex items-center">
+                                    <span class="mr-2">🔥</span>
+                                    ${improvement.exercise}
+                                </h4>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-gray-400">Progresso:</span>
+                                    <span class="text-orange-400 font-bold">+${improvement.improvement}kg</span>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-gray-400">Crescita:</span>
+                                    <span class="text-green-400 font-bold">+${improvement.percentage}%</span>
+                                </div>
+                                <div class="pt-2 border-t border-gray-700">
+                                    <div class="flex items-center justify-between text-xs text-gray-500">
+                                        <span>${improvement.from}kg → ${improvement.to}kg</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    `).join('');
+                } catch (error) {
+                    console.error('Error rendering top improvements:', error);
+                }
+            }
+
+            renderRecentActivity() {
+                try {
+                    const recentWorkouts = this.workouts
+                        .sort((a, b) => new Date(b.date) - new Date(a.date))
+                        .slice(0, 10);
+
+                    const container = document.getElementById('recentActivity');
+                    if (!container) return;
+
+                    if (recentWorkouts.length === 0) {
+                        container.innerHTML = '<p class="text-gray-400 text-center py-4">Nessuna attività recente</p>';
+                        return;
+                    }
+
+                    container.innerHTML = recentWorkouts.map(workout => `
+                        <div class="flex items-center justify-between p-4 glass-effect rounded-xl hover:bg-slate-700/30 smooth-transition">
+                            <div class="flex items-center space-x-3">
+                                <div class="text-2xl">💪</div>
+                                <div>
+                                    <h4 class="text-white font-semibold">${workout.exercise}</h4>
+                                    <p class="text-gray-400 text-sm">${workout.sets} serie × ${workout.reps} reps</p>
+                                </div>
+                            </div>
+                            <div class="text-right">
+                                <p class="text-blue-400 font-bold">${workout.weight}kg</p>
+                                <p class="text-gray-500 text-sm">${this.formatDate(workout.date)}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                } catch (error) {
+                    console.error('Error rendering recent activity:', error);
+                }
+            }
+
+            renderExercises() {
+                try {
+                    const searchInput = document.getElementById('searchExercises');
+                    const filterSelect = document.getElementById('filterCategory');
+                    const searchTerm = searchInput ? searchInput.value.toLowerCase() : '';
+                    const categoryFilter = filterSelect ? filterSelect.value : 'all';
+                    
+                    let filtered = [...this.exercises];
+                    
+                    if (categoryFilter !== 'all') {
+                        filtered = filtered.filter(ex => ex.category === categoryFilter);
+                    }
+                    
+                    if (searchTerm) {
+                        filtered = filtered.filter(ex => 
+                            ex.name.toLowerCase().includes(searchTerm) ||
+                            (ex.muscleGroup && ex.muscleGroup.toLowerCase().includes(searchTerm))
+                        );
+                    }
+
+                    const container = document.getElementById('exercisesGrid');
+                    if (!container) return;
+                    
+                    if (filtered.length === 0) {
+                        container.innerHTML = `
+                            <div class="col-span-full glass-effect rounded-2xl p-8 card-hover text-center py-12">
+                                <div class="space-y-4">
+                                    <div class="text-6xl">🔍</div>
+                                    <h3 class="text-xl font-semibold text-gray-300">Nessun esercizio trovato</h3>
+                                    <p class="text-gray-500">
+                                        ${searchTerm ? `Nessun risultato per "${searchTerm}"` : `Nessun esercizio nella categoria selezionata`}
+                                    </p>
+                                </div>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    container.innerHTML = filtered.map((exercise, index) => {
+                        const exerciseWorkouts = this.workouts.filter(w => w.exerciseId === exercise.id);
+                        const maxWeight = exerciseWorkouts.length > 0 ? Math.max(...exerciseWorkouts.map(w => w.weight || 0)) : 0;
+                        const latestWorkout = exerciseWorkouts.length > 0 ? 
+                            exerciseWorkouts.sort((a, b) => new Date(b.date) - new Date(a.date))[0] : null;
+
+                        const categoryEmojis = {
+                            petto: '💪',
+                            schiena: '🦵',
+                            gambe: '🦵',
+                            spalle: '🏋️',
+                            bicipiti: '💪',
+                            tricipiti: '💪',
+                            addominali: '🎯',
+                            cardio: '❤️'
+                        };
+
+                        return `
+                            <div class="glass-effect rounded-2xl p-6 card-hover relative group" style="animation-delay: ${index * 50}ms">
+                                <div class="absolute -top-2 -right-2 px-3 py-1 rounded-full text-xs font-bold shadow-lg bg-gradient-to-r from-blue-500 to-purple-600 text-white">
+                                    ${categoryEmojis[exercise.category] || '💪'} ${exercise.category}
+                                </div>
+
+                                <div class="flex items-start justify-between mb-4">
+                                    <div class="flex items-center">
+                                        <div class="text-3xl mr-3">
+                                            ${categoryEmojis[exercise.category] || '💪'}
+                                        </div>
+                                        <div>
+                                            <h4 class="text-white font-bold text-lg">${exercise.name}</h4>
+                                            <p class="text-gray-400 text-sm">${exercise.muscleGroup || 'Non specificato'}</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <button onclick="FitTracker.showDeleteModal('exercise', ${exercise.id})" class="opacity-0 group-hover:opacity-100 smooth-transition p-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg hover-lift">
+                                        🗑️
+                                    </button>
+                                </div>
+                                
+                                <div class="space-y-3 mb-4">
+                                    <div class="flex justify-between items-center p-3 glass-effect rounded-lg">
+                                        <span class="text-gray-400 text-sm font-medium">Peso Massimo</span>
+                                        <span class="text-blue-400 font-bold text-lg">${maxWeight}kg</span>
+                                    </div>
+                                    ${latestWorkout ? `
+                                        <div class="flex justify-between items-center p-3 glass-effect rounded-lg">
+                                            <span class="text-gray-400 text-sm font-medium">Ultimo Allenamento</span>
+                                            <span class="text-green-400 font-semibold text-sm">${this.formatDate(latestWorkout.date)}</span>
+                                        </div>
+                                    ` : ''}
+                                </div>
+
+                                <div class="border-t border-slate-700/50 pt-4">
+                                    <h5 class="text-white font-semibold mb-3 flex items-center">
+                                        ➕ Aggiungi Carico
+                                    </h5>
+                                    <div class="grid grid-cols-3 gap-2 mb-3">
+                                        <input type="number" placeholder="Peso" class="glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition placeholder-gray-400" id="weight-${exercise.id}">
+                                        <input type="number" placeholder="Serie" class="glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition placeholder-gray-400" id="sets-${exercise.id}">
+                                        <input type="number" placeholder="Reps" class="glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition placeholder-gray-400" id="reps-${exercise.id}">
+                                    </div>
+                                    <input type="date" value="${new Date().toISOString().split('T')[0]}" class="glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition w-full mb-3" id="date-${exercise.id}">
+                                    
+                                    <button onclick="FitTracker.addWorkout(${exercise.id})" class="w-full flex items-center justify-center space-x-2 px-4 py-3 text-sm font-semibold rounded-lg smooth-transition hover-lift bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg">
+                                        ✅ Salva Carico
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                } catch (error) {
+                    console.error('Error rendering exercises:', error);
+                    const container = document.getElementById('exercisesGrid');
+                    if (container) {
+                        container.innerHTML = '<div class="col-span-full text-center text-gray-400 p-8">Errore nel caricamento degli esercizi</div>';
+                    }
+                }
+            }
+
+            renderProgress() {
+                try {
+                    if (typeof Chart !== 'undefined') {
+                        setTimeout(() => {
+                            this.renderProgressCharts();
+                            this.populateProgressExerciseSelect();
+                        }, 100);
+                    } else {
+                        console.warn('Chart.js not available');
+                    }
+                } catch (error) {
+                    console.error('Progress rendering error:', error);
+                }
+            }
+
+            renderProgressCharts() {
+                this.renderWeightProgressChart();
+                this.renderVolumeProgressChart();
+                this.renderExerciseDetailChart();
+            }
+
+            renderWeightProgressChart() {
+                try {
+                    const ctx = document.getElementById('weightProgressChart');
+                    if (!ctx || typeof Chart === 'undefined') return;
+
+                    if (this.charts.weightProgress) {
+                        this.charts.weightProgress.destroy();
+                    }
+
+                    const exerciseMaxWeights = this.exercises.map(exercise => {
+                        const exerciseWorkouts = this.workouts.filter(w => w.exerciseId === exercise.id);
+                        const maxWeight = exerciseWorkouts.length > 0 ? Math.max(...exerciseWorkouts.map(w => w.weight || 0)) : 0;
+                        return { name: exercise.name, weight: maxWeight };
+                    }).filter(e => e.weight > 0);
+
+                    if (exerciseMaxWeights.length === 0) {
+                        ctx.parentElement.innerHTML = '<div class="text-center text-gray-400 p-8">Nessun dato disponibile</div>';
+                        return;
+                    }
+
+                    this.charts.weightProgress = new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: exerciseMaxWeights.map(e => e.name),
+                            datasets: [{
+                                label: 'Peso Massimo (kg)',
+                                data: exerciseMaxWeights.map(e => e.weight),
+                                backgroundColor: 'rgba(59, 130, 246, 0.8)',
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                borderWidth: 2,
+                                borderRadius: 8,
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: { color: '#94a3b8' },
+                                    grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                                },
+                                x: {
+                                    ticks: { color: '#94a3b8', maxRotation: 45 },
+                                    grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                                }
+                            }
+                        }
+                    });
+                } catch (error) {
+                    console.error('Weight progress chart error:', error);
+                }
+            }
+
+            renderVolumeProgressChart() {
+                try {
+                    const ctx = document.getElementById('volumeProgressChart');
+                    if (!ctx || typeof Chart === 'undefined') return;
+
+                    if (this.charts.volumeProgress) {
+                        this.charts.volumeProgress.destroy();
+                    }
+
+                    const thirtyDaysAgo = new Date();
+                    thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
+                    
+                    const volumeByDate = {};
+                    this.workouts
+                        .filter(w => new Date(w.date) >= thirtyDaysAgo)
+                        .forEach(workout => {
+                            const volume = (workout.weight || 0) * (workout.sets || 0) * (workout.reps || 0);
+                            if (!volumeByDate[workout.date]) {
+                                volumeByDate[workout.date] = 0;
+                            }
+                            volumeByDate[workout.date] += volume;
+                        });
+
+                    const dates = Object.keys(volumeByDate).sort();
+                    const volumes = dates.map(date => volumeByDate[date]);
+
+                    if (dates.length === 0) {
+                        ctx.parentElement.innerHTML = '<div class="text-center text-gray-400 p-8">Nessun dato disponibile</div>';
+                        return;
+                    }
+
+                    this.charts.volumeProgress = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: dates.map(date => this.formatDate(date)),
+                            datasets: [{
+                                label: 'Volume Totale (kg)',
+                                data: volumes,
+                                borderColor: 'rgba(139, 92, 246, 1)',
+                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: { display: false }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: { color: '#94a3b8' },
+                                    grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                                },
+                                x: {
+                                    ticks: { color: '#94a3b8', maxRotation: 45 },
+                                    grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                                }
+                            }
+                        }
+                    });
+                } catch (error) {
+                    console.error('Volume progress chart error:', error);
+                }
+            }
+
+            populateProgressExerciseSelect() {
+                try {
+                    const select = document.getElementById('progressExerciseSelect');
+                    if (!select) return;
+                    
+                    const exercisesWithWorkouts = this.exercises.filter(e => 
+                        this.workouts.some(w => w.exerciseId === e.id)
+                    );
+
+                    select.innerHTML = '<option value="">Seleziona un esercizio...</option>' +
+                        exercisesWithWorkouts.map(e => 
+                            `<option value="${e.id}">${e.name}</option>`
+                        ).join('');
+                } catch (error) {
+                    console.error('Populate select error:', error);
+                }
+            }
+
+            renderExerciseDetailChart() {
+                const exerciseSelect = document.getElementById('progressExerciseSelect');
+                const timeRangeSelect = document.getElementById('progressTimeRange');
+                
+                const exerciseId = exerciseSelect ? exerciseSelect.value : '';
+                const timeRange = timeRangeSelect ? timeRangeSelect.value : '30';
+                
+                const ctx = document.getElementById('exerciseDetailChart');
+                if (!ctx) return;
+                
+                if (!exerciseId) {
+                    if (this.charts.exerciseDetail) {
+                        this.charts.exerciseDetail.destroy();
+                        delete this.charts.exerciseDetail;
+                    }
+                    ctx.getContext('2d').clearRect(0, 0, ctx.width, ctx.height);
+                    return;
+                }
+
+                if (this.charts.exerciseDetail) {
+                    this.charts.exerciseDetail.destroy();
+                }
+
+                let filteredWorkouts = this.workouts.filter(w => w.exerciseId == exerciseId);
+                
+                if (timeRange !== 'all') {
+                    const daysAgo = new Date();
+                    daysAgo.setDate(daysAgo.getDate() - parseInt(timeRange));
+                    filteredWorkouts = filteredWorkouts.filter(w => new Date(w.date) >= daysAgo);
+                }
+
+                filteredWorkouts.sort((a, b) => new Date(a.date) - new Date(b.date));
+
+                const exercise = this.exercises.find(e => e.id == exerciseId);
+
+                this.charts.exerciseDetail = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: filteredWorkouts.map(w => this.formatDate(w.date)),
+                        datasets: [{
+                            label: 'Peso (kg)',
+                            data: filteredWorkouts.map(w => w.weight),
+                            borderColor: 'rgba(59, 130, 246, 1)',
+                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4,
+                            pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                            pointBorderColor: '#ffffff',
+                            pointBorderWidth: 2,
+                            pointRadius: 6,
+                            pointHoverRadius: 8
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: exercise ? `Progressione - ${exercise.name}` : 'Progressione Esercizio',
+                                color: '#ffffff',
+                                font: { size: 16, weight: 'bold' }
+                            },
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: false,
+                                ticks: { 
+                                    color: '#94a3b8',
+                                    callback: function(value) {
+                                        return value + 'kg';
+                                    }
+                                },
+                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                            },
+                            x: {
+                                ticks: { color: '#94a3b8', maxRotation: 45 },
+                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
                             }
                         }
                     }
-                }, 300);
-            }
-        }
-
-        // Load data from localStorage or initialize with sample data
-        function loadData() {
-            try {
-                const savedExercises = localStorage.getItem('fittrack_exercises');
-                const savedWorkouts = localStorage.getItem('fittrack_workouts');
-                const savedMeasurements = localStorage.getItem('fittrack_measurements');
-                const savedGoals = localStorage.getItem('fittrack_goals');
-
-                if (savedExercises && savedWorkouts) {
-                    exercises = JSON.parse(savedExercises);
-                    workouts = JSON.parse(savedWorkouts);
-                    bodyMeasurements = JSON.parse(savedMeasurements || '[]');
-                    goals = JSON.parse(savedGoals || '[]');
-                    
-                    // Validate data integrity
-                    if (!Array.isArray(exercises)) exercises = [];
-                    if (!Array.isArray(workouts)) workouts = [];
-                    if (!Array.isArray(bodyMeasurements)) bodyMeasurements = [];
-                    if (!Array.isArray(goals)) goals = [];
-                } else {
-                    initializeSampleData();
-                }
-                console.log('Data loaded successfully');
-            } catch (e) {
-                console.error('Error loading data:', e);
-                initializeSampleData();
-            }
-        }
-
-        // Save data to localStorage
-        function saveData() {
-            try {
-                localStorage.setItem('fittrack_exercises', JSON.stringify(exercises));
-                localStorage.setItem('fittrack_workouts', JSON.stringify(workouts));
-                localStorage.setItem('fittrack_measurements', JSON.stringify(bodyMeasurements));
-                localStorage.setItem('fittrack_goals', JSON.stringify(goals));
-            } catch (e) {
-                console.warn('Could not save to localStorage:', e);
-            }
-        }
-
-        // Initialize sample data
-        function initializeSampleData() {
-            exercises = [
-                { id: 1, name: 'Panca Piana', category: 'petto', muscleGroup: 'Pettorale maggiore' },
-                { id: 2, name: 'Squat', category: 'gambe', muscleGroup: 'Quadricipiti' },
-                { id: 3, name: 'Deadlift', category: 'schiena', muscleGroup: 'Dorsali' },
-                { id: 4, name: 'Military Press', category: 'spalle', muscleGroup: 'Deltoidi' },
-                { id: 5, name: 'Curl Bilanciere', category: 'bicipiti', muscleGroup: 'Bicipiti' }
-            ];
-
-            workouts = [
-                { id: 1, exerciseId: 1, exercise: 'Panca Piana', weight: 80, sets: 3, reps: 8, date: '2025-08-15' },
-                { id: 2, exerciseId: 1, exercise: 'Panca Piana', weight: 82, sets: 3, reps: 8, date: '2025-08-18' },
-                { id: 3, exerciseId: 1, exercise: 'Panca Piana', weight: 85, sets: 3, reps: 7, date: '2025-08-22' },
-                { id: 4, exerciseId: 1, exercise: 'Panca Piana', weight: 87, sets: 3, reps: 7, date: '2025-08-25' },
-                { id: 5, exerciseId: 1, exercise: 'Panca Piana', weight: 90, sets: 3, reps: 6, date: '2025-08-27' },
-                { id: 6, exerciseId: 2, exercise: 'Squat', weight: 100, sets: 4, reps: 6, date: '2025-08-16' },
-                { id: 7, exerciseId: 2, exercise: 'Squat', weight: 105, sets: 4, reps: 6, date: '2025-08-20' },
-                { id: 8, exerciseId: 2, exercise: 'Squat', weight: 110, sets: 4, reps: 6, date: '2025-08-24' }
-            ];
-
-            bodyMeasurements = [
-                { id: 1, type: 'peso', value: 75, date: '2025-08-15' },
-                { id: 2, type: 'peso', value: 74.5, date: '2025-08-22' },
-                { id: 3, type: 'peso', value: 74, date: '2025-08-27' },
-                { id: 4, type: 'petto', value: 98, date: '2025-08-15' },
-                { id: 5, type: 'petto', value: 99, date: '2025-08-22' },
-                { id: 6, type: 'petto', value: 100, date: '2025-08-27' }
-            ];
-
-            goals = [
-                { id: 1, type: 'weight', target: 'Panca Piana 100kg', value: 100, current: 90, deadline: '2025-12-31' },
-                { id: 2, type: 'body_weight', target: 'Peso 70kg', value: 70, current: 74, deadline: '2025-11-30' },
-                { id: 3, type: 'weight', target: 'Squat 130kg', value: 130, current: 110, deadline: '2025-10-31' }
-            ];
-
-            saveData();
-        }
-
-        // Setup event listeners
-        function setupEventListeners() {
-            // Navigation
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    const view = this.dataset.view;
-                    switchView(view);
                 });
-            });
+            }
 
-            // Add exercise
-            document.getElementById('addExerciseBtn').addEventListener('click', addExercise);
+            renderMeasurements() {
+                this.renderMeasurementsList();
+                this.populateMeasurementChartTypes();
+            }
 
-            // Add measurement
-            document.getElementById('addMeasurementBtn').addEventListener('click', addMeasurement);
+            populateMeasurementChartTypes() {
+                const select = document.getElementById('measurementChartType');
+                if (!select) return;
+                
+                const types = [...new Set(this.bodyMeasurements.map(m => m.type))];
+                
+                const typeLabels = {
+                    peso: '⚖️ Peso (kg)',
+                    altezza: '📏 Altezza (cm)',
+                    petto: '💪 Petto (cm)',
+                    vita: '🌟 Vita (cm)',
+                    fianchi: '🍑 Fianchi (cm)',
+                    braccio_dx: '💪 Braccio Dx (cm)',
+                    braccio_sx: '💪 Braccio Sx (cm)',
+                    coscia_dx: '🦵 Coscia Dx (cm)',
+                    coscia_sx: '🦵 Coscia Sx (cm)',
+                    bf_percentage: '📊 Massa Grassa (%)'
+                };
 
-            // Add goal
-            document.getElementById('addGoalBtn').addEventListener('click', addGoal);
+                select.innerHTML = '<option value="">Seleziona tipo di misurazione...</option>' +
+                    types.map(type => 
+                        `<option value="${type}">${typeLabels[type] || type}</option>`
+                    ).join('');
+            }
 
-            // Export/Import data
-            document.getElementById('exportBtn').addEventListener('click', exportData);
-            document.getElementById('importBtn').addEventListener('click', () => {
-                document.getElementById('fileImport').click();
-            });
-            document.getElementById('fileImport').addEventListener('change', importData);
-
-            // Delete modal
-            document.getElementById('cancelDeleteBtn').addEventListener('click', () => {
-                document.getElementById('deleteModal').classList.add('hidden');
-            });
-
-            document.getElementById('confirmDeleteBtn').addEventListener('click', () => {
-                if (deleteTarget) {
-                    const [type, id] = deleteTarget.split('-');
-                    handleDelete(type, parseInt(id));
-                    document.getElementById('deleteModal').classList.add('hidden');
-                    deleteTarget = null;
+            renderMeasurementChart() {
+                const measurementTypeSelect = document.getElementById('measurementChartType');
+                const measurementType = measurementTypeSelect ? measurementTypeSelect.value : '';
+                
+                const ctx = document.getElementById('measurementChart');
+                if (!ctx || !measurementType) {
+                    if (this.charts.measurement) {
+                        this.charts.measurement.destroy();
+                        delete this.charts.measurement;
+                    }
+                    return;
                 }
-            });
 
-            // Search and filter
-            document.getElementById('searchExercises').addEventListener('input', renderExercises);
-            document.getElementById('filterCategory').addEventListener('change', renderExercises);
+                if (this.charts.measurement) {
+                    this.charts.measurement.destroy();
+                }
 
-            // Progress view selectors
-            document.getElementById('progressExerciseSelect').addEventListener('change', renderExerciseDetailChart);
-            document.getElementById('progressTimeRange').addEventListener('change', renderExerciseDetailChart);
-
-            // Measurement chart selector
-            document.getElementById('measurementChartType').addEventListener('change', renderMeasurementChart);
-
-            // Set default dates
-            const today = new Date().toISOString().split('T')[0];
-            document.getElementById('measurementDate').value = today;
-            document.getElementById('goalDeadline').value = today;
-        }
-
-        // Switch view
-        function switchView(view) {
-            // Update navigation
-            document.querySelectorAll('.nav-btn').forEach(btn => {
-                btn.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-purple-600', 'text-white', 'shadow-lg');
-                btn.classList.add('hover:bg-slate-700/50', 'text-gray-300', 'hover:text-white');
-            });
-
-            const activeBtn = document.querySelector(`[data-view="${view}"]`);
-            activeBtn.classList.remove('hover:bg-slate-700/50', 'text-gray-300', 'hover:text-white');
-            activeBtn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-purple-600', 'text-white', 'shadow-lg');
-
-            // Update content
-            document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-            document.getElementById(view + 'View').classList.add('active');
-
-            currentView = view;
-
-            // Render appropriate content
-            switch(view) {
-                case 'dashboard':
-                    renderDashboard();
-                    break;
-                case 'exercises':
-                    renderExercises();
-                    break;
-                case 'progress':
-                    renderProgress();
-                    break;
-                case 'measurements':
-                    renderMeasurements();
-                    break;
-                case 'goals':
-                    renderGoals();
-                    break;
-            }
-        }
-
-        // Render dashboard
-        function renderDashboard() {
-            renderStatsCards();
-            renderTopImprovements();
-            renderRecentActivity();
-        }
-
-        // Render stats cards
-        function renderStatsCards() {
-            const completedGoals = goals.filter(g => calculateGoalProgress(g) >= 100).length;
-            const activeGoals = goals.length - completedGoals;
-            const totalWorkouts = workouts.length;
-            const uniqueExercisesThisMonth = new Set(workouts.filter(w => {
-                const workoutDate = new Date(w.date);
-                const thisMonth = new Date();
-                thisMonth.setDate(1);
-                return workoutDate >= thisMonth;
-            }).map(w => w.exerciseId)).size;
-            
-            const stats = [
-                { title: 'Esercizi Attivi', value: exercises.length, icon: 'barbell', subtitle: 'Nel tuo repertorio', color: 'blue' },
-                { title: 'Allenamenti Totali', value: totalWorkouts, icon: 'muscle', subtitle: 'Completati', color: 'green' },
-                { title: 'Obiettivi Raggiunti', value: completedGoals, icon: 'trophy', subtitle: 'Traguardi', color: 'yellow' },
-                { title: 'Esercizi Questo Mese', value: uniqueExercisesThisMonth, icon: 'weight', subtitle: 'Varietà', color: 'purple' }
-            ];
-
-            const colorClasses = {
-                blue: 'from-blue-600 to-blue-700',
-                green: 'from-green-600 to-green-700',
-                yellow: 'from-yellow-600 to-yellow-700',
-                purple: 'from-purple-600 to-purple-700'
-            };
-
-            const container = document.getElementById('statsCards');
-            container.innerHTML = stats.map((stat, index) => `
-                <div class="glass-effect rounded-2xl p-4 md:p-6 card-hover relative overflow-hidden fade-in" style="animation-delay: ${index * 100}ms">
-                    <div class="absolute top-0 right-0 w-24 h-24 bg-gradient-to-br from-${stat.color}-500/10 to-transparent rounded-full -mr-12 -mt-12"></div>
-                    <div class="relative">
-                        <div class="flex items-center justify-between mb-3">
-                            <div class="p-3 bg-gradient-to-r ${colorClasses[stat.color]} rounded-xl shadow-lg">
-                                ${getIconSVG(stat.icon, 'w-5 h-5 md:w-6 md:h-6 text-white')}
-                            </div>
-                        </div>
-                        <h3 class="text-gray-400 text-xs md:text-sm font-medium mb-1">${stat.title}</h3>
-                        <p class="text-2xl md:text-3xl font-bold text-white mb-1">${stat.value}</p>
-                        <p class="text-gray-500 text-xs">${stat.subtitle}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Render top improvements
-        function renderTopImprovements() {
-            const thirtyDaysAgo = new Date();
-            thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-            
-            const improvements = exercises.map(exercise => {
-                const exerciseWorkouts = workouts
-                    .filter(w => w.exerciseId === exercise.id && new Date(w.date) >= thirtyDaysAgo)
+                const measurements = this.bodyMeasurements
+                    .filter(m => m.type === measurementType)
                     .sort((a, b) => new Date(a.date) - new Date(b.date));
-                    
-                if (exerciseWorkouts.length < 2) return null;
-                
-                const first = exerciseWorkouts[0];
-                const last = exerciseWorkouts[exerciseWorkouts.length - 1];
-                const improvement = last.weight - first.weight;
-                
-                return {
-                    exercise: exercise.name,
-                    improvement,
-                    percentage: ((improvement / first.weight) * 100).toFixed(1),
-                    from: first.weight,
-                    to: last.weight
-                };
-            })
-            .filter(item => item && item.improvement > 0)
-            .sort((a, b) => b.improvement - a.improvement)
-            .slice(0, 3);
 
-            const container = document.getElementById('topImprovements');
-            if (improvements.length === 0) {
-                container.innerHTML = '<p class="text-gray-400 col-span-full text-center py-8">Nessun miglioramento negli ultimi 30 giorni</p>';
-                return;
-            }
-
-            container.innerHTML = improvements.map((improvement, index) => `
-                <div class="relative bg-gradient-to-br from-orange-900/20 to-red-900/10 p-4 rounded-xl border border-orange-500/20 hover:border-orange-500/40 smooth-transition overflow-hidden group">
-                    <div class="absolute -top-8 -right-8 w-16 h-16 bg-gradient-to-br from-orange-500/20 to-red-500/20 rounded-full"></div>
-                    <div class="absolute top-2 right-2 text-orange-400 font-bold">#${index + 1}</div>
-                    <div class="space-y-2 relative z-10">
-                        <h4 class="text-white font-bold">${improvement.exercise}</h4>
-                        <div class="flex items-center justify-between text-sm">
-                            <span class="text-gray-400">Progresso:</span>
-                            <span class="text-orange-400 font-bold">+${improvement.improvement}kg</span>
-                        </div>
-                        <div class="flex items-center justify-between text-sm">
-                            <span class="text-gray-400">Crescita:</span>
-                            <span class="text-green-400 font-bold">+${improvement.percentage}%</span>
-                        </div>
-                        <div class="pt-2 border-t border-gray-700">
-                            <div class="flex items-center justify-between text-xs text-gray-500">
-                                <span>${improvement.from}kg → ${improvement.to}kg</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Render recent activity
-        function renderRecentActivity() {
-            const recentWorkouts = workouts
-                .sort((a, b) => new Date(b.date) - new Date(a.date))
-                .slice(0, 10);
-
-            const container = document.getElementById('recentActivity');
-            if (recentWorkouts.length === 0) {
-                container.innerHTML = '<p class="text-gray-400 text-center py-4">Nessuna attività recente</p>';
-                return;
-            }
-
-            container.innerHTML = recentWorkouts.map(workout => `
-                <div class="flex items-center justify-between p-4 glass-effect rounded-xl hover:bg-slate-700/30 smooth-transition">
-                    <div class="flex items-center space-x-3">
-                        <div class="p-2 bg-gradient-to-r from-blue-600 to-blue-700 rounded-lg">
-                            ${getIconSVG('dumbbell', 'w-4 h-4 text-white')}
-                        </div>
-                        <div>
-                            <h4 class="text-white font-semibold">${workout.exercise}</h4>
-                            <p class="text-gray-400 text-sm">${workout.sets} serie × ${workout.reps} reps</p>
-                        </div>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-blue-400 font-bold">${workout.weight}kg</p>
-                        <p class="text-gray-500 text-sm">${formatDate(workout.date)}</p>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Render exercises
-        function renderExercises() {
-            const searchTerm = document.getElementById('searchExercises').value.toLowerCase();
-            const categoryFilter = document.getElementById('filterCategory').value;
-            
-            let filtered = exercises;
-            
-            if (categoryFilter !== 'all') {
-                filtered = filtered.filter(ex => ex.category === categoryFilter);
-            }
-            
-            if (searchTerm) {
-                filtered = filtered.filter(ex => 
-                    ex.name.toLowerCase().includes(searchTerm) ||
-                    ex.muscleGroup.toLowerCase().includes(searchTerm)
-                );
-            }
-
-            const container = document.getElementById('exercisesGrid');
-            
-            if (filtered.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full glass-effect rounded-2xl p-8 card-hover fade-in text-center py-12">
-                        <div class="space-y-4">
-                            <div class="p-6 bg-slate-700/30 rounded-full w-20 h-20 mx-auto flex items-center justify-center">
-                                ${getIconSVG('search', 'w-8 h-8 text-gray-400')}
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-300">Nessun esercizio trovato</h3>
-                            <p class="text-gray-500">
-                                ${searchTerm ? `Nessun risultato per "${searchTerm}"` : `Nessun esercizio nella categoria "${categoryFilter}"`}
-                            </p>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = filtered.map((exercise, index) => {
-                const exerciseWorkouts = workouts.filter(w => w.exerciseId === exercise.id);
-                const maxWeight = exerciseWorkouts.length > 0 ? Math.max(...exerciseWorkouts.map(w => w.weight)) : 0;
-                const latestWorkout = exerciseWorkouts.length > 0 ? 
-                    exerciseWorkouts.sort((a, b) => new Date(b.date) - new Date(a.date))[0] : null;
-
-                const categoryColors = {
-                    petto: 'from-red-500 to-red-600',
-                    schiena: 'from-blue-500 to-blue-600',
-                    gambe: 'from-green-500 to-green-600',
-                    spalle: 'from-yellow-500 to-yellow-600',
-                    bicipiti: 'from-purple-500 to-purple-600',
-                    tricipiti: 'from-pink-500 to-pink-600',
-                    addominali: 'from-indigo-500 to-indigo-600',
-                    cardio: 'from-orange-500 to-orange-600'
+                const typeLabels = {
+                    peso: '⚖️ Peso (kg)',
+                    altezza: '📏 Altezza (cm)',
+                    petto: '💪 Petto (cm)',
+                    vita: '🌟 Vita (cm)',
+                    fianchi: '🍑 Fianchi (cm)',
+                    braccio_dx: '💪 Braccio Dx (cm)',
+                    braccio_sx: '💪 Braccio Sx (cm)',
+                    coscia_dx: '🦵 Coscia Dx (cm)',
+                    coscia_sx: '🦵 Coscia Sx (cm)',
+                    bf_percentage: '📊 Massa Grassa (%)'
                 };
 
-                return `
-                    <div class="glass-effect rounded-2xl p-6 card-hover relative group fade-in" style="animation-delay: ${index * 50}ms">
-                        <div class="absolute -top-2 -right-2 px-3 py-1 rounded-full text-xs font-bold shadow-lg bg-gradient-to-r ${categoryColors[exercise.category] || categoryColors.bicipiti} text-white">
-                            ${exercise.category}
-                        </div>
+                this.charts.measurement = new Chart(ctx, {
+                    type: 'line',
+                    data: {
+                        labels: measurements.map(m => this.formatDate(m.date)),
+                        datasets: [{
+                            label: typeLabels[measurementType],
+                            data: measurements.map(m => m.value),
+                            borderColor: 'rgba(139, 92, 246, 1)',
+                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                            borderWidth: 3,
+                            fill: true,
+                            tension: 0.4
+                        }]
+                    },
+                    options: {
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            title: {
+                                display: true,
+                                text: `Andamento - ${typeLabels[measurementType]}`,
+                                color: '#ffffff',
+                                font: { size: 16, weight: 'bold' }
+                            },
+                            legend: { display: false }
+                        },
+                        scales: {
+                            y: {
+                                beginAtZero: measurementType !== 'peso',
+                                ticks: { color: '#94a3b8' },
+                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                            },
+                            x: {
+                                ticks: { color: '#94a3b8', maxRotation: 45 },
+                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                            }
+                        }
+                    }
+                });
+            }
 
-                        <div class="flex items-start justify-between mb-4">
-                            <div class="flex items-center">
-                                <div class="p-3 bg-gradient-to-r from-slate-700 to-slate-800 rounded-xl mr-3 shadow-lg">
-                                    ${getIconSVG('dumbbell', 'w-5 h-5 text-white')}
-                                </div>
-                                <div>
-                                    <h4 class="text-white font-bold text-lg">${exercise.name}</h4>
-                                    <p class="text-gray-400 text-sm">${exercise.muscleGroup}</p>
-                                </div>
+            renderMeasurementsList() {
+                const container = document.getElementById('measurementsList');
+                if (!container) return;
+                
+                const sortedMeasurements = this.bodyMeasurements
+                    .sort((a, b) => new Date(b.date) - new Date(a.date))
+                    .slice(0, 20);
+
+                if (sortedMeasurements.length === 0) {
+                    container.innerHTML = '<p class="text-gray-400 text-center py-8">Nessuna misurazione registrata</p>';
+                    return;
+                }
+
+                const typeLabels = {
+                    peso: 'Peso',
+                    altezza: 'Altezza', 
+                    petto: 'Petto',
+                    vita: 'Vita',
+                    fianchi: 'Fianchi',
+                    braccio_dx: 'Braccio Dx',
+                    braccio_sx: 'Braccio Sx',
+                    coscia_dx: 'Coscia Dx',
+                    coscia_sx: 'Coscia Sx',
+                    bf_percentage: 'Massa Grassa'
+                };
+
+                const typeEmojis = {
+                    peso: '⚖️',
+                    altezza: '📏',
+                    petto: '💪',
+                    vita: '🌟',
+                    fianchi: '🍑',
+                    braccio_dx: '💪',
+                    braccio_sx: '💪',
+                    coscia_dx: '🦵',
+                    coscia_sx: '🦵',
+                    bf_percentage: '📊'
+                };
+
+                container.innerHTML = sortedMeasurements.map(measurement => `
+                    <div class="flex items-center justify-between p-4 glass-effect rounded-xl hover:bg-slate-700/30 smooth-transition">
+                        <div class="flex items-center space-x-3">
+                            <div class="text-2xl">${typeEmojis[measurement.type] || '📏'}</div>
+                            <div>
+                                <h4 class="text-white font-semibold">${typeLabels[measurement.type] || measurement.type}</h4>
+                                <p class="text-gray-400 text-sm">${this.formatDate(measurement.date)}</p>
                             </div>
-                            
-                            <button onclick="showDeleteModal('exercise', ${exercise.id})" class="opacity-0 group-hover:opacity-100 smooth-transition p-2 text-sm font-semibold rounded-lg bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg hover-lift">
-                                ${getIconSVG('trash', 'w-4 h-4')}
+                        </div>
+                        <div class="text-right flex items-center space-x-2">
+                            <p class="text-purple-400 font-bold">${measurement.value}${measurement.type === 'peso' ? 'kg' : measurement.type === 'bf_percentage' ? '%' : 'cm'}</p>
+                            <button onclick="FitTracker.showDeleteModal('measurement', ${measurement.id})" class="p-2 text-red-400 hover:text-red-300 smooth-transition">
+                                🗑️
                             </button>
                         </div>
-                        
-                        <div class="space-y-3 mb-4">
-                            <div class="flex justify-between items-center p-3 glass-effect rounded-lg">
-                                <span class="text-gray-500">Attuale: ${goal.current}</span>
-                                <span class="text-gray-500">Target: ${goal.value}</span>
+                    </div>
+                `).join('');
+            }
+
+            renderGoals() {
+                const container = document.getElementById('goalsList');
+                if (!container) return;
+                
+                if (this.goals.length === 0) {
+                    container.innerHTML = `
+                        <div class="col-span-full glass-effect rounded-2xl p-8 card-hover text-center py-12">
+                            <div class="space-y-4">
+                                <div class="text-6xl">🎯</div>
+                                <h3 class="text-xl font-semibold text-gray-300">Nessun obiettivo definito</h3>
+                                <p class="text-gray-500">Inizia aggiungendo i tuoi primi traguardi!</p>
                             </div>
                         </div>
+                    `;
+                    return;
+                }
 
-                        <div class="text-right">
-                            <p class="text-gray-400 text-sm">Scadenza: ${formatDate(goal.deadline)}</p>
+                container.innerHTML = this.goals.map((goal, index) => {
+                    const progress = this.calculateGoalProgress(goal);
+                    const daysLeft = Math.ceil((new Date(goal.deadline) - new Date()) / (1000 * 60 * 60 * 24));
+                    const isOverdue = daysLeft < 0;
+                    const isCompleted = progress >= 100;
+
+                    const typeEmojis = {
+                        weight: '🏋️',
+                        reps: '🔄',
+                        body_weight: '⚖️',
+                        body_measurement: '📏',
+                        time: '⏱️',
+                        distance: '🏃'
+                    };
+
+                    return `
+                        <div class="glass-effect rounded-2xl p-6 card-hover relative overflow-hidden" style="animation-delay: ${index * 100}ms">
+                            ${isCompleted ? `
+                                <div class="absolute top-4 right-4 p-2 bg-green-500/20 rounded-full">
+                                    <div class="text-green-400 text-xl">✅</div>
+                                </div>
+                            ` : ''}
+                            
+                            <div class="flex items-start justify-between mb-4">
+                                <div class="flex items-center space-x-3">
+                                    <div class="text-3xl">${typeEmojis[goal.type] || '🎯'}</div>
+                                    <div>
+                                        <h4 class="text-white font-bold text-lg">${goal.target}</h4>
+                                        <p class="text-gray-400 text-sm">
+                                            ${isOverdue ? '⏰ Scaduto' : isCompleted ? '🎉 Completato!' : `📅 ${daysLeft} giorni rimasti`}
+                                        </p>
+                                    </div>
+                                </div>
+                                <button onclick="FitTracker.showDeleteModal('goal', ${goal.id})" class="p-2 text-red-400 hover:text-red-300 smooth-transition">
+                                    🗑️
+                                </button>
+                            </div>
+
+                            <div class="space-y-3 mb-4">
+                                <div class="flex justify-between items-center">
+                                    <span class="text-gray-400 text-sm">Progressi</span>
+                                    <span class="text-white font-semibold">${progress.toFixed(1)}%</span>
+                                </div>
+                                <div class="w-full bg-gray-700 rounded-full h-3">
+                                    <div class="progress-bar h-3 rounded-full ${isCompleted ? 'bg-green-500' : ''}" style="width: ${Math.min(progress, 100)}%"></div>
+                                </div>
+                                <div class="flex justify-between items-center text-sm">
+                                    <span class="text-gray-500">Attuale: ${goal.current || 0}</span>
+                                    <span class="text-gray-500">Target: ${goal.value}</span>
+                                </div>
+                            </div>
+
+                            <div class="text-right">
+                                <p class="text-gray-400 text-sm">Scadenza: ${this.formatDate(goal.deadline)}</p>
+                            </div>
                         </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Add exercise
-        function addExercise() {
-            const name = document.getElementById('exerciseName').value.trim();
-            const category = document.getElementById('exerciseCategory').value;
-            const muscleGroup = document.getElementById('exerciseMuscleGroup').value.trim();
-
-            if (!name || !muscleGroup) {
-                showNotification('Inserisci nome e gruppo muscolare', 'error');
-                return;
+                    `;
+                }).join('');
             }
 
-            const exercise = {
-                id: Date.now(),
-                name,
-                category,
-                muscleGroup
-            };
+            addExercise() {
+                try {
+                    const nameInput = document.getElementById('exerciseName');
+                    const categorySelect = document.getElementById('exerciseCategory');
+                    const muscleGroupInput = document.getElementById('exerciseMuscleGroup');
 
-            exercises.push(exercise);
-            saveData();
-            
-            // Clear form
-            document.getElementById('exerciseName').value = '';
-            document.getElementById('exerciseMuscleGroup').value = '';
-            document.getElementById('exerciseCategory').value = 'petto';
+                    const name = nameInput ? nameInput.value.trim() : '';
+                    const category = categorySelect ? categorySelect.value : 'petto';
+                    const muscleGroup = muscleGroupInput ? muscleGroupInput.value.trim() : '';
 
-            // Re-render
-            renderExercises();
-            if (currentView === 'dashboard') renderDashboard();
-            
-            showNotification('Esercizio aggiunto con successo!', 'success');
-        }
+                    if (!name || !muscleGroup) {
+                        this.showNotification('Inserisci nome e gruppo muscolare', 'error');
+                        return;
+                    }
 
-        // Add workout
-        function addWorkout(exerciseId) {
-            const weight = parseFloat(document.getElementById(`weight-${exerciseId}`).value);
-            const sets = parseInt(document.getElementById(`sets-${exerciseId}`).value);
-            const reps = parseInt(document.getElementById(`reps-${exerciseId}`).value);
-            const date = document.getElementById(`date-${exerciseId}`).value;
+                    const exercise = {
+                        id: Date.now(),
+                        name,
+                        category,
+                        muscleGroup
+                    };
 
-            if (!weight || !sets || !reps) {
-                showNotification('Compila tutti i campi', 'error');
-                return;
-            }
+                    this.exercises.push(exercise);
+                    this.saveData();
+                    
+                    // Clear form
+                    if (nameInput) nameInput.value = '';
+                    if (muscleGroupInput) muscleGroupInput.value = '';
+                    if (categorySelect) categorySelect.value = 'petto';
 
-            const exercise = exercises.find(ex => ex.id === exerciseId);
-            const workout = {
-                id: Date.now(),
-                exerciseId,
-                exercise: exercise.name,
-                weight,
-                sets,
-                reps,
-                date
-            };
-
-            workouts.push(workout);
-            saveData();
-
-            // Clear inputs
-            document.getElementById(`weight-${exerciseId}`).value = '';
-            document.getElementById(`sets-${exerciseId}`).value = '';
-            document.getElementById(`reps-${exerciseId}`).value = '';
-            document.getElementById(`date-${exerciseId}`).value = new Date().toISOString().split('T')[0];
-
-            // Update current values for goals
-            updateGoalProgress(exerciseId, weight);
-
-            // Re-render
-            renderExercises();
-            if (currentView === 'dashboard') renderDashboard();
-
-            showNotification('Carico aggiunto con successo!', 'success');
-        }
-
-        // Add measurement
-        function addMeasurement() {
-            const type = document.getElementById('measurementType').value;
-            const value = parseFloat(document.getElementById('measurementValue').value);
-            const date = document.getElementById('measurementDate').value;
-
-            if (!value || !date) {
-                showNotification('Compila tutti i campi', 'error');
-                return;
-            }
-
-            const measurement = {
-                id: Date.now(),
-                type,
-                value,
-                date
-            };
-
-            bodyMeasurements.push(measurement);
-            saveData();
-
-            // Clear form
-            document.getElementById('measurementValue').value = '';
-            document.getElementById('measurementDate').value = new Date().toISOString().split('T')[0];
-
-            // Update current values for body measurement goals
-            updateBodyMeasurementGoalProgress(type, value);
-
-            // Re-render
-            renderMeasurements();
-            if (currentView === 'dashboard') renderDashboard();
-
-            showNotification('Misurazione aggiunta con successo!', 'success');
-        }
-
-        // Add goal
-        function addGoal() {
-            const target = document.getElementById('goalTarget').value.trim();
-            const type = document.getElementById('goalType').value;
-            const value = parseFloat(document.getElementById('goalValue').value);
-            const deadline = document.getElementById('goalDeadline').value;
-
-            if (!target || !value || !deadline) {
-                showNotification('Compila tutti i campi', 'error');
-                return;
-            }
-
-            const goal = {
-                id: Date.now(),
-                type,
-                target,
-                value,
-                current: 0,
-                deadline
-            };
-
-            goals.push(goal);
-            saveData();
-
-            // Clear form
-            document.getElementById('goalTarget').value = '';
-            document.getElementById('goalValue').value = '';
-            document.getElementById('goalDeadline').value = new Date().toISOString().split('T')[0];
-
-            // Re-render
-            renderGoals();
-            if (currentView === 'dashboard') renderDashboard();
-
-            showNotification('Obiettivo aggiunto con successo!', 'success');
-        }
-
-        // Update goal progress
-        function updateGoalProgress(exerciseId, newWeight) {
-            const exercise = exercises.find(e => e.id === exerciseId);
-            if (!exercise) return;
-
-            goals.forEach(goal => {
-                if (goal.type === 'weight' && goal.target.toLowerCase().includes(exercise.name.toLowerCase())) {
-                    goal.current = Math.max(goal.current, newWeight);
+                    // Re-render
+                    this.renderExercises();
+                    if (this.currentView === 'dashboard') this.renderDashboard();
+                    
+                    this.showNotification('Esercizio aggiunto con successo!', 'success');
+                } catch (error) {
+                    console.error('Add exercise error:', error);
+                    this.showNotification('Errore durante l\'aggiunta dell\'esercizio', 'error');
                 }
-            });
-        }
+            }
 
-        // Update body measurement goal progress
-        function updateBodyMeasurementGoalProgress(measurementType, newValue) {
-            goals.forEach(goal => {
-                if (goal.type === 'body_weight' && measurementType === 'peso') {
-                    goal.current = newValue;
-                } else if (goal.type === 'body_measurement' && goal.target.toLowerCase().includes(measurementType)) {
-                    goal.current = newValue;
+            addWorkout(exerciseId) {
+                try {
+                    const weightInput = document.getElementById(`weight-${exerciseId}`);
+                    const setsInput = document.getElementById(`sets-${exerciseId}`);
+                    const repsInput = document.getElementById(`reps-${exerciseId}`);
+                    const dateInput = document.getElementById(`date-${exerciseId}`);
+
+                    if (!weightInput || !setsInput || !repsInput || !dateInput) {
+                        this.showNotification('Errore nei campi del form', 'error');
+                        return;
+                    }
+
+                    const weight = parseFloat(weightInput.value);
+                    const sets = parseInt(setsInput.value);
+                    const reps = parseInt(repsInput.value);
+                    const date = dateInput.value;
+
+                    if (!weight || weight <= 0 || !sets || sets <= 0 || !reps || reps <= 0) {
+                        this.showNotification('Inserisci valori validi per tutti i campi', 'error');
+                        return;
+                    }
+
+                    const exercise = this.exercises.find(ex => ex.id === exerciseId);
+                    if (!exercise) {
+                        this.showNotification('Esercizio non trovato', 'error');
+                        return;
+                    }
+
+                    const workout = {
+                        id: Date.now(),
+                        exerciseId,
+                        exercise: exercise.name,
+                        weight,
+                        sets,
+                        reps,
+                        date
+                    };
+
+                    this.workouts.push(workout);
+                    this.saveData();
+
+                    // Clear inputs
+                    weightInput.value = '';
+                    setsInput.value = '';
+                    repsInput.value = '';
+                    dateInput.value = new Date().toISOString().split('T')[0];
+
+                    // Update current values for goals
+                    this.updateGoalProgress(exerciseId, weight);
+
+                    // Re-render
+                    if (this.currentView === 'exercises') this.renderExercises();
+                    if (this.currentView === 'dashboard') this.renderDashboard();
+
+                    this.showNotification('Carico aggiunto con successo!', 'success');
+                } catch (error) {
+                    console.error('Add workout error:', error);
+                    this.showNotification('Errore durante il salvataggio del carico', 'error');
                 }
-            });
-        }
+            }
 
-        // Calculate goal progress
-        function calculateGoalProgress(goal) {
-            try {
-                if (!goal || typeof goal.current !== 'number' || typeof goal.value !== 'number') {
+            addMeasurement() {
+                try {
+                    const typeSelect = document.getElementById('measurementType');
+                    const valueInput = document.getElementById('measurementValue');
+                    const dateInput = document.getElementById('measurementDate');
+
+                    const type = typeSelect ? typeSelect.value : '';
+                    const value = valueInput ? parseFloat(valueInput.value) : 0;
+                    const date = dateInput ? dateInput.value : '';
+
+                    if (!value || !date) {
+                        this.showNotification('Compila tutti i campi', 'error');
+                        return;
+                    }
+
+                    const measurement = {
+                        id: Date.now(),
+                        type,
+                        value,
+                        date
+                    };
+
+                    this.bodyMeasurements.push(measurement);
+                    this.saveData();
+
+                    // Clear form
+                    if (valueInput) valueInput.value = '';
+                    if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+
+                    // Update current values for body measurement goals
+                    this.updateBodyMeasurementGoalProgress(type, value);
+
+                    // Re-render
+                    this.renderMeasurements();
+                    if (this.currentView === 'dashboard') this.renderDashboard();
+
+                    this.showNotification('Misurazione aggiunta con successo!', 'success');
+                } catch (error) {
+                    console.error('Add measurement error:', error);
+                    this.showNotification('Errore durante l\'aggiunta della misurazione', 'error');
+                }
+            }
+
+            addGoal() {
+                try {
+                    const targetInput = document.getElementById('goalTarget');
+                    const typeSelect = document.getElementById('goalType');
+                    const valueInput = document.getElementById('goalValue');
+                    const deadlineInput = document.getElementById('goalDeadline');
+
+                    const target = targetInput ? targetInput.value.trim() : '';
+                    const type = typeSelect ? typeSelect.value : '';
+                    const value = valueInput ? parseFloat(valueInput.value) : 0;
+                    const deadline = deadlineInput ? deadlineInput.value : '';
+
+                    if (!target || !value || !deadline) {
+                        this.showNotification('Compila tutti i campi', 'error');
+                        return;
+                    }
+
+                    const goal = {
+                        id: Date.now(),
+                        type,
+                        target,
+                        value,
+                        current: 0,
+                        deadline
+                    };
+
+                    this.goals.push(goal);
+                    this.saveData();
+
+                    // Clear form
+                    if (targetInput) targetInput.value = '';
+                    if (valueInput) valueInput.value = '';
+                    if (deadlineInput) deadlineInput.value = new Date().toISOString().split('T')[0];
+
+                    // Re-render
+                    this.renderGoals();
+                    if (this.currentView === 'dashboard') this.renderDashboard();
+
+                    this.showNotification('Obiettivo aggiunto con successo!', 'success');
+                } catch (error) {
+                    console.error('Add goal error:', error);
+                    this.showNotification('Errore durante l\'aggiunta dell\'obiettivo', 'error');
+                }
+            }
+
+            updateGoalProgress(exerciseId, newWeight) {
+                try {
+                    const exercise = this.exercises.find(e => e.id === exerciseId);
+                    if (!exercise) return;
+
+                    this.goals.forEach(goal => {
+                        try {
+                            if (goal.type === 'weight' && goal.target && goal.target.toLowerCase().includes(exercise.name.toLowerCase())) {
+                                goal.current = Math.max(goal.current || 0, newWeight || 0);
+                            }
+                        } catch (e) {
+                            console.warn('Goal update error for goal:', goal.id);
+                        }
+                    });
+                    
+                    this.saveData();
+                } catch (error) {
+                    console.error('Update goal progress error:', error);
+                }
+            }
+
+            updateBodyMeasurementGoalProgress(measurementType, newValue) {
+                try {
+                    this.goals.forEach(goal => {
+                        try {
+                            if (goal.type === 'body_weight' && measurementType === 'peso') {
+                                goal.current = newValue;
+                            } else if (goal.type === 'body_measurement' && goal.target && goal.target.toLowerCase().includes(measurementType)) {
+                                goal.current = newValue;
+                            }
+                        } catch (e) {
+                            console.warn('Body measurement goal update error for goal:', goal.id);
+                        }
+                    });
+                    
+                    this.saveData();
+                } catch (error) {
+                    console.error('Update body measurement goal progress error:', error);
+                }
+            }
+
+            calculateGoalProgress(goal) {
+                try {
+                    if (!goal || typeof goal.current !== 'number' || typeof goal.value !== 'number') {
+                        return 0;
+                    }
+                    
+                    if (goal.type === 'body_weight') {
+                        // For weight loss goals, calculate differently
+                        if (goal.value < goal.current) {
+                            const latestWeight = this.bodyMeasurements
+                                .filter(m => m.type === 'peso')
+                                .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+                                
+                            if (latestWeight) {
+                                const totalToLose = goal.current - goal.value;
+                                const lost = goal.current - latestWeight.value;
+                                return Math.max(0, Math.min(100, (lost / totalToLose) * 100));
+                            }
+                        } else {
+                            return Math.min(100, (goal.current / goal.value) * 100);
+                        }
+                    }
+                    return Math.min(100, Math.max(0, (goal.current / goal.value) * 100));
+                } catch (error) {
+                    console.error('Goal progress calculation error:', error);
                     return 0;
                 }
-                
-                if (goal.type === 'body_weight') {
-                    // For weight loss goals, calculate differently
-                    if (goal.value < goal.current) {
-                        const latestWeight = bodyMeasurements
-                            .filter(m => m.type === 'peso')
-                            .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
-                            
-                        if (latestWeight) {
-                            const totalToLose = goal.current - goal.value;
-                            const lost = goal.current - latestWeight.value;
-                            return Math.max(0, Math.min(100, (lost / totalToLose) * 100));
-                        }
-                    } else {
-                        return Math.min(100, (goal.current / goal.value) * 100);
+            }
+
+            showDeleteModal(type, id) {
+                this.deleteTarget = `${type}-${id}`;
+                const modal = document.getElementById('deleteModal');
+                if (modal) modal.classList.remove('hidden');
+            }
+
+            handleDelete(type, id) {
+                try {
+                    switch(type) {
+                        case 'exercise':
+                            this.exercises = this.exercises.filter(ex => ex.id !== id);
+                            this.workouts = this.workouts.filter(w => w.exerciseId !== id);
+                            break;
+                        case 'workout':
+                            this.workouts = this.workouts.filter(w => w.id !== id);
+                            break;
+                        case 'measurement':
+                            this.bodyMeasurements = this.bodyMeasurements.filter(m => m.id !== id);
+                            break;
+                        case 'goal':
+                            this.goals = this.goals.filter(g => g.id !== id);
+                            break;
                     }
+
+                    this.saveData();
+
+                    // Re-render current view
+                    switch(this.currentView) {
+                        case 'dashboard':
+                            this.renderDashboard();
+                            break;
+                        case 'exercises':
+                            this.renderExercises();
+                            break;
+                        case 'measurements':
+                            this.renderMeasurements();
+                            break;
+                        case 'goals':
+                            this.renderGoals();
+                            break;
+                    }
+
+                    this.showNotification('Elemento eliminato con successo!', 'success');
+                } catch (error) {
+                    console.error('Delete error:', error);
+                    this.showNotification('Errore durante l\'eliminazione', 'error');
                 }
-                return Math.min(100, Math.max(0, (goal.current / goal.value) * 100));
-            } catch (error) {
-                console.error('Goal progress calculation error:', error);
-                return 0;
             }
-        }
 
-        // Format date
-        function formatDate(dateStr) {
-            try {
-                if (!dateStr) return 'Data non valida';
-                const date = new Date(dateStr);
-                if (isNaN(date.getTime())) return 'Data non valida';
-                
-                return date.toLocaleDateString('it-IT', {
-                    day: '2-digit',
-                    month: '2-digit',
-                    year: 'numeric'
-                });
-            } catch (error) {
-                console.error('Date formatting error:', error);
-                return 'Data non valida';
+            exportData() {
+                try {
+                    const data = {
+                        exercises: this.exercises,
+                        workouts: this.workouts,
+                        bodyMeasurements: this.bodyMeasurements,
+                        goals: this.goals,
+                        exportDate: new Date().toISOString(),
+                        version: '2.0'
+                    };
+                    
+                    const dataStr = JSON.stringify(data, null, 2);
+                    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                    
+                    const exportFileDefaultName = `fittrack-backup-${new Date().toISOString().split('T')[0]}.json`;
+                    
+                    const linkElement = document.createElement('a');
+                    linkElement.setAttribute('href', dataUri);
+                    linkElement.setAttribute('download', exportFileDefaultName);
+                    linkElement.click();
+
+                    this.showNotification('Dati esportati con successo!', 'success');
+                } catch (error) {
+                    console.error('Export error:', error);
+                    this.showNotification('Errore durante l\'esportazione', 'error');
+                }
             }
-        }
 
-        // Show notification with better error handling
-        function showNotification(message, type = 'info') {
-            try {
-                // Remove existing notifications
-                const existing = document.querySelectorAll('.notification');
-                existing.forEach(n => {
+            importData(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
                     try {
-                        n.remove();
-                    } catch (e) {
-                        // Ignore removal errors
-                    }
-                });
+                        const data = JSON.parse(e.target.result);
+                        
+                        // Validate data structure
+                        if (!data.exercises || !data.workouts || !data.bodyMeasurements || !data.goals) {
+                            throw new Error('Invalid data format');
+                        }
 
-                // Create notification element
-                const notification = document.createElement('div');
-                notification.className = `notification ${type}`;
-                notification.innerHTML = `
-                    <div class="flex items-center space-x-3">
-                        <div class="flex-shrink-0">
-                            ${type === 'success' ? getIconSVG('check', 'w-5 h-5') : 
-                              type === 'error' ? getIconSVG('x', 'w-5 h-5') : 
-                              getIconSVG('info', 'w-5 h-5')}
-                        </div>
-                        <p class="font-medium">${message || 'Operazione completata'}</p>
-                    </div>
-                `;
-                
-                document.body.appendChild(notification);
-                
-                // Show notification
-                setTimeout(() => {
-                    notification.classList.add('show');
-                }, 100);
-                
-                // Hide notification
-                setTimeout(() => {
-                    notification.classList.remove('show');
-                    setTimeout(() => {
+                        // Import data
+                        this.exercises = Array.isArray(data.exercises) ? data.exercises : [];
+                        this.workouts = Array.isArray(data.workouts) ? data.workouts : [];
+                        this.bodyMeasurements = Array.isArray(data.bodyMeasurements) ? data.bodyMeasurements : [];
+                        this.goals = Array.isArray(data.goals) ? data.goals : [];
+
+                        this.saveData();
+
+                        // Re-render current view
+                        switch(this.currentView) {
+                            case 'dashboard':
+                                this.renderDashboard();
+                                break;
+                            case 'exercises':
+                                this.renderExercises();
+                                break;
+                            case 'progress':
+                                this.renderProgress();
+                                break;
+                            case 'measurements':
+                                this.renderMeasurements();
+                                break;
+                            case 'goals':
+                                this.renderGoals();
+                                break;
+                        }
+
+                        this.showNotification('Dati importati con successo!', 'success');
+                    } catch (error) {
+                        this.showNotification('Errore nell\'importazione dei dati', 'error');
+                        console.error('Import error:', error);
+                    }
+                };
+                reader.readAsText(file);
+
+                // Reset file input
+                event.target.value = '';
+            }
+
+            showNotification(message, type = 'info') {
+                try {
+                    // Remove existing notifications
+                    const existing = document.querySelectorAll('.notification');
+                    existing.forEach(n => {
                         try {
-                            if (notification.parentNode) {
-                                notification.parentNode.removeChild(notification);
-                            }
+                            n.remove();
                         } catch (e) {
                             // Ignore removal errors
                         }
-                    }, 300);
-                }, 3000);
-            } catch (error) {
-                console.error('Notification error:', error);
-                // Fallback to simple alert if notification fails
-                alert(message);
+                    });
+
+                    // Create notification element
+                    const notification = document.createElement('div');
+                    notification.className = `notification ${type}`;
+                    
+                    const icons = {
+                        success: '✅',
+                        error: '❌', 
+                        info: 'ℹ️'
+                    };
+
+                    notification.innerHTML = `
+                        <div class="flex items-center space-x-3">
+                            <div class="flex-shrink-0 text-xl">
+                                ${icons[type] || icons.info}
+                            </div>
+                            <p class="font-medium">${message || 'Operazione completata'}</p>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(notification);
+                    
+                    // Show notification
+                    setTimeout(() => {
+                        notification.classList.add('show');
+                    }, 100);
+                    
+                    // Hide notification
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                        setTimeout(() => {
+                            try {
+                                if (notification.parentNode) {
+                                    notification.parentNode.removeChild(notification);
+                                }
+                            } catch (e) {
+                                // Ignore removal errors
+                            }
+                        }, 300);
+                    }, 3000);
+                } catch (error) {
+                    console.error('Notification error:', error);
+                    // Fallback to simple alert if notification fails
+                    alert(message);
+                }
+            }
+
+            formatDate(dateStr) {
+                try {
+                    if (!dateStr) return 'Data non valida';
+                    const date = new Date(dateStr);
+                    if (isNaN(date.getTime())) return 'Data non valida';
+                    
+                    return date.toLocaleDateString('it-IT', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    });
+                } catch (error) {
+                    console.error('Date formatting error:', error);
+                    return 'Data non valida';
+                }
+            }
+
+            // Static methods for global access
+            static showDeleteModal(type, id) {
+                if (window.fitTrackerInstance) {
+                    window.fitTrackerInstance.showDeleteModal(type, id);
+                }
+            }
+
+            static addWorkout(exerciseId) {
+                if (window.fitTrackerInstance) {
+                    window.fitTrackerInstance.addWorkout(exerciseId);
+                }
+            }
+
+            static exportData() {
+                if (window.fitTrackerInstance) {
+                    window.fitTrackerInstance.exportData();
+                }
             }
         }
 
-        // Add workout with better validation
-        function addWorkout(exerciseId) {
+        // Global functions for backward compatibility
+        function switchView(view) {
+            if (window.fitTrackerInstance) {
+                window.fitTrackerInstance.switchView(view);
+            }
+        }
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
             try {
-                const weightInput = document.getElementById(`weight-${exerciseId}`);
-                const setsInput = document.getElementById(`sets-${exerciseId}`);
-                const repsInput = document.getElementById(`reps-${exerciseId}`);
-                const dateInput = document.getElementById(`date-${exerciseId}`);
-
-                if (!weightInput || !setsInput || !repsInput || !dateInput) {
-                    showNotification('Errore nei campi del form', 'error');
-                    return;
-                }
-
-                const weight = parseFloat(weightInput.value);
-                const sets = parseInt(setsInput.value);
-                const reps = parseInt(repsInput.value);
-                const date = dateInput.value;
-
-                if (!weight || weight <= 0 || !sets || sets <= 0 || !reps || reps <= 0) {
-                    showNotification('Inserisci valori validi per tutti i campi', 'error');
-                    return;
-                }
-
-                const exercise = exercises.find(ex => ex.id === exerciseId);
-                if (!exercise) {
-                    showNotification('Esercizio non trovato', 'error');
-                    return;
-                }
-
-                const workout = {
-                    id: Date.now(),
-                    exerciseId,
-                    exercise: exercise.name,
-                    weight,
-                    sets,
-                    reps,
-                    date
-                };
-
-                workouts.push(workout);
-                saveData();
-
-                // Clear inputs
-                weightInput.value = '';
-                setsInput.value = '';
-                repsInput.value = '';
-                dateInput.value = new Date().toISOString().split('T')[0];
-
-                // Update current values for goals
-                updateGoalProgress(exerciseId, weight);
-
-                // Re-render
-                if (currentView === 'exercises') renderExercises();
-                if (currentView === 'dashboard') renderDashboard();
-
-                showNotification('Carico aggiunto con successo!', 'success');
+                window.fitTrackerInstance = new FitTracker();
+                window.FitTracker = FitTracker; // Make class globally available
             } catch (error) {
-                console.error('Add workout error:', error);
-                showNotification('Errore durante il salvataggio del carico', 'error');
+                console.error('FitTracker initialization error:', error);
+                // Show basic error message
+                document.body.innerHTML = `
+                    <div class="fixed inset-0 bg-slate-900 flex items-center justify-center">
+                        <div class="text-center p-8">
+                            <div class="text-6xl mb-4">⚠️</div>
+                            <h1 class="text-white text-2xl mb-2">Errore di Inizializzazione</h1>
+                            <p class="text-gray-400">Ricarica la pagina per riprovare</p>
+                            <button onclick="location.reload()" class="mt-4 px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700">
+                                Ricarica
+                            </button>
+                        </div>
+                    </div>
+                `;
             }
-        }
+        });
 
-        // Update goal progress with error handling
-        function updateGoalProgress(exerciseId, newWeight) {
-            try {
-                const exercise = exercises.find(e => e.id === exerciseId);
-                if (!exercise) return;
-
-                goals.forEach(goal => {
-                    try {
-                        if (goal.type === 'weight' && goal.target && goal.target.toLowerCase().includes(exercise.name.toLowerCase())) {
-                            goal.current = Math.max(goal.current || 0, newWeight || 0);
-                        }
-                    } catch (e) {
-                        console.warn('Goal update error for goal:', goal.id);
-                    }
-                });
-                
-                saveData();
-            } catch (error) {
-                console.error('Update goal progress error:', error);
-            }
-        }
-
-        // Global error handler
+        // Global error handlers
         window.addEventListener('error', function(e) {
             console.error('Global error:', e.error);
-            // Don't let errors crash the app completely
             return true;
         });
 
-        // Global unhandled promise rejection handler
         window.addEventListener('unhandledrejection', function(e) {
             console.error('Unhandled promise rejection:', e.reason);
-            // Prevent unhandled promise rejections from crashing
             e.preventDefault();
         });
 
-        // Show delete modal
-        function showDeleteModal(type, id) {
-            deleteTarget = `${type}-${id}`;
-            document.getElementById('deleteModal').classList.remove('hidden');
-        }
-
-        // Handle delete
-        function handleDelete(type, id) {
-            switch(type) {
-                case 'exercise':
-                    exercises = exercises.filter(ex => ex.id !== id);
-                    workouts = workouts.filter(w => w.exerciseId !== id);
-                    break;
-                case 'workout':
-                    workouts = workouts.filter(w => w.id !== id);
-                    break;
-                case 'measurement':
-                    bodyMeasurements = bodyMeasurements.filter(m => m.id !== id);
-                    break;
-                case 'goal':
-                    goals = goals.filter(g => g.id !== id);
-                    break;
-            }
-
-            saveData();
-
-            // Re-render current view
-            switch(currentView) {
-                case 'dashboard':
-                    renderDashboard();
-                    break;
-                case 'exercises':
-                    renderExercises();
-                    break;
-                case 'measurements':
-                    renderMeasurements();
-                    break;
-                case 'goals':
-                    renderGoals();
-                    break;
-            }
-
-            showNotification('Elemento eliminato con successo!', 'success');
-        }
-
-        // Export data
-        function exportData() {
-            const data = {
-                exercises,
-                workouts,
-                bodyMeasurements,
-                goals,
-                exportDate: new Date().toISOString(),
-                version: '1.0'
-            };
-            
-            const dataStr = JSON.stringify(data, null, 2);
-            const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
-            
-            const exportFileDefaultName = `fittrack-backup-${new Date().toISOString().split('T')[0]}.json`;
-            
-            const linkElement = document.createElement('a');
-            linkElement.setAttribute('href', dataUri);
-            linkElement.setAttribute('download', exportFileDefaultName);
-            linkElement.click();
-
-            showNotification('Dati esportati con successo!', 'success');
-        }
-
-        // Import data
-        function importData(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    const data = JSON.parse(e.target.result);
-                    
-                    // Validate data structure
-                    if (!data.exercises || !data.workouts || !data.bodyMeasurements || !data.goals) {
-                        throw new Error('Invalid data format');
-                    }
-
-                    // Import data
-                    exercises = data.exercises;
-                    workouts = data.workouts;
-                    bodyMeasurements = data.bodyMeasurements;
-                    goals = data.goals;
-
-                    saveData();
-
-                    // Re-render current view
-                    switch(currentView) {
-                        case 'dashboard':
-                            renderDashboard();
-                            break;
-                        case 'exercises':
-                            renderExercises();
-                            break;
-                        case 'progress':
-                            renderProgress();
-                            break;
-                        case 'measurements':
-                            renderMeasurements();
-                            break;
-                        case 'goals':
-                            renderGoals();
-                            break;
-                    }
-
-                    showNotification('Dati importati con successo!', 'success');
-                } catch (error) {
-                    showNotification('Errore nell\'importazione dei dati', 'error');
-                    console.error('Import error:', error);
-                }
-            };
-            reader.readAsText(file);
-
-            // Reset file input
-            event.target.value = '';
-        }
-
-        // Show notification
-        function showNotification(message, type = 'info') {
-            // Remove existing notifications
-            const existing = document.querySelectorAll('.notification');
-            existing.forEach(n => n.remove());
-
-            // Create notification element
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.innerHTML = `
-                <div class="flex items-center space-x-3">
-                    <div class="flex-shrink-0">
-                        ${type === 'success' ? getIconSVG('check', 'w-5 h-5') : 
-                          type === 'error' ? getIconSVG('x', 'w-5 h-5') : 
-                          getIconSVG('info', 'w-5 h-5')}
-                    </div>
-                    <p class="font-medium">${message}</p>
-                </div>
-            `;
-            
-            document.body.appendChild(notification);
-            
-            // Show notification
-            setTimeout(() => {
-                notification.classList.add('show');
-            }, 100);
-            
-            // Hide notification
-            setTimeout(() => {
-                notification.classList.remove('show');
-                setTimeout(() => {
-                    if (notification.parentNode) {
-                        notification.parentNode.removeChild(notification);
-                    }
-                }, 300);
-            }, 3000);
-        }
-
-        // Format date
-        function formatDate(dateStr) {
-            const date = new Date(dateStr);
-            return date.toLocaleDateString('it-IT', {
-                day: '2-digit',
-                month: '2-digit',
-                year: 'numeric'
-            });
-        }
-
-        // Utility functions - Icone specifiche per palestra
-        function getIconSVG(iconName, className = 'w-5 h-5') {
-            const icons = {
-                dumbbell: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M20.57 14.86L22 13.43 20.57 12 17 15.57 8.43 7 12 3.43 10.57 2 9.14 3.43 7.71 2 5.57 4.14 4.14 2.71 2.71 4.14l1.43 1.43L2 7.71l1.43 1.43L2 10.57 3.43 12 7 8.43 15.57 17 12 20.57 13.43 22l1.43-1.43L16.29 22l2.14-2.14 1.43 1.43 1.43-1.43-1.43-1.43L22 16.29l-1.43-1.43z"/></svg>`,
-                barbell: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M2 12h2v-1h1v-1h1v-1h1V7H6V6H5V5H4v1H3v1H2v1H1v1h1v2zm20 0h-2v-1h-1v-1h-1v-1h-1V7h1V6h1V5h1v1h1v1h1v1h1v1h-1v2zm-8-4h-4v8h4V8z"/></svg>`,
-                weight: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M9 4c-4.42 0-8 3.58-8 8s3.58 8 8 8c1.85 0 3.55-.63 4.9-1.69L20 22l2-2-3.69-6.1C19.37 12.55 20 10.85 20 9c0-4.42-3.58-8-8-8H9zm0 2h3c3.31 0 6 2.69 6 6 0 1.94-.93 3.65-2.37 4.74L12 13l-2 2 3.63 3.63C12.65 19.07 10.94 20 9 20c-3.31 0-6-2.69-6-6s2.69-6 6-6z"/></svg>`,
-                muscle: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M9 4c-.83 0-1.5.67-1.5 1.5 0 .52.27.98.68 1.25L8 7v1c0 1.1.9 2 2 2h4c1.1 0 2-.9 2-2V7l-.18-.25c.41-.27.68-.73.68-1.25C16.5 4.67 15.83 4 15 4s-1.5.67-1.5 1.5c0 .28.08.54.2.77L12 8l-1.7-1.73c.12-.23.2-.49.2-.77C10.5 4.67 9.83 4 9 4zm3 6c-2.21 0-4 1.79-4 4v6c0 1.1.9 2 2 2h4c1.1 0 2-.9 2-2v-6c0-2.21-1.79-4-4-4z"/></svg>`,
-                growth: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6h-6z"/></svg>`,
-                timer: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61l1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42A8.962 8.962 0 0012 4c-4.97 0-9 4.03-9 9s4.02 9 9 9a8.994 8.994 0 007.03-14.61zM12 20c-3.87 0-7-3.13-7-7s3.13-7 7-7 7 3.13 7 7-3.13 7-7 7z"/></svg>`,
-                trophy: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M5 16L3 5h5.5l1.5 5 1.5-5H17l-2 11H5zm2.5-7H6l.5 3h1V9zm9 0h-1.5v3h1l.5-3zM12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>`,
-                target: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm0-14c-3.31 0-6 2.69-6 6s2.69 6 6 6 6-2.69 6-6-2.69-6-6-6zm0 10c-2.21 0-4-1.79-4-4s1.79-4 4-4 4 1.79 4 4-1.79 4-4 4zm0-6c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/></svg>`,
-                ruler: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M7 4V2c0-1.1.9-2 2-2h6c1.1 0 2 .9 2 2v2h1c1.1 0 2 .9 2 2v14c0 1.1-.9 2-2 2H6c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2h1zm2 0h6V2H9v2zm9 4H6v12h12V8z"/></svg>`,
-                plus: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm5 11h-4v4h-2v-4H7v-2h4V7h2v4h4v2z"/></svg>`,
-                trash: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>`,
-                check: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M9 16.2L4.8 12l-1.4 1.4L9 19 21 7l-1.4-1.4L9 16.2z"/></svg>`,
-                search: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>`,
-                x: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>`,
-                info: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-6h2v6zm0-8h-2V7h2v2z"/></svg>`,
-                fire: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.28 2.67-.2 3.73-.72 1.59-2.73 2.99-4.01 5.11z"/></svg>`,
-                award: `<svg class="${className}" fill="currentColor" viewBox="0 0 24 24"><path d="M5 16L3 5l1.5-.5L6 16l-1 0zm14 0L17 4.5L18.5 5L21 16l-2 0zm-7 4l-2.5-1.5L12 17l2.5 1.5L12 20zm0-15c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zm0 8c-1.65 0-3-1.35-3-3s1.35-3 3-3 3 1.35 3 3-1.35 3-3 3z"/></svg>`
-            };
-            return icons[iconName] || icons.dumbbell;
-        }
-
         // Keyboard shortcuts
         document.addEventListener('keydown', function(e) {
-            // Alt + number keys for navigation
             if (e.altKey && e.key >= '1' && e.key <= '5') {
                 e.preventDefault();
                 const views = ['dashboard', 'exercises', 'progress', 'measurements', 'goals'];
                 const index = parseInt(e.key) - 1;
-                if (views[index]) {
-                    switchView(views[index]);
+                if (views[index] && window.fitTrackerInstance) {
+                    window.fitTrackerInstance.switchView(views[index]);
                 }
             }
         });
@@ -1699,550 +2115,24 @@
         });
 
         function handleSwipe() {
+            if (!window.fitTrackerInstance) return;
+            
             const swipeThreshold = 50;
             const diff = touchStartX - touchEndX;
             
             if (Math.abs(diff) > swipeThreshold) {
                 const views = ['dashboard', 'exercises', 'progress', 'measurements', 'goals'];
-                const currentIndex = views.indexOf(currentView);
+                const currentIndex = views.indexOf(window.fitTrackerInstance.currentView);
                 
                 if (diff > 0 && currentIndex < views.length - 1) {
                     // Swipe left - next view
-                    switchView(views[currentIndex + 1]);
+                    window.fitTrackerInstance.switchView(views[currentIndex + 1]);
                 } else if (diff < 0 && currentIndex > 0) {
                     // Swipe right - previous view
-                    switchView(views[currentIndex - 1]);
+                    window.fitTrackerInstance.switchView(views[currentIndex - 1]);
                 }
             }
         }
     </script>
 </body>
-</html>400 text-sm font-medium">Peso Massimo</span>
-                                <span class="text-blue-400 font-bold text-lg">${maxWeight}kg</span>
-                            </div>
-                            ${latestWorkout ? `
-                                <div class="flex justify-between items-center p-3 glass-effect rounded-lg">
-                                    <span class="text-gray-400 text-sm font-medium">Ultimo Allenamento</span>
-                                    <span class="text-green-400 font-semibold text-sm">${formatDate(latestWorkout.date)}</span>
-                                </div>
-                            ` : ''}
-                        </div>
-
-                        <div class="border-t border-slate-700/50 pt-4">
-                            <h5 class="text-white font-semibold mb-3 flex items-center">
-                                ${getIconSVG('plus', 'w-4 h-4 mr-2')}
-                                Aggiungi Carico
-                            </h5>
-                            <div class="grid grid-cols-3 gap-2 mb-3">
-                                <input type="number" placeholder="Peso" class="glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition placeholder-gray-400" id="weight-${exercise.id}">
-                                <input type="number" placeholder="Serie" class="glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition placeholder-gray-400" id="sets-${exercise.id}">
-                                <input type="number" placeholder="Reps" class="glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition placeholder-gray-400" id="reps-${exercise.id}">
-                            </div>
-                            <input type="date" value="${new Date().toISOString().split('T')[0]}" class="glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition w-full mb-3" id="date-${exercise.id}">
-                            
-                            <button onclick="addWorkout(${exercise.id})" class="w-full flex items-center justify-center space-x-2 px-4 py-3 text-sm font-semibold rounded-lg smooth-transition hover-lift bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg">
-                                ${getIconSVG('check', 'w-4 h-4')}
-                                <span>Salva Carico</span>
-                            </button>
-                        </div>
-                    </div>
-                `;
-            }).join('');
-        }
-
-        // Render progress view
-        function renderProgress() {
-            try {
-                // Only render charts if Chart.js is available
-                if (typeof Chart !== 'undefined') {
-                    renderProgressCharts();
-                    populateProgressExerciseSelect();
-                } else {
-                    console.warn('Chart.js not available');
-                    const containers = ['weightProgressChart', 'volumeProgressChart', 'exerciseDetailChart'];
-                    containers.forEach(id => {
-                        const container = document.getElementById(id);
-                        if (container && container.parentElement) {
-                            container.parentElement.innerHTML = '<div class="text-center text-gray-400 p-8">Grafici non disponibili</div>';
-                        }
-                    });
-                }
-            } catch (error) {
-                console.error('Progress rendering error:', error);
-            }
-        }
-
-        // Render progress charts
-        function renderProgressCharts() {
-            try {
-                setTimeout(() => {
-                    renderWeightProgressChart();
-                    renderVolumeProgressChart();
-                    renderExerciseDetailChart();
-                }, 100);
-            } catch (error) {
-                console.error('Charts rendering error:', error);
-            }
-        }
-
-        // Render weight progress chart
-        function renderWeightProgressChart() {
-            try {
-                const ctx = document.getElementById('weightProgressChart');
-                if (!ctx || typeof Chart === 'undefined') return;
-
-                if (charts.weightProgress) {
-                    charts.weightProgress.destroy();
-                }
-
-                const exerciseMaxWeights = exercises.map(exercise => {
-                    try {
-                        const exerciseWorkouts = workouts.filter(w => w.exerciseId === exercise.id);
-                        const maxWeight = exerciseWorkouts.length > 0 ? Math.max(...exerciseWorkouts.map(w => w.weight || 0)) : 0;
-                        return { name: exercise.name, weight: maxWeight };
-                    } catch (e) {
-                        return { name: exercise.name, weight: 0 };
-                    }
-                }).filter(e => e.weight > 0);
-
-                if (exerciseMaxWeights.length === 0) {
-                    ctx.parentElement.innerHTML = '<div class="text-center text-gray-400 p-8">Nessun dato disponibile</div>';
-                    return;
-                }
-
-                charts.weightProgress = new Chart(ctx, {
-                    type: 'bar',
-                    data: {
-                        labels: exerciseMaxWeights.map(e => e.name),
-                        datasets: [{
-                            label: 'Peso Massimo (kg)',
-                            data: exerciseMaxWeights.map(e => e.weight),
-                            backgroundColor: 'rgba(59, 130, 246, 0.8)',
-                            borderColor: 'rgba(59, 130, 246, 1)',
-                            borderWidth: 2,
-                            borderRadius: 8,
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: { color: '#94a3b8' },
-                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
-                            },
-                            x: {
-                                ticks: { color: '#94a3b8', maxRotation: 45 },
-                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
-                            }
-                        }
-                    }
-                });
-            } catch (error) {
-                console.error('Weight progress chart error:', error);
-                const ctx = document.getElementById('weightProgressChart');
-                if (ctx && ctx.parentElement) {
-                    ctx.parentElement.innerHTML = '<div class="text-center text-gray-400 p-8">Errore nel caricamento grafico</div>';
-                }
-            }
-        }
-
-        // Render volume progress chart
-        function renderVolumeProgressChart() {
-            try {
-                const ctx = document.getElementById('volumeProgressChart');
-                if (!ctx || typeof Chart === 'undefined') return;
-
-                if (charts.volumeProgress) {
-                    charts.volumeProgress.destroy();
-                }
-
-                // Calculate total volume by date (last 30 days)
-                const thirtyDaysAgo = new Date();
-                thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
-                
-                const volumeByDate = {};
-                workouts
-                    .filter(w => {
-                        try {
-                            return new Date(w.date) >= thirtyDaysAgo;
-                        } catch (e) {
-                            return false;
-                        }
-                    })
-                    .forEach(workout => {
-                        try {
-                            const volume = (workout.weight || 0) * (workout.sets || 0) * (workout.reps || 0);
-                            if (!volumeByDate[workout.date]) {
-                                volumeByDate[workout.date] = 0;
-                            }
-                            volumeByDate[workout.date] += volume;
-                        } catch (e) {
-                            console.warn('Volume calculation error for workout:', workout);
-                        }
-                    });
-
-                const dates = Object.keys(volumeByDate).sort();
-                const volumes = dates.map(date => volumeByDate[date]);
-
-                if (dates.length === 0) {
-                    ctx.parentElement.innerHTML = '<div class="text-center text-gray-400 p-8">Nessun dato disponibile</div>';
-                    return;
-                }
-
-                charts.volumeProgress = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: dates.map(date => formatDate(date)),
-                        datasets: [{
-                            label: 'Volume Totale (kg)',
-                            data: volumes,
-                            borderColor: 'rgba(139, 92, 246, 1)',
-                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                            borderWidth: 3,
-                            fill: true,
-                            tension: 0.4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: { display: false }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: { color: '#94a3b8' },
-                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
-                            },
-                            x: {
-                                ticks: { color: '#94a3b8', maxRotation: 45 },
-                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
-                            }
-                        }
-                    }
-                });
-            } catch (error) {
-                console.error('Volume progress chart error:', error);
-                const ctx = document.getElementById('volumeProgressChart');
-                if (ctx && ctx.parentElement) {
-                    ctx.parentElement.innerHTML = '<div class="text-center text-gray-400 p-8">Errore nel caricamento grafico</div>';
-                }
-            }
-        }
-
-        // Populate progress exercise select
-        function populateProgressExerciseSelect() {
-            try {
-                const select = document.getElementById('progressExerciseSelect');
-                if (!select) return;
-                
-                const exercisesWithWorkouts = exercises.filter(e => 
-                    workouts.some(w => w.exerciseId === e.id)
-                );
-
-                select.innerHTML = '<option value="">Seleziona un esercizio...</option>' +
-                    exercisesWithWorkouts.map(e => 
-                        `<option value="${e.id}">${e.name}</option>`
-                    ).join('');
-            } catch (error) {
-                console.error('Populate select error:', error);
-            }
-        }
-
-        // Render exercise detail chart
-        function renderExerciseDetailChart() {
-            const exerciseId = document.getElementById('progressExerciseSelect')?.value;
-            const timeRange = document.getElementById('progressTimeRange')?.value;
-            
-            const ctx = document.getElementById('exerciseDetailChart');
-            if (!ctx) return;
-            
-            if (!exerciseId) {
-                if (charts.exerciseDetail) {
-                    charts.exerciseDetail.destroy();
-                    delete charts.exerciseDetail;
-                }
-                // Clear canvas
-                ctx.getContext('2d').clearRect(0, 0, ctx.width, ctx.height);
-                return;
-            }
-
-            if (charts.exerciseDetail) {
-                charts.exerciseDetail.destroy();
-            }
-
-            let filteredWorkouts = workouts.filter(w => w.exerciseId == exerciseId);
-            
-            if (timeRange !== 'all') {
-                const daysAgo = new Date();
-                daysAgo.setDate(daysAgo.getDate() - parseInt(timeRange));
-                filteredWorkouts = filteredWorkouts.filter(w => new Date(w.date) >= daysAgo);
-            }
-
-            filteredWorkouts.sort((a, b) => new Date(a.date) - new Date(b.date));
-
-            const exercise = exercises.find(e => e.id == exerciseId);
-
-            charts.exerciseDetail = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: filteredWorkouts.map(w => formatDate(w.date)),
-                    datasets: [{
-                        label: 'Peso (kg)',
-                        data: filteredWorkouts.map(w => w.weight),
-                        borderColor: 'rgba(59, 130, 246, 1)',
-                        backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4,
-                        pointBackgroundColor: 'rgba(59, 130, 246, 1)',
-                        pointBorderColor: '#ffffff',
-                        pointBorderWidth: 2,
-                        pointRadius: 6,
-                        pointHoverRadius: 8
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: exercise ? `Progressione - ${exercise.name}` : 'Progressione Esercizio',
-                            color: '#ffffff',
-                            font: { size: 16, weight: 'bold' }
-                        },
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: false,
-                            ticks: { 
-                                color: '#94a3b8',
-                                callback: function(value) {
-                                    return value + 'kg';
-                                }
-                            },
-                            grid: { color: 'rgba(148, 163, 184, 0.1)' }
-                        },
-                        x: {
-                            ticks: { color: '#94a3b8', maxRotation: 45 },
-                            grid: { color: 'rgba(148, 163, 184, 0.1)' }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Render measurements view
-        function renderMeasurements() {
-            renderMeasurementsList();
-            populateMeasurementChartTypes();
-        }
-
-        // Populate measurement chart types
-        function populateMeasurementChartTypes() {
-            const select = document.getElementById('measurementChartType');
-            const types = [...new Set(bodyMeasurements.map(m => m.type))];
-            
-            const typeLabels = {
-                peso: 'Peso (kg)',
-                altezza: 'Altezza (cm)',
-                petto: 'Petto (cm)',
-                vita: 'Vita (cm)',
-                fianchi: 'Fianchi (cm)',
-                braccio_dx: 'Braccio Dx (cm)',
-                braccio_sx: 'Braccio Sx (cm)',
-                coscia_dx: 'Coscia Dx (cm)',
-                coscia_sx: 'Coscia Sx (cm)',
-                bf_percentage: 'Massa Grassa (%)'
-            };
-
-            select.innerHTML = '<option value="">Seleziona tipo di misurazione...</option>' +
-                types.map(type => 
-                    `<option value="${type}">${typeLabels[type] || type}</option>`
-                ).join('');
-        }
-
-        // Render measurement chart
-        function renderMeasurementChart() {
-            const measurementType = document.getElementById('measurementChartType')?.value;
-            
-            const ctx = document.getElementById('measurementChart');
-            if (!ctx || !measurementType) {
-                if (charts.measurement) {
-                    charts.measurement.destroy();
-                    delete charts.measurement;
-                }
-                return;
-            }
-
-            if (charts.measurement) {
-                charts.measurement.destroy();
-            }
-
-            const measurements = bodyMeasurements
-                .filter(m => m.type === measurementType)
-                .sort((a, b) => new Date(a.date) - new Date(b.date));
-
-            const typeLabels = {
-                peso: 'Peso (kg)',
-                altezza: 'Altezza (cm)',
-                petto: 'Petto (cm)',
-                vita: 'Vita (cm)',
-                fianchi: 'Fianchi (cm)',
-                braccio_dx: 'Braccio Dx (cm)',
-                braccio_sx: 'Braccio Sx (cm)',
-                coscia_dx: 'Coscia Dx (cm)',
-                coscia_sx: 'Coscia Sx (cm)',
-                bf_percentage: 'Massa Grassa (%)'
-            };
-
-            charts.measurement = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: measurements.map(m => formatDate(m.date)),
-                    datasets: [{
-                        label: typeLabels[measurementType],
-                        data: measurements.map(m => m.value),
-                        borderColor: 'rgba(139, 92, 246, 1)',
-                        backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                        borderWidth: 3,
-                        fill: true,
-                        tension: 0.4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        title: {
-                            display: true,
-                            text: `Andamento - ${typeLabels[measurementType]}`,
-                            color: '#ffffff',
-                            font: { size: 16, weight: 'bold' }
-                        },
-                        legend: { display: false }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: measurementType !== 'peso',
-                            ticks: { color: '#94a3b8' },
-                            grid: { color: 'rgba(148, 163, 184, 0.1)' }
-                        },
-                        x: {
-                            ticks: { color: '#94a3b8', maxRotation: 45 },
-                            grid: { color: 'rgba(148, 163, 184, 0.1)' }
-                        }
-                    }
-                }
-            });
-        }
-
-        // Render measurements list
-        function renderMeasurementsList() {
-            const container = document.getElementById('measurementsList');
-            const sortedMeasurements = bodyMeasurements
-                .sort((a, b) => new Date(b.date) - new Date(a.date))
-                .slice(0, 20);
-
-            if (sortedMeasurements.length === 0) {
-                container.innerHTML = '<p class="text-gray-400 text-center py-8">Nessuna misurazione registrata</p>';
-                return;
-            }
-
-            const typeLabels = {
-                peso: 'Peso',
-                altezza: 'Altezza',
-                petto: 'Petto',
-                vita: 'Vita',
-                fianchi: 'Fianchi',
-                braccio_dx: 'Braccio Dx',
-                braccio_sx: 'Braccio Sx',
-                coscia_dx: 'Coscia Dx',
-                coscia_sx: 'Coscia Sx',
-                bf_percentage: 'Massa Grassa'
-            };
-
-            container.innerHTML = sortedMeasurements.map(measurement => `
-                <div class="flex items-center justify-between p-4 glass-effect rounded-xl hover:bg-slate-700/30 smooth-transition">
-                    <div class="flex items-center space-x-3">
-                        <div class="p-2 bg-gradient-to-r from-purple-600 to-purple-700 rounded-lg">
-                            ${getIconSVG('ruler', 'w-4 h-4 text-white')}
-                        </div>
-                        <div>
-                            <h4 class="text-white font-semibold">${typeLabels[measurement.type] || measurement.type}</h4>
-                            <p class="text-gray-400 text-sm">${formatDate(measurement.date)}</p>
-                        </div>
-                    </div>
-                    <div class="text-right flex items-center space-x-2">
-                        <p class="text-purple-400 font-bold">${measurement.value}${measurement.type === 'peso' ? 'kg' : measurement.type === 'bf_percentage' ? '%' : 'cm'}</p>
-                        <button onclick="showDeleteModal('measurement', ${measurement.id})" class="p-2 text-red-400 hover:text-red-300 smooth-transition">
-                            ${getIconSVG('trash', 'w-4 h-4')}
-                        </button>
-                    </div>
-                </div>
-            `).join('');
-        }
-
-        // Render goals view
-        function renderGoals() {
-            const container = document.getElementById('goalsList');
-            
-            if (goals.length === 0) {
-                container.innerHTML = `
-                    <div class="col-span-full glass-effect rounded-2xl p-8 card-hover fade-in text-center py-12">
-                        <div class="space-y-4">
-                            <div class="p-6 bg-yellow-700/30 rounded-full w-20 h-20 mx-auto flex items-center justify-center">
-                                ${getIconSVG('target', 'w-8 h-8 text-yellow-400')}
-                            </div>
-                            <h3 class="text-xl font-semibold text-gray-300">Nessun obiettivo definito</h3>
-                            <p class="text-gray-500">Inizia aggiungendo i tuoi primi traguardi!</p>
-                        </div>
-                    </div>
-                `;
-                return;
-            }
-
-            container.innerHTML = goals.map((goal, index) => {
-                const progress = calculateGoalProgress(goal);
-                const daysLeft = Math.ceil((new Date(goal.deadline) - new Date()) / (1000 * 60 * 60 * 24));
-                const isOverdue = daysLeft < 0;
-                const isCompleted = progress >= 100;
-
-                return `
-                    <div class="glass-effect rounded-2xl p-6 card-hover relative overflow-hidden fade-in" style="animation-delay: ${index * 100}ms">
-                        ${isCompleted ? `
-                            <div class="absolute top-4 right-4 p-2 bg-green-500/20 rounded-full">
-                                ${getIconSVG('check', 'w-5 h-5 text-green-400')}
-                            </div>
-                        ` : ''}
-                        
-                        <div class="flex items-start justify-between mb-4">
-                            <div>
-                                <h4 class="text-white font-bold text-lg mb-1">${goal.target}</h4>
-                                <p class="text-gray-400 text-sm">
-                                    ${isOverdue ? 'Scaduto' : isCompleted ? 'Completato' : `${daysLeft} giorni rimasti`}
-                                </p>
-                            </div>
-                            <button onclick="showDeleteModal('goal', ${goal.id})" class="p-2 text-red-400 hover:text-red-300 smooth-transition">
-                                ${getIconSVG('trash', 'w-4 h-4')}
-                            </button>
-                        </div>
-
-                        <div class="space-y-3 mb-4">
-                            <div class="flex justify-between items-center">
-                                <span class="text-gray-400 text-sm">Progressi</span>
-                                <span class="text-white font-semibold">${progress.toFixed(1)}%</span>
-                            </div>
-                            <div class="w-full bg-gray-700 rounded-full h-2">
-                                <div class="progress-bar h-2 rounded-full" style="width: ${Math.min(progress, 100)}%"></div>
-                            </div>
-                            <div class="flex justify-between items-center text-sm">
-                                <span class="text-gray-
+</html>
