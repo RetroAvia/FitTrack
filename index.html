@@ -719,46 +719,91 @@
                 this.deleteTarget = null;
                 this.charts = {};
                 this.debounceTimers = {};
+                this.isLocalStorageAvailable = this.checkLocalStorageAvailability();
                 
                 this.init();
             }
 
+            checkLocalStorageAvailability() {
+                try {
+                    const test = 'localStorage-test';
+                    localStorage.setItem(test, test);
+                    localStorage.removeItem(test);
+                    return true;
+                } catch(e) {
+                    console.warn('localStorage not available, using session storage');
+                    return false;
+                }
+            }
+
             init() {
-                this.loadData();
-                this.setupEventListeners();
+                try {
+                    this.loadData();
+                    this.setupEventListeners();
+                    this.showApp();
+                } catch (error) {
+                    console.error('Initialization error:', error);
+                    this.handleInitError();
+                }
+            }
+
+            handleInitError() {
+                // Show error and initialize with defaults
+                this.initializeSampleData();
                 this.showApp();
+                this.showNotification('App inizializzata con dati di esempio', 'info');
             }
 
             showApp() {
-                setTimeout(() => {
-                    const loadingScreen = document.getElementById('loadingScreen');
+                try {
+                    setTimeout(() => {
+                        const loadingScreen = document.getElementById('loadingScreen');
+                        const mainContent = document.getElementById('mainContent');
+                        
+                        if (loadingScreen) {
+                            loadingScreen.style.opacity = '0';
+                            loadingScreen.style.transform = 'scale(0.8)';
+                            setTimeout(() => {
+                                loadingScreen.style.display = 'none';
+                                if (mainContent) {
+                                    mainContent.style.opacity = '1';
+                                    this.renderDashboard();
+                                }
+                            }, 300);
+                        } else if (mainContent) {
+                            // Fallback if loading screen doesn't exist
+                            mainContent.style.opacity = '1';
+                            this.renderDashboard();
+                        }
+                    }, 800); // Reduced from 200 to show loading longer
+                } catch (error) {
+                    console.error('ShowApp error:', error);
+                    // Emergency fallback
+                    document.getElementById('loadingScreen')?.remove();
                     const mainContent = document.getElementById('mainContent');
-                    
-                    if (loadingScreen) {
-                        loadingScreen.style.opacity = '0';
-                        setTimeout(() => {
-                            loadingScreen.style.display = 'none';
-                            if (mainContent) {
-                                mainContent.style.opacity = '1';
-                                this.renderDashboard();
-                            }
-                        }, 300);
+                    if (mainContent) {
+                        mainContent.style.opacity = '1';
+                        this.renderDashboard();
                     }
-                }, 200);
+                }
             }
 
             loadData() {
                 try {
-                    const savedExercises = localStorage.getItem('fittrack_exercises');
-                    const savedWorkouts = localStorage.getItem('fittrack_workouts');
-                    const savedMeasurements = localStorage.getItem('fittrack_measurements');
-                    const savedGoals = localStorage.getItem('fittrack_goals');
+                    if (this.isLocalStorageAvailable) {
+                        const savedExercises = localStorage.getItem('fittrack_exercises');
+                        const savedWorkouts = localStorage.getItem('fittrack_workouts');
+                        const savedMeasurements = localStorage.getItem('fittrack_measurements');
+                        const savedGoals = localStorage.getItem('fittrack_goals');
 
-                    if (savedExercises && savedWorkouts) {
-                        this.exercises = JSON.parse(savedExercises) || [];
-                        this.workouts = JSON.parse(savedWorkouts) || [];
-                        this.bodyMeasurements = JSON.parse(savedMeasurements || '[]') || [];
-                        this.goals = JSON.parse(savedGoals || '[]') || [];
+                        if (savedExercises && savedWorkouts) {
+                            this.exercises = JSON.parse(savedExercises) || [];
+                            this.workouts = JSON.parse(savedWorkouts) || [];
+                            this.bodyMeasurements = JSON.parse(savedMeasurements || '[]') || [];
+                            this.goals = JSON.parse(savedGoals || '[]') || [];
+                        } else {
+                            this.initializeSampleData();
+                        }
                     } else {
                         this.initializeSampleData();
                     }
@@ -770,13 +815,15 @@
 
             saveData() {
                 try {
-                    localStorage.setItem('fittrack_exercises', JSON.stringify(this.exercises));
-                    localStorage.setItem('fittrack_workouts', JSON.stringify(this.workouts));
-                    localStorage.setItem('fittrack_measurements', JSON.stringify(this.bodyMeasurements));
-                    localStorage.setItem('fittrack_goals', JSON.stringify(this.goals));
+                    if (this.isLocalStorageAvailable) {
+                        localStorage.setItem('fittrack_exercises', JSON.stringify(this.exercises));
+                        localStorage.setItem('fittrack_workouts', JSON.stringify(this.workouts));
+                        localStorage.setItem('fittrack_measurements', JSON.stringify(this.bodyMeasurements));
+                        localStorage.setItem('fittrack_goals', JSON.stringify(this.goals));
+                    }
                 } catch (e) {
                     console.warn('Could not save to localStorage:', e);
-                    this.showNotification('❌ Errore nel salvataggio dei dati', 'error');
+                    this.showNotification('Attenzione: i dati non possono essere salvati permanentemente', 'error');
                 }
             }
 
@@ -826,191 +873,242 @@
             }
 
             setupEventListeners() {
-                // Immediate button response
-                document.addEventListener('click', this.handleClick.bind(this), true);
-                document.addEventListener('input', this.handleInput.bind(this));
-                document.addEventListener('change', this.handleChange.bind(this));
+                try {
+                    // Improved event delegation
+                    document.addEventListener('click', this.handleClick.bind(this));
+                    document.addEventListener('input', this.handleInput.bind(this));
+                    document.addEventListener('change', this.handleChange.bind(this));
 
-                // Set default dates
-                const today = new Date().toISOString().split('T')[0];
-                const measurementDate = document.getElementById('measurementDate');
-                const goalDeadline = document.getElementById('goalDeadline');
-                if (measurementDate) measurementDate.value = today;
-                if (goalDeadline) goalDeadline.value = today;
+                    // Set default dates with error handling
+                    try {
+                        const today = new Date().toISOString().split('T')[0];
+                        const measurementDate = document.getElementById('measurementDate');
+                        const goalDeadline = document.getElementById('goalDeadline');
+                        if (measurementDate) measurementDate.value = today;
+                        if (goalDeadline) goalDeadline.value = today;
+                    } catch (dateError) {
+                        console.warn('Date setting error:', dateError);
+                    }
+                } catch (error) {
+                    console.error('Event listeners setup error:', error);
+                }
             }
 
             handleClick(event) {
-                const target = event.target.closest('button') || event.target;
-                
-                // Add immediate visual feedback
-                if (target.tagName === 'BUTTON' || target.closest('button')) {
-                    const btn = target.closest('button') || target;
-                    btn.style.transform = 'scale(0.98)';
-                    setTimeout(() => {
-                        btn.style.transform = '';
-                    }, 100);
-                }
+                try {
+                    const target = event.target.closest('button') || event.target;
+                    
+                    // Add immediate visual feedback
+                    if (target.tagName === 'BUTTON' || target.closest('button')) {
+                        const btn = target.closest('button') || target;
+                        btn.style.transform = 'scale(0.95)';
+                        setTimeout(() => {
+                            btn.style.transform = '';
+                        }, 100);
+                    }
 
-                // Handle button actions
-                if (target.classList?.contains('nav-btn') || target.dataset?.view) {
-                    const view = target.dataset.view;
-                    if (view) this.switchView(view);
-                    return;
-                }
+                    // Handle button actions
+                    if (target.classList?.contains('nav-btn') || target.dataset?.view) {
+                        const view = target.dataset.view;
+                        if (view) this.switchView(view);
+                        return;
+                    }
 
-                // Quick actions
-                if (target.dataset?.action) {
-                    const action = target.dataset.action;
-                    this.handleQuickAction(action);
-                    return;
-                }
+                    // Quick actions
+                    if (target.dataset?.action) {
+                        const action = target.dataset.action;
+                        this.handleQuickAction(action);
+                        return;
+                    }
 
-                // Specific button handlers
-                this.handleSpecificButtons(target);
+                    // Specific button handlers
+                    this.handleSpecificButtons(target);
+                } catch (error) {
+                    console.error('Click handler error:', error);
+                }
             }
 
             handleQuickAction(action) {
-                switch(action) {
-                    case 'exercises':
-                    case 'measurements':
-                    case 'goals':
-                        this.switchView(action);
-                        break;
-                    case 'export':
-                        this.exportData();
-                        break;
-                    case 'reset':
-                        this.showResetModal();
-                        break;
+                try {
+                    switch(action) {
+                        case 'exercises':
+                        case 'measurements':
+                        case 'goals':
+                            this.switchView(action);
+                            break;
+                        case 'export':
+                            this.exportData();
+                            break;
+                        case 'reset':
+                            this.showResetModal();
+                            break;
+                    }
+                } catch (error) {
+                    console.error('Quick action error:', error);
                 }
             }
 
             handleSpecificButtons(target) {
-                const id = target.id;
-                const action = target.dataset?.btnAction;
+                try {
+                    const id = target.id;
+                    const action = target.dataset?.btnAction;
 
-                switch(id) {
-                    case 'addExerciseBtn':
-                        this.addExercise();
-                        break;
-                    case 'addMeasurementBtn':
-                        this.addMeasurement();
-                        break;
-                    case 'addGoalBtn':
-                        this.addGoal();
-                        break;
-                    case 'exportBtn':
-                        this.exportData();
-                        break;
-                    case 'importBtn':
-                        document.getElementById('fileImport').click();
-                        break;
-                    case 'resetBtn':
-                        this.showResetModal();
-                        break;
-                    case 'cancelDeleteBtn':
-                        document.getElementById('deleteModal').classList.add('hidden');
-                        break;
-                    case 'confirmDeleteBtn':
-                        this.confirmDelete();
-                        break;
-                    case 'cancelResetBtn':
-                        document.getElementById('resetModal').classList.add('hidden');
-                        break;
-                    case 'confirmResetBtn':
-                        this.confirmReset();
-                        break;
-                }
+                    switch(id) {
+                        case 'addExerciseBtn':
+                            this.addExercise();
+                            break;
+                        case 'addMeasurementBtn':
+                            this.addMeasurement();
+                            break;
+                        case 'addGoalBtn':
+                            this.addGoal();
+                            break;
+                        case 'exportBtn':
+                            this.exportData();
+                            break;
+                        case 'importBtn':
+                            const fileInput = document.getElementById('fileImport');
+                            if (fileInput) fileInput.click();
+                            break;
+                        case 'resetBtn':
+                            this.showResetModal();
+                            break;
+                        case 'cancelDeleteBtn':
+                            this.hideModal('deleteModal');
+                            break;
+                        case 'confirmDeleteBtn':
+                            this.confirmDelete();
+                            break;
+                        case 'cancelResetBtn':
+                            this.hideModal('resetModal');
+                            break;
+                        case 'confirmResetBtn':
+                            this.confirmReset();
+                            break;
+                    }
 
-                // Handle delete buttons
-                if (action === 'delete') {
-                    const type = target.dataset.type;
-                    const id = target.dataset.itemId;
-                    this.showDeleteModal(type, id);
-                }
+                    // Handle delete buttons
+                    if (action === 'delete') {
+                        const type = target.dataset.type;
+                        const id = target.dataset.itemId;
+                        this.showDeleteModal(type, id);
+                    }
 
-                // Handle workout add buttons
-                if (action === 'add-workout') {
-                    const exerciseId = parseInt(target.dataset.exerciseId);
-                    this.addWorkout(exerciseId);
+                    // Handle workout add buttons
+                    if (action === 'add-workout') {
+                        const exerciseId = parseInt(target.dataset.exerciseId);
+                        this.addWorkout(exerciseId);
+                    }
+                } catch (error) {
+                    console.error('Specific button handler error:', error);
                 }
             }
 
             handleInput(event) {
-                const target = event.target;
+                try {
+                    const target = event.target;
 
-                // Debounced search
-                if (target.id === 'searchExercises') {
-                    this.debounce(() => this.renderExercises(), 200, 'search')();
+                    // Debounced search
+                    if (target.id === 'searchExercises') {
+                        this.debounce(() => this.renderExercises(), 200, 'search')();
+                    }
+                } catch (error) {
+                    console.error('Input handler error:', error);
                 }
             }
 
             handleChange(event) {
-                const target = event.target;
+                try {
+                    const target = event.target;
 
-                switch(target.id) {
-                    case 'fileImport':
-                        this.importData(event);
-                        break;
-                    case 'filterCategory':
-                        this.renderExercises();
-                        break;
-                    case 'progressExerciseSelect':
-                    case 'progressTimeRange':
-                        this.renderExerciseDetailChart();
-                        break;
-                    case 'measurementChartType':
-                        this.renderMeasurementChart();
-                        break;
+                    switch(target.id) {
+                        case 'fileImport':
+                            this.importData(event);
+                            break;
+                        case 'filterCategory':
+                            this.renderExercises();
+                            break;
+                        case 'progressExerciseSelect':
+                        case 'progressTimeRange':
+                            this.renderExerciseDetailChart();
+                            break;
+                        case 'measurementChartType':
+                            this.renderMeasurementChart();
+                            break;
+                    }
+                } catch (error) {
+                    console.error('Change handler error:', error);
+                }
+            }
+
+            hideModal(modalId) {
+                try {
+                    const modal = document.getElementById(modalId);
+                    if (modal) modal.classList.add('hidden');
+                } catch (error) {
+                    console.error('Hide modal error:', error);
                 }
             }
 
             switchView(view) {
-                // Update navigation
-                document.querySelectorAll('.nav-btn').forEach(btn => {
-                    btn.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-purple-600', 'text-white', 'shadow-lg');
-                    btn.classList.add('hover:bg-slate-700/50', 'text-gray-300', 'hover:text-white');
-                });
+                try {
+                    // Update navigation with error handling
+                    document.querySelectorAll('.nav-btn').forEach(btn => {
+                        btn.classList.remove('bg-gradient-to-r', 'from-blue-600', 'to-purple-600', 'text-white', 'shadow-lg');
+                        btn.classList.add('hover:bg-slate-700/50', 'text-gray-300', 'hover:text-white');
+                    });
 
-                const activeBtn = document.querySelector(`[data-view="${view}"]`);
-                if (activeBtn) {
-                    activeBtn.classList.remove('hover:bg-slate-700/50', 'text-gray-300', 'hover:text-white');
-                    activeBtn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-purple-600', 'text-white', 'shadow-lg');
-                }
-
-                // Update content
-                document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
-                const targetView = document.getElementById(view + 'View');
-                if (targetView) targetView.classList.add('active');
-
-                this.currentView = view;
-
-                // Render appropriate content
-                setTimeout(() => {
-                    switch(view) {
-                        case 'dashboard':
-                            this.renderDashboard();
-                            break;
-                        case 'exercises':
-                            this.renderExercises();
-                            break;
-                        case 'progress':
-                            this.renderProgress();
-                            break;
-                        case 'measurements':
-                            this.renderMeasurements();
-                            break;
-                        case 'goals':
-                            this.renderGoals();
-                            break;
+                    const activeBtn = document.querySelector(`[data-view="${view}"]`);
+                    if (activeBtn) {
+                        activeBtn.classList.remove('hover:bg-slate-700/50', 'text-gray-300', 'hover:text-white');
+                        activeBtn.classList.add('bg-gradient-to-r', 'from-blue-600', 'to-purple-600', 'text-white', 'shadow-lg');
                     }
-                }, 50);
+
+                    // Update content
+                    document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+                    const targetView = document.getElementById(view + 'View');
+                    if (targetView) targetView.classList.add('active');
+
+                    this.currentView = view;
+
+                    // Render appropriate content with timeout for smooth transition
+                    setTimeout(() => {
+                        try {
+                            switch(view) {
+                                case 'dashboard':
+                                    this.renderDashboard();
+                                    break;
+                                case 'exercises':
+                                    this.renderExercises();
+                                    break;
+                                case 'progress':
+                                    this.renderProgress();
+                                    break;
+                                case 'measurements':
+                                    this.renderMeasurements();
+                                    break;
+                                case 'goals':
+                                    this.renderGoals();
+                                    break;
+                            }
+                        } catch (renderError) {
+                            console.error('Render error for view:', view, renderError);
+                        }
+                    }, 50);
+                } catch (error) {
+                    console.error('Switch view error:', error);
+                }
             }
 
             renderDashboard() {
-                this.renderStatsCards();
-                this.renderTopImprovements();
-                this.renderRecentActivity();
+                try {
+                    this.renderStatsCards();
+                    this.renderTopImprovements();
+                    this.renderRecentActivity();
+                } catch (error) {
+                    console.error('Dashboard render error:', error);
+                    this.showNotification('Errore nel caricamento della dashboard', 'error');
+                }
             }
 
             renderStatsCards() {
@@ -1040,7 +1138,7 @@
                         `).join('');
                     }
                 } catch (error) {
-                    console.error('Error rendering stats cards:', error);
+                    console.error('Stats cards render error:', error);
                 }
             }
 
@@ -1050,23 +1148,28 @@
                     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30);
                     
                     const improvements = this.exercises.map(exercise => {
-                        const exerciseWorkouts = this.workouts
-                            .filter(w => w.exerciseId === exercise.id && new Date(w.date) >= thirtyDaysAgo)
-                            .sort((a, b) => new Date(a.date) - new Date(b.date));
+                        try {
+                            const exerciseWorkouts = this.workouts
+                                .filter(w => w.exerciseId === exercise.id && new Date(w.date) >= thirtyDaysAgo)
+                                .sort((a, b) => new Date(a.date) - new Date(b.date));
+                                
+                            if (exerciseWorkouts.length < 2) return null;
                             
-                        if (exerciseWorkouts.length < 2) return null;
-                        
-                        const first = exerciseWorkouts[0];
-                        const last = exerciseWorkouts[exerciseWorkouts.length - 1];
-                        const improvement = last.weight - first.weight;
-                        
-                        return {
-                            exercise: exercise.name,
-                            improvement,
-                            percentage: ((improvement / first.weight) * 100).toFixed(1),
-                            from: first.weight,
-                            to: last.weight
-                        };
+                            const first = exerciseWorkouts[0];
+                            const last = exerciseWorkouts[exerciseWorkouts.length - 1];
+                            const improvement = last.weight - first.weight;
+                            
+                            return {
+                                exercise: exercise.name,
+                                improvement,
+                                percentage: ((improvement / first.weight) * 100).toFixed(1),
+                                from: first.weight,
+                                to: last.weight
+                            };
+                        } catch (exerciseError) {
+                            console.warn('Exercise improvement calculation error:', exerciseError);
+                            return null;
+                        }
                     })
                     .filter(item => item && item.improvement > 0)
                     .sort((a, b) => b.improvement - a.improvement)
@@ -1107,7 +1210,7 @@
                         </div>
                     `).join('');
                 } catch (error) {
-                    console.error('Error rendering top improvements:', error);
+                    console.error('Top improvements render error:', error);
                 }
             }
 
@@ -1141,7 +1244,7 @@
                         </div>
                     `).join('');
                 } catch (error) {
-                    console.error('Error rendering recent activity:', error);
+                    console.error('Recent activity render error:', error);
                 }
             }
 
@@ -1195,68 +1298,73 @@
                     };
 
                     container.innerHTML = filtered.map(exercise => {
-                        const exerciseWorkouts = this.workouts.filter(w => w.exerciseId === exercise.id);
-                        const maxWeight = exerciseWorkouts.length > 0 ? Math.max(...exerciseWorkouts.map(w => w.weight || 0)) : 0;
-                        const latestWorkout = exerciseWorkouts.length > 0 ? 
-                            exerciseWorkouts.sort((a, b) => new Date(b.date) - new Date(a.date))[0] : null;
+                        try {
+                            const exerciseWorkouts = this.workouts.filter(w => w.exerciseId === exercise.id);
+                            const maxWeight = exerciseWorkouts.length > 0 ? Math.max(...exerciseWorkouts.map(w => w.weight || 0)) : 0;
+                            const latestWorkout = exerciseWorkouts.length > 0 ? 
+                                exerciseWorkouts.sort((a, b) => new Date(b.date) - new Date(a.date))[0] : null;
 
-                        return `
-                            <div class="glass-effect rounded-2xl p-6 card-hover relative group">
-                                <div class="absolute -top-2 -right-2 px-3 py-1 rounded-full text-xs font-bold shadow-lg category-${exercise.category} text-white">
-                                    ${categoryEmojis[exercise.category]} ${exercise.category}
-                                </div>
+                            return `
+                                <div class="glass-effect rounded-2xl p-6 card-hover relative group">
+                                    <div class="absolute -top-2 -right-2 px-3 py-1 rounded-full text-xs font-bold shadow-lg category-${exercise.category} text-white">
+                                        ${categoryEmojis[exercise.category] || '💪'} ${exercise.category}
+                                    </div>
 
-                                <div class="flex items-start justify-between mb-4">
-                                    <div class="flex items-center">
-                                        <div class="text-3xl mr-3">
-                                            ${categoryEmojis[exercise.category]}
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div class="flex items-center">
+                                            <div class="text-3xl mr-3">
+                                                ${categoryEmojis[exercise.category] || '💪'}
+                                            </div>
+                                            <div>
+                                                <h4 class="text-white font-bold text-lg">${exercise.name}</h4>
+                                                <p class="text-gray-400 text-sm">${exercise.muscleGroup || 'Non specificato'}</p>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <h4 class="text-white font-bold text-lg">${exercise.name}</h4>
-                                            <p class="text-gray-400 text-sm">${exercise.muscleGroup || 'Non specificato'}</p>
-                                        </div>
+                                        
+                                        <button class="delete-btn opacity-0 group-hover:opacity-100 smooth-transition font-semibold rounded-lg bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg btn-fast" data-btn-action="delete" data-type="exercise" data-item-id="${exercise.id}">
+                                            <div class="text-lg">🗑️</div>
+                                        </button>
                                     </div>
                                     
-                                    <button class="delete-btn opacity-0 group-hover:opacity-100 smooth-transition font-semibold rounded-lg bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800 text-white shadow-lg btn-fast" data-btn-action="delete" data-type="exercise" data-item-id="${exercise.id}">
-                                        <div class="text-lg">🗑️</div>
-                                    </button>
-                                </div>
-                                
-                                <div class="space-y-3 mb-4">
-                                    <div class="flex justify-between items-center p-3 glass-effect rounded-lg">
-                                        <span class="text-gray-400 text-sm font-medium">💪 Peso Massimo</span>
-                                        <span class="text-blue-400 font-bold text-lg">${maxWeight}kg</span>
-                                    </div>
-                                    ${latestWorkout ? `
+                                    <div class="space-y-3 mb-4">
                                         <div class="flex justify-between items-center p-3 glass-effect rounded-lg">
-                                            <span class="text-gray-400 text-sm font-medium">📅 Ultimo Allenamento</span>
-                                            <span class="text-green-400 font-semibold text-sm">${this.formatDate(latestWorkout.date)}</span>
+                                            <span class="text-gray-400 text-sm font-medium">💪 Peso Massimo</span>
+                                            <span class="text-blue-400 font-bold text-lg">${maxWeight}kg</span>
                                         </div>
-                                    ` : ''}
-                                </div>
-
-                                <div class="border-t border-slate-700/50 pt-4">
-                                    <h5 class="text-white font-semibold mb-3 flex items-center">
-                                        <div class="text-lg mr-2">➕</div>
-                                        Aggiungi Carico
-                                    </h5>
-                                    <div class="grid grid-cols-3 gap-2 mb-3">
-                                        <input type="number" placeholder="Peso" class="input-enhanced glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition placeholder-gray-400" id="weight-${exercise.id}">
-                                        <input type="number" placeholder="Serie" class="input-enhanced glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition placeholder-gray-400" id="sets-${exercise.id}">
-                                        <input type="number" placeholder="Reps" class="input-enhanced glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition placeholder-gray-400" id="reps-${exercise.id}">
+                                        ${latestWorkout ? `
+                                            <div class="flex justify-between items-center p-3 glass-effect rounded-lg">
+                                                <span class="text-gray-400 text-sm font-medium">📅 Ultimo Allenamento</span>
+                                                <span class="text-green-400 font-semibold text-sm">${this.formatDate(latestWorkout.date)}</span>
+                                            </div>
+                                        ` : ''}
                                     </div>
-                                    <input type="date" value="${new Date().toISOString().split('T')[0]}" class="input-enhanced glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition w-full mb-3" id="date-${exercise.id}">
-                                    
-                                    <button class="w-full flex items-center justify-center space-x-2 px-4 py-3 text-sm font-semibold rounded-lg btn-fast bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg btn-pulse" data-btn-action="add-workout" data-exercise-id="${exercise.id}">
-                                        <div class="text-lg">✅</div>
-                                        <span>Salva Carico</span>
-                                    </button>
+
+                                    <div class="border-t border-slate-700/50 pt-4">
+                                        <h5 class="text-white font-semibold mb-3 flex items-center">
+                                            <div class="text-lg mr-2">➕</div>
+                                            Aggiungi Carico
+                                        </h5>
+                                        <div class="grid grid-cols-3 gap-2 mb-3">
+                                            <input type="number" placeholder="Peso" class="input-enhanced glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition placeholder-gray-400" id="weight-${exercise.id}">
+                                            <input type="number" placeholder="Serie" class="input-enhanced glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition placeholder-gray-400" id="sets-${exercise.id}">
+                                            <input type="number" placeholder="Reps" class="input-enhanced glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition placeholder-gray-400" id="reps-${exercise.id}">
+                                        </div>
+                                        <input type="date" value="${new Date().toISOString().split('T')[0]}" class="input-enhanced glass-effect text-white p-2 text-sm rounded-lg border border-slate-600/50 focus:border-blue-500 focus:outline-none smooth-transition w-full mb-3" id="date-${exercise.id}">
+                                        
+                                        <button class="w-full flex items-center justify-center space-x-2 px-4 py-3 text-sm font-semibold rounded-lg btn-fast bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white shadow-lg btn-pulse" data-btn-action="add-workout" data-exercise-id="${exercise.id}">
+                                            <div class="text-lg">✅</div>
+                                            <span>Salva Carico</span>
+                                        </button>
+                                    </div>
                                 </div>
-                            </div>
-                        `;
+                            `;
+                        } catch (exerciseRenderError) {
+                            console.warn('Exercise render error:', exerciseRenderError);
+                            return '';
+                        }
                     }).join('');
                 } catch (error) {
-                    console.error('Error rendering exercises:', error);
+                    console.error('Exercises render error:', error);
                 }
             }
 
@@ -1269,16 +1377,21 @@
                         }, 100);
                     } else {
                         console.warn('Chart.js not available');
+                        this.showNotification('Grafici non disponibili - Chart.js non caricato', 'error');
                     }
                 } catch (error) {
-                    console.error('Progress rendering error:', error);
+                    console.error('Progress render error:', error);
                 }
             }
 
             renderProgressCharts() {
-                this.renderWeightProgressChart();
-                this.renderVolumeProgressChart();
-                this.renderExerciseDetailChart();
+                try {
+                    this.renderWeightProgressChart();
+                    this.renderVolumeProgressChart();
+                    this.renderExerciseDetailChart();
+                } catch (error) {
+                    console.error('Progress charts render error:', error);
+                }
             }
 
             renderWeightProgressChart() {
@@ -1429,333 +1542,1023 @@
                             `<option value="${e.id}">${e.name}</option>`
                         ).join('');
                 } catch (error) {
-                    console.error('Populate select error:', error);
+                    console.error('Populate exercise select error:', error);
                 }
             }
 
             renderExerciseDetailChart() {
-                const exerciseSelect = document.getElementById('progressExerciseSelect');
-                const timeRangeSelect = document.getElementById('progressTimeRange');
-                
-                const exerciseId = exerciseSelect ? exerciseSelect.value : '';
-                const timeRange = timeRangeSelect ? timeRangeSelect.value : '30';
-                
-                const ctx = document.getElementById('exerciseDetailChart');
-                if (!ctx) return;
-                
-                if (!exerciseId) {
+                try {
+                    const exerciseSelect = document.getElementById('progressExerciseSelect');
+                    const timeRangeSelect = document.getElementById('progressTimeRange');
+                    
+                    const exerciseId = exerciseSelect ? exerciseSelect.value : '';
+                    const timeRange = timeRangeSelect ? timeRangeSelect.value : '30';
+                    
+                    const ctx = document.getElementById('exerciseDetailChart');
+                    if (!ctx) return;
+                    
+                    if (!exerciseId) {
+                        if (this.charts.exerciseDetail) {
+                            this.charts.exerciseDetail.destroy();
+                            delete this.charts.exerciseDetail;
+                        }
+                        const context = ctx.getContext('2d');
+                        if (context) {
+                            context.clearRect(0, 0, ctx.width, ctx.height);
+                        }
+                        return;
+                    }
+
                     if (this.charts.exerciseDetail) {
                         this.charts.exerciseDetail.destroy();
-                        delete this.charts.exerciseDetail;
                     }
-                    ctx.getContext('2d').clearRect(0, 0, ctx.width, ctx.height);
-                    return;
-                }
 
-                if (this.charts.exerciseDetail) {
-                    this.charts.exerciseDetail.destroy();
-                }
+                    let filteredWorkouts = this.workouts.filter(w => w.exerciseId == exerciseId);
+                    
+                    if (timeRange !== 'all') {
+                        const daysAgo = new Date();
+                        daysAgo.setDate(daysAgo.getDate() - parseInt(timeRange));
+                        filteredWorkouts = filteredWorkouts.filter(w => new Date(w.date) >= daysAgo);
+                    }
 
-                let filteredWorkouts = this.workouts.filter(w => w.exerciseId == exerciseId);
-                
-                if (timeRange !== 'all') {
-                    const daysAgo = new Date();
-                    daysAgo.setDate(daysAgo.getDate() - parseInt(timeRange));
-                    filteredWorkouts = filteredWorkouts.filter(w => new Date(w.date) >= daysAgo);
-                }
+                    filteredWorkouts.sort((a, b) => new Date(a.date) - new Date(b.date));
 
-                filteredWorkouts.sort((a, b) => new Date(a.date) - new Date(b.date));
+                    const exercise = this.exercises.find(e => e.id == exerciseId);
 
-                const exercise = this.exercises.find(e => e.id == exerciseId);
-
-                this.charts.exerciseDetail = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: filteredWorkouts.map(w => this.formatDate(w.date)),
-                        datasets: [{
-                            label: 'Peso (kg)',
-                            data: filteredWorkouts.map(w => w.weight),
-                            borderColor: 'rgba(59, 130, 246, 1)',
-                            backgroundColor: 'rgba(59, 130, 246, 0.1)',
-                            borderWidth: 3,
-                            fill: true,
-                            tension: 0.4,
-                            pointBackgroundColor: 'rgba(59, 130, 246, 1)',
-                            pointBorderColor: '#ffffff',
-                            pointBorderWidth: 2,
-                            pointRadius: 6,
-                            pointHoverRadius: 8
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        animation: {
-                            duration: 500,
-                            easing: 'easeOutQuart'
+                    this.charts.exerciseDetail = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: filteredWorkouts.map(w => this.formatDate(w.date)),
+                            datasets: [{
+                                label: 'Peso (kg)',
+                                data: filteredWorkouts.map(w => w.weight),
+                                borderColor: 'rgba(59, 130, 246, 1)',
+                                backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4,
+                                pointBackgroundColor: 'rgba(59, 130, 246, 1)',
+                                pointBorderColor: '#ffffff',
+                                pointBorderWidth: 2,
+                                pointRadius: 6,
+                                pointHoverRadius: 8
+                            }]
                         },
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: exercise ? `📈 Progressione - ${exercise.name}` : '📈 Progressione Esercizio',
-                                color: '#ffffff',
-                                font: { size: 16, weight: 'bold' }
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            animation: {
+                                duration: 500,
+                                easing: 'easeOutQuart'
                             },
-                            legend: { display: false }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: false,
-                                ticks: { 
-                                    color: '#94a3b8',
-                                    callback: function(value) {
-                                        return value + 'kg';
-                                    }
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: exercise ? `📈 Progressione - ${exercise.name}` : '📈 Progressione Esercizio',
+                                    color: '#ffffff',
+                                    font: { size: 16, weight: 'bold' }
                                 },
-                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                                legend: { display: false }
                             },
-                            x: {
-                                ticks: { color: '#94a3b8', maxRotation: 45 },
-                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                            scales: {
+                                y: {
+                                    beginAtZero: false,
+                                    ticks: { 
+                                        color: '#94a3b8',
+                                        callback: function(value) {
+                                            return value + 'kg';
+                                        }
+                                    },
+                                    grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                                },
+                                x: {
+                                    ticks: { color: '#94a3b8', maxRotation: 45 },
+                                    grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                } catch (error) {
+                    console.error('Exercise detail chart error:', error);
+                }
             }
 
             renderMeasurements() {
-                this.renderMeasurementsList();
-                this.populateMeasurementChartTypes();
+                try {
+                    this.renderMeasurementsList();
+                    this.populateMeasurementChartTypes();
+                } catch (error) {
+                    console.error('Measurements render error:', error);
+                }
             }
 
             populateMeasurementChartTypes() {
-                const select = document.getElementById('measurementChartType');
-                if (!select) return;
-                
-                const types = [...new Set(this.bodyMeasurements.map(m => m.type))];
-                
-                const typeLabels = {
-                    peso: '⚖️ Peso (kg)',
-                    altezza: '📏 Altezza (cm)',
-                    petto: '💪 Petto (cm)',
-                    vita: '🎯 Vita (cm)',
-                    fianchi: '🍑 Fianchi (cm)',
-                    braccio_dx: '💪 Braccio Dx (cm)',
-                    braccio_sx: '💪 Braccio Sx (cm)',
-                    coscia_dx: '🦵 Coscia Dx (cm)',
-                    coscia_sx: '🦵 Coscia Sx (cm)',
-                    bf_percentage: '📊 Massa Grassa (%)'
-                };
+                try {
+                    const select = document.getElementById('measurementChartType');
+                    if (!select) return;
+                    
+                    const types = [...new Set(this.bodyMeasurements.map(m => m.type))];
+                    
+                    const typeLabels = {
+                        peso: '⚖️ Peso (kg)',
+                        altezza: '📏 Altezza (cm)',
+                        petto: '💪 Petto (cm)',
+                        vita: '🎯 Vita (cm)',
+                        fianchi: '🍑 Fianchi (cm)',
+                        braccio_dx: '💪 Braccio Dx (cm)',
+                        braccio_sx: '💪 Braccio Sx (cm)',
+                        coscia_dx: '🦵 Coscia Dx (cm)',
+                        coscia_sx: '🦵 Coscia Sx (cm)',
+                        bf_percentage: '📊 Massa Grassa (%)'
+                    };
 
-                select.innerHTML = '<option value="">Seleziona tipo di misurazione...</option>' +
-                    types.map(type => 
-                        `<option value="${type}">${typeLabels[type] || type}</option>`
-                    ).join('');
+                    select.innerHTML = '<option value="">Seleziona tipo di misurazione...</option>' +
+                        types.map(type => 
+                            `<option value="${type}">${typeLabels[type] || type}</option>`
+                        ).join('');
+                } catch (error) {
+                    console.error('Populate measurement chart types error:', error);
+                }
             }
 
             renderMeasurementChart() {
-                const measurementTypeSelect = document.getElementById('measurementChartType');
-                const measurementType = measurementTypeSelect ? measurementTypeSelect.value : '';
-                
-                const ctx = document.getElementById('measurementChart');
-                if (!ctx || !measurementType) {
+                try {
+                    const measurementTypeSelect = document.getElementById('measurementChartType');
+                    const measurementType = measurementTypeSelect ? measurementTypeSelect.value : '';
+                    
+                    const ctx = document.getElementById('measurementChart');
+                    if (!ctx || !measurementType) {
+                        if (this.charts.measurement) {
+                            this.charts.measurement.destroy();
+                            delete this.charts.measurement;
+                        }
+                        return;
+                    }
+
                     if (this.charts.measurement) {
                         this.charts.measurement.destroy();
-                        delete this.charts.measurement;
                     }
-                    return;
-                }
 
-                if (this.charts.measurement) {
-                    this.charts.measurement.destroy();
-                }
+                    const measurements = this.bodyMeasurements
+                        .filter(m => m.type === measurementType)
+                        .sort((a, b) => new Date(a.date) - new Date(b.date));
 
-                const measurements = this.bodyMeasurements
-                    .filter(m => m.type === measurementType)
-                    .sort((a, b) => new Date(a.date) - new Date(b.date));
+                    const typeLabels = {
+                        peso: '⚖️ Peso (kg)',
+                        altezza: '📏 Altezza (cm)',
+                        petto: '💪 Petto (cm)',
+                        vita: '🎯 Vita (cm)',
+                        fianchi: '🍑 Fianchi (cm)',
+                        braccio_dx: '💪 Braccio Dx (cm)',
+                        braccio_sx: '💪 Braccio Sx (cm)',
+                        coscia_dx: '🦵 Coscia Dx (cm)',
+                        coscia_sx: '🦵 Coscia Sx (cm)',
+                        bf_percentage: '📊 Massa Grassa (%)'
+                    };
 
-                const typeLabels = {
-                    peso: '⚖️ Peso (kg)',
-                    altezza: '📏 Altezza (cm)',
-                    petto: '💪 Petto (cm)',
-                    vita: '🎯 Vita (cm)',
-                    fianchi: '🍑 Fianchi (cm)',
-                    braccio_dx: '💪 Braccio Dx (cm)',
-                    braccio_sx: '💪 Braccio Sx (cm)',
-                    coscia_dx: '🦵 Coscia Dx (cm)',
-                    coscia_sx: '🦵 Coscia Sx (cm)',
-                    bf_percentage: '📊 Massa Grassa (%)'
-                };
-
-                this.charts.measurement = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: measurements.map(m => this.formatDate(m.date)),
-                        datasets: [{
-                            label: typeLabels[measurementType],
-                            data: measurements.map(m => m.value),
-                            borderColor: 'rgba(139, 92, 246, 1)',
-                            backgroundColor: 'rgba(139, 92, 246, 0.1)',
-                            borderWidth: 3,
-                            fill: true,
-                            tension: 0.4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        animation: {
-                            duration: 500,
-                            easing: 'easeOutQuart'
+                    this.charts.measurement = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: measurements.map(m => this.formatDate(m.date)),
+                            datasets: [{
+                                label: typeLabels[measurementType],
+                                data: measurements.map(m => m.value),
+                                borderColor: 'rgba(139, 92, 246, 1)',
+                                backgroundColor: 'rgba(139, 92, 246, 0.1)',
+                                borderWidth: 3,
+                                fill: true,
+                                tension: 0.4
+                            }]
                         },
-                        plugins: {
-                            title: {
-                                display: true,
-                                text: `📈 Andamento - ${typeLabels[measurementType]}`,
-                                color: '#ffffff',
-                                font: { size: 16, weight: 'bold' }
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            animation: {
+                                duration: 500,
+                                easing: 'easeOutQuart'
                             },
-                            legend: { display: false }
-                        },
-                        scales: {
-                            y: {
-                                beginAtZero: measurementType !== 'peso',
-                                ticks: { color: '#94a3b8' },
-                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: `📈 Andamento - ${typeLabels[measurementType]}`,
+                                    color: '#ffffff',
+                                    font: { size: 16, weight: 'bold' }
+                                },
+                                legend: { display: false }
                             },
-                            x: {
-                                ticks: { color: '#94a3b8', maxRotation: 45 },
-                                grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                            scales: {
+                                y: {
+                                    beginAtZero: measurementType !== 'peso',
+                                    ticks: { color: '#94a3b8' },
+                                    grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                                },
+                                x: {
+                                    ticks: { color: '#94a3b8', maxRotation: 45 },
+                                    grid: { color: 'rgba(148, 163, 184, 0.1)' }
+                                }
                             }
                         }
-                    }
-                });
+                    });
+                } catch (error) {
+                    console.error('Measurement chart error:', error);
+                }
             }
 
             renderMeasurementsList() {
-                const container = document.getElementById('measurementsList');
-                if (!container) return;
-                
-                const sortedMeasurements = this.bodyMeasurements
-                    .sort((a, b) => new Date(b.date) - new Date(a.date))
-                    .slice(0, 15);
+                try {
+                    const container = document.getElementById('measurementsList');
+                    if (!container) return;
+                    
+                    const sortedMeasurements = this.bodyMeasurements
+                        .sort((a, b) => new Date(b.date) - new Date(a.date))
+                        .slice(0, 15);
 
-                if (sortedMeasurements.length === 0) {
-                    container.innerHTML = '<p class="text-gray-400 text-center py-8">📏 Nessuna misurazione registrata</p>';
-                    return;
-                }
+                    if (sortedMeasurements.length === 0) {
+                        container.innerHTML = '<p class="text-gray-400 text-center py-8">📏 Nessuna misurazione registrata</p>';
+                        return;
+                    }
 
-                const typeLabels = {
-                    peso: '⚖️ Peso',
-                    altezza: '📏 Altezza', 
-                    petto: '💪 Petto',
-                    vita: '🎯 Vita',
-                    fianchi: '🍑 Fianchi',
-                    braccio_dx: '💪 Braccio Dx',
-                    braccio_sx: '💪 Braccio Sx',
-                    coscia_dx: '🦵 Coscia Dx',
-                    coscia_sx: '🦵 Coscia Sx',
-                    bf_percentage: '📊 Massa Grassa'
-                };
-
-                container.innerHTML = sortedMeasurements.map(measurement => `
-                    <div class="flex items-center justify-between p-4 glass-effect rounded-xl hover:bg-slate-700/30 btn-fast card-hover">
-                        <div class="flex items-center space-x-3">
-                            <div class="text-2xl">📏</div>
-                            <div>
-                                <h4 class="text-white font-semibold">${typeLabels[measurement.type] || measurement.type}</h4>
-                                <p class="text-gray-400 text-sm">📅 ${this.formatDate(measurement.date)}</p>
-                            </div>
-                        </div>
-                        <div class="text-right flex items-center space-x-2">
-                            <p class="text-purple-400 font-bold">${measurement.value}${measurement.type === 'peso' ? 'kg' : measurement.type === 'bf_percentage' ? '%' : 'cm'}</p>
-                            <button class="delete-btn text-red-400 hover:text-red-300 btn-fast" data-btn-action="delete" data-type="measurement" data-item-id="${measurement.id}">
-                                <div class="text-lg">🗑️</div>
-                            </button>
-                        </div>
-                    </div>
-                `).join('');
-            }
-
-            renderGoals() {
-                const container = document.getElementById('goalsList');
-                if (!container) return;
-                
-                if (this.goals.length === 0) {
-                    container.innerHTML = `
-                        <div class="col-span-full glass-effect rounded-2xl p-8 card-hover text-center py-12">
-                            <div class="space-y-4">
-                                <div class="text-6xl">🎯</div>
-                                <h3 class="text-xl font-semibold text-gray-300">Nessun obiettivo definito</h3>
-                                <p class="text-gray-500">Inizia aggiungendo i tuoi primi traguardi!</p>
-                            </div>
-                        </div>
-                    `;
-                    return;
-                }
-
-                container.innerHTML = this.goals.map(goal => {
-                    const progress = this.calculateGoalProgress(goal);
-                    const daysLeft = Math.ceil((new Date(goal.deadline) - new Date()) / (1000 * 60 * 60 * 24));
-                    const isOverdue = daysLeft < 0;
-                    const isCompleted = progress >= 100;
-
-                    const typeEmojis = {
-                        weight: '🏋️',
-                        reps: '🔄',
-                        body_weight: '⚖️',
-                        body_measurement: '📏',
-                        time: '⏱️',
-                        distance: '🏃'
+                    const typeLabels = {
+                        peso: '⚖️ Peso',
+                        altezza: '📏 Altezza', 
+                        petto: '💪 Petto',
+                        vita: '🎯 Vita',
+                        fianchi: '🍑 Fianchi',
+                        braccio_dx: '💪 Braccio Dx',
+                        braccio_sx: '💪 Braccio Sx',
+                        coscia_dx: '🦵 Coscia Dx',
+                        coscia_sx: '🦵 Coscia Sx',
+                        bf_percentage: '📊 Massa Grassa'
                     };
 
-                    return `
-                        <div class="glass-effect rounded-2xl p-6 card-hover relative overflow-hidden">
-                            ${isCompleted ? `
-                                <div class="absolute top-4 right-4 p-2 bg-green-500/20 rounded-full">
-                                    <div class="text-2xl">✅</div>
+                    container.innerHTML = sortedMeasurements.map(measurement => `
+                        <div class="flex items-center justify-between p-4 glass-effect rounded-xl hover:bg-slate-700/30 btn-fast card-hover">
+                            <div class="flex items-center space-x-3">
+                                <div class="text-2xl">📏</div>
+                                <div>
+                                    <h4 class="text-white font-semibold">${typeLabels[measurement.type] || measurement.type}</h4>
+                                    <p class="text-gray-400 text-sm">📅 ${this.formatDate(measurement.date)}</p>
                                 </div>
-                            ` : ''}
-                            
-                            <div class="flex items-start justify-between mb-4">
-                                <div class="flex items-center space-x-3">
-                                    <div class="text-3xl">${typeEmojis[goal.type] || '🎯'}</div>
-                                    <div>
-                                        <h4 class="text-white font-bold text-lg">${goal.target}</h4>
-                                        <p class="text-gray-400 text-sm">
-                                            ${isOverdue ? '⏰ Scaduto' : isCompleted ? '🎉 Completato!' : `⏳ ${daysLeft} giorni rimasti`}
-                                        </p>
-                                    </div>
-                                </div>
-                                <button class="delete-btn text-red-400 hover:text-red-300 btn-fast" data-btn-action="delete" data-type="goal" data-item-id="${goal.id}">
+                            </div>
+                            <div class="text-right flex items-center space-x-2">
+                                <p class="text-purple-400 font-bold">${measurement.value}${measurement.type === 'peso' ? 'kg' : measurement.type === 'bf_percentage' ? '%' : 'cm'}</p>
+                                <button class="delete-btn text-red-400 hover:text-red-300 btn-fast" data-btn-action="delete" data-type="measurement" data-item-id="${measurement.id}">
                                     <div class="text-lg">🗑️</div>
                                 </button>
                             </div>
-
-                            <div class="space-y-3 mb-4">
-                                <div class="flex justify-between items-center">
-                                    <span class="text-gray-400 text-sm">📊 Progressi</span>
-                                    <span class="text-white font-semibold">${progress.toFixed(1)}%</span>
-                                </div>
-                                <div class="w-full bg-gray-700 rounded-full h-3">
-                                    <div class="${isCompleted ? 'bg-green-500' : 'progress-bar'} h-3 rounded-full" style="width: ${Math.min(progress, 100)}%"></div>
-                                </div>
-                                <div class="flex justify-between items-center text-sm">
-                                    <span class="text-gray-500">📍 Attuale: ${goal.current || 0}</span>
-                                    <span class="text-gray-500">🎯 Target: ${goal.value}</span>
-                                </div>
-                            </div>
-
-                            <div class="text-right">
-                                <p class="text-gray-400 text-sm">📅 Scadenza: ${this.formatDate(goal.deadline)}</p>
-                            </div>
                         </div>
-                    `;
-                }).join('');
+                    `).join('');
+                } catch (error) {
+                    console.error('Measurements list render error:', error);
+                }
+            }
+
+            renderGoals() {
+                try {
+                    const container = document.getElementById('goalsList');
+                    if (!container) return;
+                    
+                    if (this.goals.length === 0) {
+                        container.innerHTML = `
+                            <div class="col-span-full glass-effect rounded-2xl p-8 card-hover text-center py-12">
+                                <div class="space-y-4">
+                                    <div class="text-6xl">🎯</div>
+                                    <h3 class="text-xl font-semibold text-gray-300">Nessun obiettivo definito</h3>
+                                    <p class="text-gray-500">Inizia aggiungendo i tuoi primi traguardi!</p>
+                                </div>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    container.innerHTML = this.goals.map(goal => {
+                        try {
+                            const progress = this.calculateGoalProgress(goal);
+                            const daysLeft = Math.ceil((new Date(goal.deadline) - new Date()) / (1000 * 60 * 60 * 24));
+                            const isOverdue = daysLeft < 0;
+                            const isCompleted = progress >= 100;
+
+                            const typeEmojis = {
+                                weight: '🏋️',
+                                reps: '🔄',
+                                body_weight: '⚖️',
+                                body_measurement: '📏',
+                                time: '⏱️',
+                                distance: '🏃'
+                            };
+
+                            return `
+                                <div class="glass-effect rounded-2xl p-6 card-hover relative overflow-hidden">
+                                    ${isCompleted ? `
+                                        <div class="absolute top-4 right-4 p-2 bg-green-500/20 rounded-full">
+                                            <div class="text-2xl">✅</div>
+                                        </div>
+                                    ` : ''}
+                                    
+                                    <div class="flex items-start justify-between mb-4">
+                                        <div class="flex items-center space-x-3">
+                                            <div class="text-3xl">${typeEmojis[goal.type] || '🎯'}</div>
+                                            <div>
+                                                <h4 class="text-white font-bold text-lg">${goal.target}</h4>
+                                                <p class="text-gray-400 text-sm">
+                                                    ${isOverdue ? '⏰ Scaduto' : isCompleted ? '🎉 Completato!' : `⏳ ${daysLeft} giorni rimasti`}
+                                                </p>
+                                            </div>
+                                        </div>
+                                        <button class="delete-btn text-red-400 hover:text-red-300 btn-fast" data-btn-action="delete" data-type="goal" data-item-id="${goal.id}">
+                                            <div class="text-lg">🗑️</div>
+                                        </button>
+                                    </div>
+
+                                    <div class="space-y-3 mb-4">
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-gray-400 text-sm">📊 Progressi</span>
+                                            <span class="text-white font-semibold">${progress.toFixed(1)}%</span>
+                                        </div>
+                                        <div class="w-full bg-gray-700 rounded-full h-3">
+                                            <div class="${isCompleted ? 'bg-green-500' : 'progress-bar'} h-3 rounded-full" style="width: ${Math.min(progress, 100)}%"></div>
+                                        </div>
+                                        <div class="flex justify-between items-center text-sm">
+                                            <span class="text-gray-500">📍 Attuale: ${goal.current || 0}</span>
+                                            <span class="text-gray-500">🎯 Target: ${goal.value}</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="text-right">
+                                        <p class="text-gray-400 text-sm">📅 Scadenza: ${this.formatDate(goal.deadline)}</p>
+                                    </div>
+                                </div>
+                            `;
+                        } catch (goalRenderError) {
+                            console.warn('Goal render error:', goalRenderError);
+                            return '';
+                        }
+                    }).join('');
+                } catch (error) {
+                    console.error('Goals render error:', error);
+                }
             }
 
             addExercise() {
                 try {
                     const nameInput = document.getElementById('exerciseName');
                     const categorySelect = document.getElementById('exerciseCategory');
-                    const muscleGroupInput = document.getElementById('exerciseMuscle
+                    const muscleGroupInput = document.getElementById('exerciseMuscleGroup');
+
+                    const name = nameInput ? nameInput.value.trim() : '';
+                    const category = categorySelect ? categorySelect.value : 'petto';
+                    const muscleGroup = muscleGroupInput ? muscleGroupInput.value.trim() : '';
+
+                    if (!name || !muscleGroup) {
+                        this.showNotification('Inserisci nome e gruppo muscolare', 'error');
+                        return;
+                    }
+
+                    // Show loading state
+                    const btn = document.getElementById('addExerciseBtn');
+                    if (btn) btn.classList.add('btn-loading');
+
+                    setTimeout(() => {
+                        const exercise = {
+                            id: Date.now(),
+                            name,
+                            category,
+                            muscleGroup
+                        };
+
+                        this.exercises.push(exercise);
+                        this.saveData();
+                        
+                        // Clear form
+                        if (nameInput) nameInput.value = '';
+                        if (muscleGroupInput) muscleGroupInput.value = '';
+                        if (categorySelect) categorySelect.value = 'petto';
+
+                        // Remove loading state
+                        if (btn) btn.classList.remove('btn-loading');
+
+                        // Re-render
+                        this.renderExercises();
+                        if (this.currentView === 'dashboard') this.renderDashboard();
+                        
+                        this.showNotification('Esercizio aggiunto con successo!', 'success');
+                    }, 300);
+                } catch (error) {
+                    console.error('Add exercise error:', error);
+                    this.showNotification('Errore durante l\'aggiunta dell\'esercizio', 'error');
+                    const btn = document.getElementById('addExerciseBtn');
+                    if (btn) btn.classList.remove('btn-loading');
+                }
+            }
+
+            addWorkout(exerciseId) {
+                try {
+                    const weightInput = document.getElementById(`weight-${exerciseId}`);
+                    const setsInput = document.getElementById(`sets-${exerciseId}`);
+                    const repsInput = document.getElementById(`reps-${exerciseId}`);
+                    const dateInput = document.getElementById(`date-${exerciseId}`);
+
+                    if (!weightInput || !setsInput || !repsInput || !dateInput) {
+                        this.showNotification('Errore nei campi del form', 'error');
+                        return;
+                    }
+
+                    const weight = parseFloat(weightInput.value);
+                    const sets = parseInt(setsInput.value);
+                    const reps = parseInt(repsInput.value);
+                    const date = dateInput.value;
+
+                    if (!weight || weight <= 0 || !sets || sets <= 0 || !reps || reps <= 0) {
+                        this.showNotification('Inserisci valori validi per tutti i campi', 'error');
+                        return;
+                    }
+
+                    const exercise = this.exercises.find(ex => ex.id === exerciseId);
+                    if (!exercise) {
+                        this.showNotification('Esercizio non trovato', 'error');
+                        return;
+                    }
+
+                    const workout = {
+                        id: Date.now(),
+                        exerciseId,
+                        exercise: exercise.name,
+                        weight,
+                        sets,
+                        reps,
+                        date
+                    };
+
+                    this.workouts.push(workout);
+                    this.saveData();
+
+                    // Clear inputs
+                    weightInput.value = '';
+                    setsInput.value = '';
+                    repsInput.value = '';
+                    dateInput.value = new Date().toISOString().split('T')[0];
+
+                    // Update current values for goals
+                    this.updateGoalProgress(exerciseId, weight);
+
+                    // Re-render
+                    if (this.currentView === 'exercises') this.renderExercises();
+                    if (this.currentView === 'dashboard') this.renderDashboard();
+
+                    this.showNotification('Carico aggiunto con successo!', 'success');
+                } catch (error) {
+                    console.error('Add workout error:', error);
+                    this.showNotification('Errore durante il salvataggio del carico', 'error');
+                }
+            }
+
+            addMeasurement() {
+                try {
+                    const typeSelect = document.getElementById('measurementType');
+                    const valueInput = document.getElementById('measurementValue');
+                    const dateInput = document.getElementById('measurementDate');
+
+                    const type = typeSelect ? typeSelect.value : '';
+                    const value = valueInput ? parseFloat(valueInput.value) : 0;
+                    const date = dateInput ? dateInput.value : '';
+
+                    if (!value || !date) {
+                        this.showNotification('Compila tutti i campi', 'error');
+                        return;
+                    }
+
+                    // Show loading state
+                    const btn = document.getElementById('addMeasurementBtn');
+                    if (btn) btn.classList.add('btn-loading');
+
+                    setTimeout(() => {
+                        const measurement = {
+                            id: Date.now(),
+                            type,
+                            value,
+                            date
+                        };
+
+                        this.bodyMeasurements.push(measurement);
+                        this.saveData();
+
+                        // Clear form
+                        if (valueInput) valueInput.value = '';
+                        if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+
+                        // Update current values for body measurement goals
+                        this.updateBodyMeasurementGoalProgress(type, value);
+
+                        // Remove loading state
+                        if (btn) btn.classList.remove('btn-loading');
+
+                        // Re-render
+                        this.renderMeasurements();
+                        if (this.currentView === 'dashboard') this.renderDashboard();
+
+                        this.showNotification('Misurazione aggiunta con successo!', 'success');
+                    }, 200);
+                } catch (error) {
+                    console.error('Add measurement error:', error);
+                    this.showNotification('Errore durante l\'aggiunta della misurazione', 'error');
+                    const btn = document.getElementById('addMeasurementBtn');
+                    if (btn) btn.classList.remove('btn-loading');
+                }
+            }
+
+            addGoal() {
+                try {
+                    const targetInput = document.getElementById('goalTarget');
+                    const typeSelect = document.getElementById('goalType');
+                    const valueInput = document.getElementById('goalValue');
+                    const deadlineInput = document.getElementById('goalDeadline');
+
+                    const target = targetInput ? targetInput.value.trim() : '';
+                    const type = typeSelect ? typeSelect.value : '';
+                    const value = valueInput ? parseFloat(valueInput.value) : 0;
+                    const deadline = deadlineInput ? deadlineInput.value : '';
+
+                    if (!target || !value || !deadline) {
+                        this.showNotification('Compila tutti i campi', 'error');
+                        return;
+                    }
+
+                    // Show loading state
+                    const btn = document.getElementById('addGoalBtn');
+                    if (btn) btn.classList.add('btn-loading');
+
+                    setTimeout(() => {
+                        const goal = {
+                            id: Date.now(),
+                            type,
+                            target,
+                            value,
+                            current: 0,
+                            deadline
+                        };
+
+                        this.goals.push(goal);
+                        this.saveData();
+
+                        // Clear form
+                        if (targetInput) targetInput.value = '';
+                        if (valueInput) valueInput.value = '';
+                        if (deadlineInput) deadlineInput.value = new Date().toISOString().split('T')[0];
+
+                        // Remove loading state
+                        if (btn) btn.classList.remove('btn-loading');
+
+                        // Re-render
+                        this.renderGoals();
+                        if (this.currentView === 'dashboard') this.renderDashboard();
+
+                        this.showNotification('Obiettivo aggiunto con successo!', 'success');
+                    }, 200);
+                } catch (error) {
+                    console.error('Add goal error:', error);
+                    this.showNotification('Errore durante l\'aggiunta dell\'obiettivo', 'error');
+                    const btn = document.getElementById('addGoalBtn');
+                    if (btn) btn.classList.remove('btn-loading');
+                }
+            }
+
+            updateGoalProgress(exerciseId, newWeight) {
+                try {
+                    const exercise = this.exercises.find(e => e.id === exerciseId);
+                    if (!exercise) return;
+
+                    this.goals.forEach(goal => {
+                        try {
+                            if (goal.type === 'weight' && goal.target && goal.target.toLowerCase().includes(exercise.name.toLowerCase())) {
+                                goal.current = Math.max(goal.current || 0, newWeight || 0);
+                            }
+                        } catch (e) {
+                            console.warn('Goal update error for goal:', goal.id);
+                        }
+                    });
+                    
+                    this.saveData();
+                } catch (error) {
+                    console.error('Update goal progress error:', error);
+                }
+            }
+
+            updateBodyMeasurementGoalProgress(measurementType, newValue) {
+                try {
+                    this.goals.forEach(goal => {
+                        try {
+                            if (goal.type === 'body_weight' && measurementType === 'peso') {
+                                goal.current = newValue;
+                            } else if (goal.type === 'body_measurement' && goal.target && goal.target.toLowerCase().includes(measurementType)) {
+                                goal.current = newValue;
+                            }
+                        } catch (e) {
+                            console.warn('Body measurement goal update error for goal:', goal.id);
+                        }
+                    });
+                    
+                    this.saveData();
+                } catch (error) {
+                    console.error('Update body measurement goal progress error:', error);
+                }
+            }
+
+            calculateGoalProgress(goal) {
+                try {
+                    if (!goal || typeof goal.current !== 'number' || typeof goal.value !== 'number') {
+                        return 0;
+                    }
+                    
+                    if (goal.type === 'body_weight') {
+                        // For weight loss goals, calculate differently
+                        if (goal.value < goal.current) {
+                            const latestWeight = this.bodyMeasurements
+                                .filter(m => m.type === 'peso')
+                                .sort((a, b) => new Date(b.date) - new Date(a.date))[0];
+                                
+                            if (latestWeight) {
+                                const totalToLose = goal.current - goal.value;
+                                const lost = goal.current - latestWeight.value;
+                                return Math.max(0, Math.min(100, (lost / totalToLose) * 100));
+                            }
+                        } else {
+                            return Math.min(100, (goal.current / goal.value) * 100);
+                        }
+                    }
+                    return Math.min(100, Math.max(0, (goal.current / goal.value) * 100));
+                } catch (error) {
+                    console.error('Goal progress calculation error:', error);
+                    return 0;
+                }
+            }
+
+            showDeleteModal(type, id) {
+                try {
+                    this.deleteTarget = `${type}-${id}`;
+                    const modal = document.getElementById('deleteModal');
+                    if (modal) modal.classList.remove('hidden');
+                } catch (error) {
+                    console.error('Show delete modal error:', error);
+                }
+            }
+
+            showResetModal() {
+                try {
+                    const modal = document.getElementById('resetModal');
+                    if (modal) modal.classList.remove('hidden');
+                } catch (error) {
+                    console.error('Show reset modal error:', error);
+                }
+            }
+
+            confirmDelete() {
+                try {
+                    if (this.deleteTarget) {
+                        const [type, id] = this.deleteTarget.split('-');
+                        this.handleDelete(type, parseInt(id));
+                        this.hideModal('deleteModal');
+                        this.deleteTarget = null;
+                    }
+                } catch (error) {
+                    console.error('Confirm delete error:', error);
+                }
+            }
+
+            confirmReset() {
+                try {
+                    // Clear all data
+                    if (this.isLocalStorageAvailable) {
+                        localStorage.removeItem('fittrack_exercises');
+                        localStorage.removeItem('fittrack_workouts');
+                        localStorage.removeItem('fittrack_measurements');
+                        localStorage.removeItem('fittrack_goals');
+                    }
+                    
+                    // Reset arrays
+                    this.exercises = [];
+                    this.workouts = [];
+                    this.bodyMeasurements = [];
+                    this.goals = [];
+
+                    // Close modal
+                    this.hideModal('resetModal');
+
+                    // Re-render all views
+                    this.renderDashboard();
+                    this.renderExercises();
+                    this.renderMeasurements();
+                    this.renderGoals();
+
+                    // Switch to dashboard
+                    this.switchView('dashboard');
+
+                    this.showNotification('Applicazione resettata con successo!', 'success');
+                } catch (error) {
+                    console.error('Reset error:', error);
+                    this.showNotification('Errore durante il reset', 'error');
+                }
+            }
+
+            handleDelete(type, id) {
+                try {
+                    switch(type) {
+                        case 'exercise':
+                            this.exercises = this.exercises.filter(ex => ex.id !== id);
+                            this.workouts = this.workouts.filter(w => w.exerciseId !== id);
+                            break;
+                        case 'workout':
+                            this.workouts = this.workouts.filter(w => w.id !== id);
+                            break;
+                        case 'measurement':
+                            this.bodyMeasurements = this.bodyMeasurements.filter(m => m.id !== id);
+                            break;
+                        case 'goal':
+                            this.goals = this.goals.filter(g => g.id !== id);
+                            break;
+                    }
+
+                    this.saveData();
+
+                    // Re-render current view
+                    switch(this.currentView) {
+                        case 'dashboard':
+                            this.renderDashboard();
+                            break;
+                        case 'exercises':
+                            this.renderExercises();
+                            break;
+                        case 'measurements':
+                            this.renderMeasurements();
+                            break;
+                        case 'goals':
+                            this.renderGoals();
+                            break;
+                    }
+
+                    this.showNotification('Elemento eliminato con successo!', 'success');
+                } catch (error) {
+                    console.error('Delete error:', error);
+                    this.showNotification('Errore durante l\'eliminazione', 'error');
+                }
+            }
+
+            exportData() {
+                try {
+                    const data = {
+                        exercises: this.exercises,
+                        workouts: this.workouts,
+                        bodyMeasurements: this.bodyMeasurements,
+                        goals: this.goals,
+                        exportDate: new Date().toISOString(),
+                        version: '2.1'
+                    };
+                    
+                    const dataStr = JSON.stringify(data, null, 2);
+                    const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+                    
+                    const exportFileDefaultName = `fittrack-backup-${new Date().toISOString().split('T')[0]}.json`;
+                    
+                    const linkElement = document.createElement('a');
+                    linkElement.setAttribute('href', dataUri);
+                    linkElement.setAttribute('download', exportFileDefaultName);
+                    linkElement.click();
+
+                    this.showNotification('Dati esportati con successo!', 'success');
+                } catch (error) {
+                    console.error('Export error:', error);
+                    this.showNotification('Errore durante l\'esportazione', 'error');
+                }
+            }
+
+            importData(event) {
+                try {
+                    const file = event.target.files[0];
+                    if (!file) return;
+
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        try {
+                            const data = JSON.parse(e.target.result);
+                            
+                            // Validate data structure
+                            if (!data.exercises || !data.workouts || !data.bodyMeasurements || !data.goals) {
+                                throw new Error('Invalid data format');
+                            }
+
+                            // Import data
+                            this.exercises = Array.isArray(data.exercises) ? data.exercises : [];
+                            this.workouts = Array.isArray(data.workouts) ? data.workouts : [];
+                            this.bodyMeasurements = Array.isArray(data.bodyMeasurements) ? data.bodyMeasurements : [];
+                            this.goals = Array.isArray(data.goals) ? data.goals : [];
+
+                            this.saveData();
+
+                            // Re-render current view
+                            switch(this.currentView) {
+                                case 'dashboard':
+                                    this.renderDashboard();
+                                    break;
+                                case 'exercises':
+                                    this.renderExercises();
+                                    break;
+                                case 'progress':
+                                    this.renderProgress();
+                                    break;
+                                case 'measurements':
+                                    this.renderMeasurements();
+                                    break;
+                                case 'goals':
+                                    this.renderGoals();
+                                    break;
+                            }
+
+                            this.showNotification('Dati importati con successo!', 'success');
+                        } catch (error) {
+                            this.showNotification('Errore nell\'importazione dei dati', 'error');
+                            console.error('Import error:', error);
+                        }
+                    };
+                    reader.readAsText(file);
+
+                    // Reset file input
+                    event.target.value = '';
+                } catch (error) {
+                    console.error('Import handler error:', error);
+                    this.showNotification('Errore durante l\'importazione', 'error');
+                }
+            }
+
+            showNotification(message, type = 'info') {
+                try {
+                    // Remove existing notifications
+                    const existing = document.querySelectorAll('.notification');
+                    existing.forEach(n => {
+                        try {
+                            n.remove();
+                        } catch (e) {
+                            // Ignore removal errors
+                        }
+                    });
+
+                    // Create notification element
+                    const notification = document.createElement('div');
+                    notification.className = `notification ${type}`;
+                    
+                    const icons = {
+                        success: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>`,
+                        error: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/></svg>`,
+                        info: `<svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>`
+                    };
+
+                    notification.innerHTML = `
+                        <div class="flex items-center space-x-3">
+                            <div class="flex-shrink-0">
+                                ${icons[type] || icons.info}
+                            </div>
+                            <p class="font-medium">${message || 'Operazione completata'}</p>
+                        </div>
+                    `;
+                    
+                    document.body.appendChild(notification);
+                    
+                    // Show notification
+                    setTimeout(() => {
+                        notification.classList.add('show');
+                    }, 50);
+                    
+                    // Hide notification
+                    setTimeout(() => {
+                        notification.classList.remove('show');
+                        setTimeout(() => {
+                            try {
+                                if (notification.parentNode) {
+                                    notification.parentNode.removeChild(notification);
+                                }
+                            } catch (e) {
+                                // Ignore removal errors
+                            }
+                        }, 300);
+                    }, 3000);
+                } catch (error) {
+                    console.error('Notification error:', error);
+                    // Fallback to simple alert if notification fails
+                    alert(message);
+                }
+            }
+
+            formatDate(dateStr) {
+                try {
+                    if (!dateStr) return 'Data non valida';
+                    const date = new Date(dateStr);
+                    if (isNaN(date.getTime())) return 'Data non valida';
+                    
+                    return date.toLocaleDateString('it-IT', {
+                        day: '2-digit',
+                        month: '2-digit',
+                        year: 'numeric'
+                    });
+                } catch (error) {
+                    console.error('Date formatting error:', error);
+                    return 'Data non valida';
+                }
+            }
+        }
+
+        // Initialize the application when DOM is ready
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                window.fitTrackerInstance = new FitTracker();
+                window.FitTracker = FitTracker;
+                console.log('FitTracker initialized successfully');
+            } catch (error) {
+                console.error('FitTracker initialization error:', error);
+                // Show basic error message
+                document.body.innerHTML = `
+                    <div class="fixed inset-0 bg-slate-900 flex items-center justify-center">
+                        <div class="text-center p-8">
+                            <div class="text-6xl mb-4">⚠️</div>
+                            <h1 class="text-white text-2xl mb-2">Errore di Inizializzazione</h1>
+                            <p class="text-gray-400 mb-4">Si è verificato un errore durante l'avvio dell'applicazione</p>
+                            <button onclick="location.reload()" class="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 btn-fast">
+                                Ricarica Pagina
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }
+        });
+
+        // Global error handlers
+        window.addEventListener('error', function(e) {
+            console.error('Global error:', e.error);
+            return true;
+        });
+
+        window.addEventListener('unhandledrejection', function(e) {
+            console.error('Unhandled promise rejection:', e.reason);
+            e.preventDefault();
+        });
+
+        // Performance optimization - preload critical resources
+        window.addEventListener('load', function() {
+            // Preload Chart.js if needed
+            if (typeof Chart === 'undefined') {
+                console.warn('Chart.js not loaded - charts will not be available');
+            }
+        });
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', function(e) {
+            try {
+                if (e.altKey && e.key >= '1' && e.key <= '5') {
+                    e.preventDefault();
+                    const views = ['dashboard', 'exercises', 'progress', 'measurements', 'goals'];
+                    const index = parseInt(e.key) - 1;
+                    if (views[index] && window.fitTrackerInstance) {
+                        window.fitTrackerInstance.switchView(views[index]);
+                    }
+                }
+            } catch (error) {
+                console.error('Keyboard shortcut error:', error);
+            }
+        });
+
+        // Touch/swipe support for mobile
+        let touchStartX = 0;
+        let touchEndX = 0;
+
+        document.addEventListener('touchstart', function(e) {
+            touchStartX = e.changedTouches[0].screenX;
+        }, { passive: true });
+
+        document.addEventListener('touchend', function(e) {
+            touchEndX = e.changedTouches[0].screenX;
+            handleSwipe();
+        }, { passive: true });
+
+        function handleSwipe() {
+            try {
+                if (!window.fitTrackerInstance) return;
+                
+                const swipeThreshold = 50;
+                const diff = touchStartX - touchEndX;
+                
+                if (Math.abs(diff) > swipeThreshold) {
+                    const views = ['dashboard', 'exercises', 'progress', 'measurements', 'goals'];
+                    const currentIndex = views.indexOf(window.fitTrackerInstance.currentView);
+                    
+                    if (diff > 0 && currentIndex < views.length - 1) {
+                        // Swipe left - next view
+                        window.fitTrackerInstance.switchView(views[currentIndex + 1]);
+                    } else if (diff < 0 && currentIndex > 0) {
+                        // Swipe right - previous view
+                        window.fitTrackerInstance.switchView(views[currentIndex - 1]);
+                    }
+                }
+            } catch (error) {
+                console.error('Swipe handler error:', error);
+            }
+        }
+    </script>
+</body>
+</html>
